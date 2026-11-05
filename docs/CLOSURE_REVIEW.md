@@ -9,7 +9,8 @@ no existing document. This file is the only thing it added.
 
 **Updated the same day** after the closure work that followed (architecture D46): rows
 resolved since are marked in place, and section 9 records what was done and what the three
-investigations found. Nothing was committed.
+investigations found. The work was then committed for the first time, on instruction, as
+`0bf54c0d99cc5d3d305436b92352f6d3a2e9d313`; rows that said no commit existed are corrected in place.
 
 Nothing here is an approval. Where a row says "recommend", it is a recommendation for the
 named person to accept or reject.
@@ -19,10 +20,10 @@ named person to accept or reject.
 | Measure | State |
 |---|---|
 | Backend tests | 410 passed, 32 skipped after the closure work (388 and 31 at the review). The skipped are every PostgreSQL test |
-| PostgreSQL | Never used. No database created, no migration applied (0001 to 0010 exist as files) |
+| PostgreSQL | **Verified on the test database, 5 Nov 2026:** migrations 0001 to 0010 applied to `oak_misstatements_test`; 442 passed, none skipped. The main database is created, empty and unmigrated |
 | Financial Spine | Never contacted. Every call runs against a test double built from CAF's source |
 | Frontend | Stage 0 shell only. No screen of spec section 10 exists |
-| Version control | **No commit exists.** The whole project is untracked in git |
+| Version control | No commit existed at the review. **First commit made 5 Nov 2026:** `0bf54c0d99cc5d3d305436b92352f6d3a2e9d313`, 122 files, on `master`. No remote is configured and there is no CI |
 | Spec acceptance criteria | 8 of 11 implemented and tested on the stand-in; 3 are Pass 2 |
 | Pass 1 of the spec | Not complete: the schedule screen is missing |
 | Pass 2 of the spec | Not started |
@@ -82,7 +83,7 @@ These were found by this review. None is in `DECISIONS_PENDING.md` yet.
 | N1 | **Gate exposure, approved as D18 (T12), was not built as approved** | One endpoint, `GET /api/engagements/{id}/evaluation`, carries the gates and the sign-off decision | D18 approved "two read-only endpoints, one for the opinion gate and one for the sign-off block, returning open, blocked or undetermined with the figures" | **B** | Yes, small: two thin read-only endpoints over the existing computation | `docs/architecture.md` D18; route list | **Built 5 Nov 2026 (D46):** `GET .../gates/opinion` and `GET .../gates/sign-off` | — | No (closed 5 Nov 2026) |
 | N2 | D20 no longer describes practice | D20 says nothing that depends on a pending decision is implemented until answered | Interim treatments of B1, B2, B8, B14, B15 were built on instruction, each labelled | **A** | No; a documentation correction | D20 against D37, D38, D41, D45 | **Done 5 Nov 2026:** D20 amended | — | No (closed 5 Nov 2026) |
 | N3 | The register's header and its Stage 1 table are stale | Header says "updated at the start of Stage 1"; the B7 row says acceptance 4 "is still not claimed" while later sections cite acceptance 4 tests | The two statements disagree | **A** | No; documentation | `DECISIONS_PENDING.md` lines 3 and 15; README Stage 4 section | **Done 5 Nov 2026:** register header and acceptance 4 wording corrected | — | No (closed 5 Nov 2026) |
-| N4 | Nothing is committed, and there is no CI | The git repository has no commits; every file is untracked; no pipeline exists | The work has no history and no automatic check | **B** | No | `git log`: "does not have any commits yet" | First commit, when you say so. **Not done: instructed not to commit yet** | You; firm | Go-live |
+| N4 | Nothing is committed, and there is no CI | The git repository has no commits; every file is untracked; no pipeline exists | The work has no history and no automatic check | **B** | No | `git log`: "does not have any commits yet" | **Done 5 Nov 2026:** first commit `0bf54c0` (`0bf54c0d99cc5d3d305436b92352f6d3a2e9d313`), 122 files. Still open: no remote and no CI | Firm, for a remote and CI | No (the commit is made) |
 | N5 | Python dependencies are not locked | `pyproject.toml` gives lower bounds only; the test client warns that its use of `httpx` is deprecated | Reproducible installs; one deprecation | **B** | Small | `backend/pyproject.toml`; pytest warning | **Done 5 Nov 2026:** `backend/requirements-lock.txt`. The `httpx` deprecation in the test client remains | Developer, for the deprecation | No |
 | N6 | Reads need no identity, and there is no per-engagement access | Every GET answers anyone who can reach the API; any authenticated identity may act on any engagement | Confidentiality rests entirely on the proxy | C | Yes, if the firm wants it | D36 "Reads need none" | Firm decides, with B9b and O1 | Firm | Go-live |
 | N7 | The Spine does not know who acted here | The Spine records its own service identity as `proposed_by` and `decided_by`; our actor travels in the note | Attribution inside the Spine; whether the Spine checks the caller | C | None here | `D:\CAF` `api/spine.py` lines 387 and 424 | Spine's owner decides | Spine's owner | No |
@@ -167,7 +168,7 @@ These were found by this review. None is in `DECISIONS_PENDING.md` yet.
 ### What earlier reports overlooked
 
 1. **D18 was approved and not built as approved** (N1). Earlier reports said the gate was exposed without noting that two dedicated endpoints had been agreed.
-2. **Nothing is committed** (N4). Every stage report ended with "nothing is committed"; none said that the repository has no commit at all.
+2. **Nothing is committed** (N4). Every stage report ended with "nothing is committed"; none said that the repository has no commit at all. *Since corrected: the first commit, `0bf54c0`, was made on 5 Nov 2026.*
 3. **Spec section 4 says the lines come from Materiality.** Earlier reports described manual entry as the interim under B4 without stating plainly that this departs from the spec's wording.
 4. **An engagement cannot follow the Spine to a successor version** (B10b). The Spine refuses everything on a locked version and creates a successor when unlocked. This module refuses to re-point once a misstatement exists. So once a version is locked and superseded, nothing further can be raised for that engagement. This was recorded as a pending decision, not as the operational dead end it is. *Corrected after investigation (section 9):* the Spine will not lock a version while any adjustment is proposed, so at the lock every misstatement is already final and nothing is left to decide; the dead end is for raising anything new after an unlock.
 5. **A description cannot be corrected and an item raised in error must be communicated before it can be withdrawn** (F9 with F4). Each was recorded separately; together they mean a simple mistake cannot be fixed quietly.
@@ -177,7 +178,7 @@ These were found by this review. None is in `DECISIONS_PENDING.md` yet.
 
 ## 7. What can be closed without anyone's approval
 
-Recommended at the review. All but the first commit were then done; section 9 records each:
+Recommended at the review. All were then done; section 9 records each, and the first commit is `0bf54c0`:
 
 | Item | Resolution |
 |---|---|
@@ -189,14 +190,14 @@ Recommended at the review. All but the first commit were then done; section 9 re
 | N11 | Add a CHECK on the event kind in a new migration |
 | N9 | Add a read-only orphan-proposal report |
 | N5 | Pin the Python dependencies |
-| N4 | Make the first commit, on your instruction |
+| N4 | Make the first commit, on your instruction. *Done: `0bf54c0`* |
 | New rows | Add N1 to N16 and V1 to V8 to `DECISIONS_PENDING.md` so the register is complete |
 
 ## 8. What remains before the module can be declared complete
 
 In order of dependency:
 
-1. **First commit** of the work so far. *Still not done, on instruction.*
+1. **First commit** of the work so far. *Done 5 Nov 2026: `0bf54c0d99cc5d3d305436b92352f6d3a2e9d313`.*
 2. **PostgreSQL**: create the databases, apply migrations 0001 to 0010 to the test database, run the 32 skipped tests, fix whatever they find.
 3. **The small code items** of section 7. *Done 5 Nov 2026, see section 9.*
 4. **Stage 6**: the three screens. Without the schedule screen, Pass 1 of the spec is not done.
@@ -271,7 +272,7 @@ report is how an orphan is found.
 | The CA | B2, B7a, B7b, B7c, B8, B14, B15a, F3; and B6, F5 for Pass 2 |
 | The lead or the Spine's owner | B1, B5, B10a, B10b, B10c, B15b, F9, N7, N8, N13, N17 |
 | The firm | B4a, B4b, B9a, B9b, O1, O2, N6 |
-| You | N4, the first commit |
+| You | Nothing outstanding: the first commit is made (N4). A remote and CI remain the firm's choice |
 | PostgreSQL or the live Spine | V1 to V8 |
 | A later stage or module | Stage 6 (N12), Stage 7, Pass 2 (N16), an Opinion module |
 

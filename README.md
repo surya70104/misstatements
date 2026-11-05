@@ -255,6 +255,27 @@ Run on 5 November 2026:
 - Not run: PostgreSQL (the trigger's PL/pgSQL has never executed) and the live Financial
   Spine (its decision endpoint was read from CAF's source and mirrored in the double).
 
+## PostgreSQL verification on the test database
+
+Run on 5 November 2026, PostgreSQL 16.15:
+
+- A person created the two roles and two databases with `scripts\db\02_create.sql` and set
+  the passwords. `backend\.env` holds the four URLs and is ignored by git.
+- Migrations 0001 to 0010 were applied to `oak_misstatements_test` as the owner role, driven
+  from code with the test URL only. All ten applied cleanly. The schema matches the models:
+  every table, column and named constraint, twenty triggers, seven functions, the money
+  domain, and the application role holding SELECT and INSERT plus three column-level updates.
+- `pytest` on PostgreSQL: **442 passed, none skipped, none failed.** The API tests run as the
+  application role. The first run failed four database tests; each was a fault in the test
+  (it rolled back its own rows, broke a second rule, or expected a trigger where PostgreSQL's
+  own foreign key or TRUNCATE rule refuses first). In every case the database had refused
+  the operation. No trigger, constraint or grant was changed.
+- With the test URLs blanked the same suite still passes on the in-memory stand-in: 410
+  passed, 32 skipped.
+- `ruff check`, `ruff format --check` and `mypy` strict are clean (86 files).
+- **Not done:** no migration has been applied to `oak_misstatements`. Two requests arriving
+  at the same moment have not been exercised. The live Financial Spine has not been contacted.
+
 ## Closure work on Stages 0 to 5 (D46)
 
 Run on 5 November 2026, after the review in `docs/CLOSURE_REVIEW.md`:

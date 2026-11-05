@@ -38,14 +38,20 @@ def seed(db: Connection) -> tuple[uuid.UUID, uuid.UUID, uuid.UUID]:
 
 def test_misstatement_and_its_versions_are_append_only_for_the_owner(db: Connection) -> None:
     _engagement, misstatement_id, version_id = seed(db)
-    with pytest.raises(DBAPIError, match="append-only"):
+    # Each refused statement runs in its own savepoint, so the seeded rows survive it. (The
+    # first PostgreSQL run showed the earlier form rolled the rows back and then deleted
+    # nothing, which no trigger can refuse.)
+    with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
         db.execute(
             text("UPDATE misstatement_version SET description = 'x' WHERE id = :v"),
             {"v": version_id},
         )
-    db.rollback()
-    with pytest.raises(DBAPIError, match="append-only"):
+    with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
+        db.execute(text("DELETE FROM misstatement_version WHERE id = :v"), {"v": version_id})
+    with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
         db.execute(text("DELETE FROM misstatement WHERE id = :m"), {"m": misstatement_id})
+    assert db.scalar(text("SELECT count(*) FROM misstatement_version")) == 1
+    assert db.scalar(text("SELECT count(*) FROM misstatement")) == 1
 
 
 def test_the_application_role_cannot_update_or_delete_them(app_db: Connection) -> None:
@@ -198,17 +204,32 @@ def test_the_successor_must_be_a_later_version_of_the_same_engagement(db: Connec
             text("UPDATE threshold SET superseded_by = :s WHERE id = :t"),
             {"t": first, "s": foreign},
         )
-    with pytest.raises(DBAPIError, match="does not exist"), db.begin_nested():
+    # A successor that does not exist: the foreign key refuses it. PostgreSQL fires the
+    # key's own check before the constraint trigger, so the trigger's message for this case
+    # is never the one seen; either refusal is the rule holding.
+    with (
+        pytest.raises(DBAPIError, match=r"fk_threshold_superseded_by|does not exist"),
+        db.begin_nested(),
+    ):
         db.execute(
             text("UPDATE threshold SET superseded_by = :s WHERE id = :t"),
             {"t": first, "s": uuid.uuid4()},
         )
-    earlier = seed_threshold(db, engagement_id, version_no=0 + 2)
-    # A successor with a lower or equal number is refused: point version 2 at version 1.
+    # A second version can only exist once the first is superseded by it (one current
+    # version per engagement), so supersede properly first: with the checks deferred, point
+    # version 1 at version 2, insert version 2, then make every check run.
+    second = uuid.uuid4()
+    db.execute(text("SET CONSTRAINTS ALL DEFERRED"))
+    db.execute(
+        text("UPDATE threshold SET superseded_by = :s WHERE id = :t"), {"t": first, "s": second}
+    )
+    seed_threshold(db, engagement_id, version_no=2, threshold_id=second)
+    db.execute(text("SET CONSTRAINTS ALL IMMEDIATE"))  # the valid supersession passes
+    # A successor with a lower number is refused: point version 2 back at version 1.
     with pytest.raises(DBAPIError, match="not a later version"), db.begin_nested():
         db.execute(
             text("UPDATE threshold SET superseded_by = :s WHERE id = :t"),
-            {"t": earlier, "s": first},
+            {"t": second, "s": first},
         )
 
 
@@ -303,7 +324,9 @@ def test_the_classification_snapshot_is_append_only_for_the_owner(db: Connection
 
 def test_pm_at_or_above_om_is_refused_by_the_database(db: Connection) -> None:
     engagement_id, _misstatement, _version = seed(db)
-    for pm in ("400000", "500000"):
+    # Each row is right in every other respect (CTT is PM times the fraction), so the only
+    # rule it breaks is the one under test.
+    for pm, ctt in (("400000", "20000"), ("500000", "25000")):
         with pytest.raises(DBAPIError, match="ck_threshold_pm_below_om"), db.begin_nested():
             db.execute(
                 text(INSERT_THRESHOLD),
@@ -313,7 +336,7 @@ def test_pm_at_or_above_om_is_refused_by_the_database(db: Connection) -> None:
                     "v": 1,
                     "om": "400000",
                     "pm": pm,
-                    "ctt": "20000",
+                    "ctt": ctt,
                     "fraction": "0.05",
                     "basis": "C-1",
                 },
@@ -463,9 +486,23 @@ def test_no_role_can_change_or_delete_a_version_after_a_move(db: Connection) -> 
     ):
         with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
             db.execute(text(statement), {"v": version_id, "m": misstatement_id})
-    with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
+    # A plain TRUNCATE of a table another table references is refused by PostgreSQL itself,
+    # before any trigger. With CASCADE that refusal is gone, and the triggers must hold.
+    with (
+        pytest.raises(DBAPIError, match=r"append-only|cannot truncate a table referenced"),
+        db.begin_nested(),
+    ):
         db.execute(text("TRUNCATE misstatement_version"))
+    for statement in (
+        "TRUNCATE misstatement_version CASCADE",
+        "TRUNCATE misstatement CASCADE",
+        "TRUNCATE misstatement_line_class",
+        "TRUNCATE engagement CASCADE",
+    ):
+        with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
+            db.execute(text(statement))
     assert db.scalar(text("SELECT count(*) FROM misstatement_version")) == 3
+    assert db.scalar(text("SELECT count(*) FROM misstatement")) == 1
 
 
 def test_the_application_role_can_lock_the_engagement_row_but_change_no_version(

@@ -51,7 +51,7 @@ B1, B2 and B7 against the Financial Spine's code (`D:\CAF\backend\src\oak_spine\
 | # | Decision | Needed before | Meanwhile |
 |---|---|---|---|
 | O1 | Authenticating reverse proxy, identity provider, `OAK_TRUSTED_PROXIES`, TLS | Go-live | `OAK_AUTH=dev` in development; production refuses it |
-| O2 | Running `scripts\db\02_create.sql` and applying migrations to `oak_misstatements_test`, then `oak_misstatements` | Proving the database rules of Stage 1 | Nothing created; database tests skip visibly; API tests run on an in-memory stand-in that proves logic only (D24) |
+| O2 | Running `scripts\db\02_create.sql` and applying migrations to `oak_misstatements_test`, then `oak_misstatements` | Applying migrations to `oak_misstatements`, when you approve it | **Partly done 5 Nov 2026:** both databases and both roles created by a person; migrations 0001 to 0010 applied to `oak_misstatements_test` and the full suite passes on it (442 passed, none skipped). `oak_misstatements` is empty and unmigrated |
 
 ## Found by the closure review of 5 November 2026
 
@@ -63,7 +63,7 @@ Items the review found that were not in this register. Evidence for each is in
 | N1 | The two read-only gate endpoints approved as D18 | — | **Closed 5 Nov 2026 (D46).** `GET /api/engagements/{id}/gates/opinion` and `.../gates/sign-off`, each open, blocked or undetermined with the figures |
 | N2 | D20 no longer described practice | — | **Closed 5 Nov 2026.** D20 amended: interim treatments are built only on instruction and always labelled |
 | N3 | This register's header and its acceptance 4 wording were stale | — | **Closed 5 Nov 2026.** Corrected above |
-| N4 | Nothing is committed to git; no CI | You, for the first commit; the firm, for CI | **Open.** Not committed, on instruction |
+| N4 | Nothing was committed to git; no CI | The firm, for a remote and CI | **First commit made 5 Nov 2026, on instruction:** `0bf54c0d99cc5d3d305436b92352f6d3a2e9d313`, 122 files, on `master`. Still open: no remote is configured and there is no CI |
 | N5 | Python dependencies were not locked | — | **Closed 5 Nov 2026.** `backend/requirements-lock.txt` holds the exact versions the suite passes on. Still open, minor: the test client's use of `httpx` is deprecated upstream |
 | N6 | Reads need no identity; access is not scoped to an engagement | Firm, with B9 and O1 | **Open.** Confidentiality rests on the proxy |
 | N7 | The Spine records its own service identity, not who acted here | Spine's owner | **Open.** Our actor travels in the decision note |
@@ -80,15 +80,16 @@ Items the review found that were not in this register. Evidence for each is in
 
 ## Verification that only real systems can give
 
-Nothing below has been done. Each needs a person to create the databases (O2) or to point
-the module at the Financial Spine.
+On 5 November 2026 the databases were created and V1 to V4 were done on
+`oak_misstatements_test`. The main database `oak_misstatements` exists and is empty: no
+migration has been applied to it. Nothing touching the Financial Spine has been done.
 
 | # | What is unverified |
 |---|---|
-| V1 | Whether migrations 0001 to 0010 apply. The PL/pgSQL of 0001, 0003, 0006, 0007, 0008 and 0009 has never executed |
-| V2 | The 32 skipped database tests: triggers, grants, the money domain and every CHECK |
-| V3 | The engagement row lock that serialises writes, and whether the application role may take it |
-| V4 | Exact money and time: the stand-in stores decimals as floating point and timestamps without zone |
+| V1 | Whether migrations 0001 to 0010 apply. **Done on `oak_misstatements_test`, 5 Nov 2026.** All ten applied cleanly as the owner role; the schema matches the models exactly. Not yet applied to `oak_misstatements` |
+| V2 | The 32 database tests: triggers, grants, the money domain and every CHECK. **Done on `oak_misstatements_test`, 5 Nov 2026.** All 32 pass. The first run failed 4; each was a fault in the test, and in each the database had refused the operation. No rule was changed |
+| V3 | The engagement row lock, and whether the application role may take it. **Done on `oak_misstatements_test`, 5 Nov 2026.** The application role takes the lock with its column-level rights, and every API test runs as that role. **Still open:** two requests truly at the same moment have not been exercised |
+| V4 | Exact money and time on PostgreSQL. **Done on `oak_misstatements_test`, 5 Nov 2026.** The whole API suite passes on PostgreSQL with the money domain and zoned timestamps |
 | V5 | The live Spine's answers: engagement, version, balances, adjustments and the Schedule III tree |
 | V6 | The live Spine's writes: propose, decide once, the 409s; acceptance 11 on the real adjusted trial balance |
 | V7 | Failure paths under real conditions: a commit failing after the Spine decided; an orphan proposal |

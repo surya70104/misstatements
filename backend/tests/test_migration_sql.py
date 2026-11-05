@@ -342,7 +342,7 @@ def test_no_migration_weakens_the_append_only_protection_of_the_record_tables() 
     function = sql[sql.index("CREATE FUNCTION oak_misstatements_append_only()") :]
     function = function[: function.index("$$;") if "$$;" in function else 400]
     assert "RAISE EXCEPTION" in function and "TG_OP" in function
-    assert not re.search(r"RETURN", function)  # it never lets a statement through
+    assert not re.search(r"\bRETURN\b", function)  # it never lets a statement through
     assert sql.count("CREATE FUNCTION oak_misstatements_append_only()") == 1
     assert "CREATE OR REPLACE FUNCTION oak_misstatements_append_only" not in sql
     for table in ("misstatement", "misstatement_version", "misstatement_line_class", "event"):
