@@ -1,0 +1,11 @@
+* text=auto eol=lf
+
+# PowerShell and batch scripts keep Windows line endings.
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Office documents are binary.
+*.docx binary
+*.xlsx binary
+*.xls  binary

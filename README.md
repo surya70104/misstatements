@@ -1,0 +1,532 @@
+# OAK Audit · Misstatements Rollup — SA 450
+
+Every misstatement found anywhere in the audit, accumulated in one schedule, classified
+against the thresholds, aggregated, and carried into the opinion.
+
+- Specification: [docs/MISSTATEMENTS_ROLLUP.md](docs/MISSTATEMENTS_ROLLUP.md) — the only
+  source of requirements. Nothing is built that the specification does not ask for.
+- Agreed decisions: [docs/architecture.md](docs/architecture.md)
+- Open accounting and business decisions, never resolved in code:
+  [docs/DECISIONS_PENDING.md](docs/DECISIONS_PENDING.md)
+
+This is a standalone project. It does not read from, write to, or depend on the Financial
+Spine project at `D:\CAF` or the Working Paper Binder at `D:\WORKING PAPER BINDER`, their
+databases or their credentials. Integration with the Spine, the Binder, WorkMind and
+Sampling goes through HTTP APIs only, each configured by a URL that may be unset.
+
+## Layout
+
+| Folder | Contents |
+|---|---|
+| `backend/` | Python 3.11 · FastAPI · SQLAlchemy · Alembic |
+| `backend/src/oak_misstatements/` | `config.py` (settings and the database guard), `db.py`, `identity.py`, `errors.py`, `main.py` (the app factory) |
+| `backend/src/oak_misstatements/models/` | `engagement`, `misstatement`, `misstatement_version` (spec section 9; D8, D9, D21), `threshold` and `event` (Stage 2), `misstatement_line_class` (the per-line classification snapshot, labels only, D32) |
+| `backend/src/oak_misstatements/core/` | Pure logic: `effects.py` (profit before tax above item IX, net assets as assets less liabilities, per caption, classification-only when both are nil, `null` for both when a line cannot be classified; D31), `spine_kind.py` (the one place the Spine's adjustment kind is chosen; refuses classification-only items pending B2) |
+| `backend/src/oak_misstatements/services/` | `spine_client.py` (the Financial Spine over HTTP), `engagements.py` (the Spine link), `misstatements.py` (raise and read over the Spine's lines) |
+| `backend/src/oak_misstatements/schemas/` | Request shapes; acceptance 1 is checked here before anything reaches the Spine |
+| `backend/src/oak_misstatements/api/` | Routers: health, engagements, misstatements |
+| `backend/alembic/` | Migrations. 0001: the append-only trigger function and the money domain. 0002: the three Stage 1 tables, the record tables append-only. 0003: threshold and event. 0004: the classification snapshot, append-only, no amounts. 0005: PM below OM as a CHECK. 0006: the engagement's audit columns frozen, the app role limited to the Spine link columns. 0007: the state machine's CHECKs and INSERT trigger on `misstatement_version`. 0008: the `evaluation` row, append-only, one per run. 0009: the conclusion columns on that row and the hard gate as a trigger. 0010: the event kind held to the five the module writes |
+| `backend/tests/` | `fake_spine.py` (the Spine double) and `local_stubs.py` (the double over HTTP on 8013); unit, schema, client, API and migration-SQL tests; database tests that skip until a test database exists |
+| `frontend/` | React 19 · TypeScript · Vite · Tailwind · vitest · ESLint · Prettier |
+| `scripts/db/` | One-time database and role creation scripts, run by a person as superuser. Not run yet |
+| `docs/` | Specification, architecture decisions, pending decisions |
+
+## Ports and tools
+
+| Item | Value |
+|---|---|
+| API | <http://localhost:8003> |
+| Frontend | <http://localhost:3003> |
+| Test doubles for other modules | from 8013 |
+| Python | 3.11, virtual environment at `backend\.venv` |
+| Node | 22, selected through fnm (`.node-version` in `frontend/`) |
+| Database | PostgreSQL 16 on localhost, databases `oak_misstatements` and `oak_misstatements_test` (not created yet) |
+
+## Build stages
+
+Pass 1 (spec section 11): the misstatement record with Dr/Cr lines over the Spine · the three
+thresholds with automatic banding and recompute · the state machine with mandatory refusal
+reasons · aggregation gross and net, profit and net assets · the schedule screen · the hard
+gate at overall materiality · the documented conclusion. Pass 2: qualitative factors and
+escalation · prior-period carry-forward · the TCWG extract and the written representation
+attachment · intake hooks · projected misstatements from Sampling · the generated binder paper.
+
+| Stage | Contents | Status |
+|---|---|---|
+| 0 | Git, folder structure, spec copy, architecture decisions D1–D20, pending-decisions register, backend package with settings guards, identity, app factory and health check, Alembic with migration 0001 (trigger function and money domain, no tables), frontend shell, database create scripts (not run), foundation tests, lint and type checks | done; see "Stage 0 verification" below |
+| 1 | Spine client and double; engagement with its Spine link; the misstatement record with Dr/Cr lines proposed to the Spine at raise time, effects computed from the Spine's lines on every read, references issued once per engagement, append-only versions; migration 0002 | done; see "Stage 1 verification". B1 and B2 isolated, not decided (D23): no withdrawal behaviour, classification-only items refused naming B2. B7 built on 4 Nov 2026 (D31): profit before tax above item IX, net assets as assets less liabilities from the Spine's tree sections, `null` for both when a line cannot be classified; three CA confirmations outstanding |
+| 2 | Thresholds: versioned OM, PM, CTT with the declared fraction and basis; superseded once, never deleted; the recompute event on revision; the Spine PM cross-check; banding; migration 0003 | done; see "Stage 2 verification". B3 and B11 closed at code level on 4 Nov 2026 (D33): both effects banded separately, the higher band wins, the spec's literal boundaries, acceptance 2 demonstrable. B13 closed the same day (D34): PM strictly below OM at the request and by migration 0005. B4 complete at code level (D35): manual entry as the interim, the Spine PM recorded and cross-checked, nothing pushed to the Spine, every version readable by id; three firm decisions stay pending. Still open: authorisation not enforced and declared (B9) |
+| 3 | State machine: raised → communicated → corrected / refused / withdrawn; mandatory reasons; corrected posts to the Spine | done on 5 Nov 2026 (D41); see "Stage 3 verification". Every move is a new append-only version; a correction is accepted in the Spine and posts; a refusal and a withdrawal refuse the Spine's adjustment with the reason, so neither posts. Interim and open: withdrawal in the Spine (B1), reason categories (B12), leaving `raised` early (F4), edits (F9) |
+| 4 | Aggregation gross and net, profit and net assets; the evaluation row | aggregate and gates built ahead of schedule on 4 Nov 2026 (D38): `GET /api/engagements/{id}/evaluation`, the write-path check `require_sign_off_open`, the partner-only soft-gate acknowledgement (D39). Completed on 5 Nov 2026 (D43); see "Stage 4 verification": both materiality tests shown, the reassessment prompt, and the append-only `evaluation` row, one per run (migration 0008). The conclusion and the strategy trigger (B5) are Stage 5 |
+| 5 | Gates: OM hard gate, PM soft gate, strategy trigger, individually-significant block; the conclusion | done on 5 Nov 2026 (D45); see "Stage 5 verification". The conclusion is a new append-only `evaluation` row carrying its figures and threshold version (migration 0009), partner-only, naming the run reviewed; a conclusion of not material is blocked by every gate in the write path and by a database trigger at overall materiality; the strategy trigger is built with no default band (B5). Readings to confirm: B14, B15 |
+| 6 | The schedule, misstatement detail and evaluation screens | |
+| 7 | Pass 1 acceptance run: criteria 1, 2, 3, 4, 6, 7, 10, 11 | |
+| 8–14 | Pass 2 | |
+
+## Setup on Windows
+
+Everything below runs from `D:\MISSTATEMENTS_ROLLUP` in PowerShell unless a step says
+otherwise. Nothing is installed system-wide: Python packages go into `backend\.venv`, Node
+packages into `frontend\node_modules`. Both folders are ignored by git.
+
+### Backend
+
+```powershell
+py -3.11 -m venv backend\.venv
+backend\.venv\Scripts\python.exe -m pip install -c backend\requirements-lock.txt -e "backend[dev]"
+Copy-Item backend\.env.example backend\.env
+```
+
+Open `backend\.env` afterwards and replace every `CHANGE_ME`. Until the databases exist the
+placeholders are fine because nothing connects. Then, from `D:\MISSTATEMENTS_ROLLUP\backend`:
+
+| Task | Command |
+|---|---|
+| Run the tests (database tests skip until `OAK_TEST_DATABASE_URL` is set) | `.venv\Scripts\python.exe -m pytest` |
+| Lint | `.venv\Scripts\python.exe -m ruff check .` |
+| Format check | `.venv\Scripts\python.exe -m ruff format --check .` |
+| Type check | `.venv\Scripts\python.exe -m mypy` |
+| Show migration SQL without connecting | `.venv\Scripts\python.exe -m alembic upgrade head --sql` |
+| Run the API on port 8003 | `.venv\Scripts\python.exe -m uvicorn oak_misstatements.main:create_app --factory --reload --port 8003` |
+
+The health check is at <http://localhost:8003/api/health> and the interactive API page at
+<http://localhost:8003/docs>.
+
+### Frontend
+
+Node 22 is required and is selected through fnm. `frontend\.node-version` pins it, and
+`frontend\.npmrc` makes npm refuse any other version, so the system Node 18 cannot be used
+by accident. Either activate fnm once per shell:
+
+```powershell
+fnm env --use-on-cd | Out-String | Invoke-Expression
+```
+
+or prefix each command with `fnm exec --using=22 --`. From `D:\MISSTATEMENTS_ROLLUP\frontend`:
+
+| Task | Command |
+|---|---|
+| Install packages (once, and after `package.json` changes) | `npm install` |
+| Run the tests | `npm test` |
+| Type check | `npm run typecheck` |
+| Lint | `npm run lint` |
+| Format check | `npm run format` |
+| Start the dev server on port 3003 | `npm run dev` |
+| Production build into `frontend\dist` | `npm run build` |
+
+The dev server proxies `/api` to the backend on 8003, so start the backend first and open
+<http://127.0.0.1:3003>.
+
+### Database: one-time creation, run by a person
+
+The module uses two databases of its own on the PostgreSQL 16 server, `oak_misstatements`
+and `oak_misstatements_test`, and two roles, `oak_misstatements_owner` (migrations) and
+`oak_misstatements_app` (the API). They are created once by `scripts\db\02_create.sql`, run
+as the `postgres` superuser. The script checks that none of the four names exist and stops
+without changing anything if one does. It never drops anything and never refers to any other
+project's databases or roles. **Neither script has been run yet** (pending decision O2).
+
+First, the read-only pre-check:
+
+```powershell
+& "C:\Program Files\PostgreSQL\16\bin\psql.exe" -h localhost -p 5432 -U postgres -d postgres -f scripts\db\01_check_names.sql
+```
+
+Then the creation script:
+
+```powershell
+& "C:\Program Files\PostgreSQL\16\bin\psql.exe" -h localhost -p 5432 -U postgres -d postgres -f scripts\db\02_create.sql
+```
+
+Then, in psql, set the two passwords. psql hides what you type and sends only a hash.
+
+```powershell
+& "C:\Program Files\PostgreSQL\16\bin\psql.exe" -h localhost -p 5432 -U postgres -d postgres -c "\password oak_misstatements_owner" -c "\password oak_misstatements_app"
+```
+
+Put the passwords into `backend\.env`, replacing `CHANGE_ME`, and uncomment the two
+`OAK_TEST_*` lines so the database tests run. Then apply the migration from `backend\`:
+
+```powershell
+.venv\Scripts\python.exe -m alembic upgrade head
+```
+
+### Who acts (B9, D36)
+
+Every write needs an identity: `OAK_AUTH=dev` with `OAK_DEV_USER` in development, or
+`OAK_AUTH=header` behind an authenticating proxy, believed only from `OAK_TRUSTED_PROXIES`.
+A missing, blank, duplicated or implausible identity refuses the write. The identity is
+recorded as `created_by`, `raised_by`, `set_by` or the event `actor`, taken from the
+request's identity source and never from its body; a body that names an actor is refused.
+Every audit column is frozen at the database. **No general role model is enforced**: any
+authenticated identity may raise, link and set thresholds, which the spec leaves to anyone.
+**Partner-only actions are enforced and fail closed** (D39, D45): the soft-gate acknowledgement
+and the conclusion succeed only when `OAK_TRUSTED_PROXIES` lists the proxy, the proxy presents the signed-in
+user's roles in `OAK_AUTH_ROLES_HEADER` and `OAK_PARTNER_ROLE` is among them as a whole
+value; without any of that, in dev mode, from an unlisted peer, or with a missing,
+duplicated or non-matching claim it answers 403 and writes nothing (D40). No role is read from a request body or inferred from a name. Every answer carries
+an `authorisation` block with the identity mode, whether it is production grade, and
+`partner_actions.available`. A development identity is never evidence of authorisation.
+
+### What the settings refuse
+
+Every database URL is checked at startup, before any connection (architecture D5): it must
+use the `postgresql+psycopg` driver, give host and port, be on localhost, name
+`oak_misstatements` or `oak_misstatements_test`, and connect as the role the URL is for
+(`oak_misstatements_app` for the API, `oak_misstatements_owner` for migrations and the
+test-owner URL). Production refuses `OAK_AUTH=dev`, `OAK_DEV_USER`, an empty
+`OAK_TRUSTED_PROXIES`, a plain-http service URL off the loopback interface, and the test
+database. `tests\test_config.py` proves each rule.
+
+## The API so far
+
+Interactive documentation is at <http://localhost:8003/docs> when the API runs. Every
+amount in an answer is an exact decimal string; every effect is computed from the Spine's
+lines at the moment of the request, never stored here.
+
+| Method and path | What it does |
+|---|---|
+| `GET /api/health` | The API is up; touches no database |
+| `POST /api/engagements`, `GET /api/engagements` | Create an engagement, optionally linked to a Spine engagement and version (verified against the Spine); list engagements |
+| `GET /api/engagements/{id}` | The engagement with its Spine link status: unlinked, not configured, verified (with the version's lock state), missing, unreachable, mismatch |
+| `POST /api/engagements/{id}/spine-link` | Set, change or clear the link. Changing the pinned version once a misstatement exists is refused naming pending decision B10 |
+| `POST /api/engagements/{id}/misstatements` | Raise a misstatement: balanced Dr/Cr lines (acceptance 1), type with its own fields (spec 3.2), a working paper reference (spec section 8). Proposed to the Spine with our reference in `finding_ref`: as a `correction`, or as a `reclass` when both effects are nil (classification only, D37); refused when a ledger has no head, the version is locked or unpinned, or no Spine is configured |
+| `GET /api/engagements/{id}/misstatements` | Every misstatement's current version with the Spine's lines, the computed effects, and the Spine's own status for the adjustment |
+| `GET /api/misstatements/{id}` | One misstatement with every version. Every answer carries `band` (clearly_trivial, accumulated, individually_significant, or `null` with the reason) and a `banding` block: both effects' bands and amounts, the threshold version used, `projected`, and `range_crosses_pm` for a judgemental item (D33) |
+| `POST /api/misstatements/{id}/transitions` | Move a misstatement: `communicated`, then `corrected`, `refused` (reason mandatory, acceptance 3) or `withdrawn` (reason mandatory). A new append-only version each time. `corrected` accepts the Spine's adjustment, which posts (acceptance 11); `refused` and `withdrawn` refuse it with the reason, which posts nothing. Any other move is a 409 naming the allowed ones (D41) |
+| `POST /api/engagements/{id}/thresholds` | Set a threshold version: OM, PM, the declared CTT fraction (no default) and the basis. Supersedes the current version once and records a `threshold_recompute` event with the changes. Answers with the Spine PM cross-check, the PM-below-OM check (reported, not enforced) and the authorisation notice (not enforced, pending B9) |
+| `GET /api/engagements/{id}/thresholds` | The current version with the Spine PM cross-check: match, mismatch, spine_has_no_pm, not_pinned, not_configured, unreachable |
+| `GET /api/engagements/{id}/thresholds/history` | Every version, newest first, with `superseded_by` |
+| `GET /api/thresholds/{id}` | One version by id, current or superseded, with the Spine PM cross-check against the version it was set against (D35) |
+| `GET /api/engagements/{id}/events` | The engagement's event trail: `threshold_recompute` and `soft_gate_acknowledged` |
+| `GET /api/engagements/{id}/evaluation` | The aggregate (gross and net, profit and net assets, with and without projected items), the hard and soft gates with the measures that reached the line and whether they depend on projected items, the individually significant items that block, the acknowledgement status, and the sign-off decision with its reasons (D38) |
+| `POST /api/engagements/{id}/evaluation/runs` | Record an evaluation run: one append-only row with the current threshold version and the four aggregates, plus labels of every misstatement seen. `materiality_reassessed: true` is required (SA 450 paragraph 10). Refused with 409 when thresholds are missing, an effect is unresolved or a state disagrees with the Spine. A gate that fires does not stop a run (D43) |
+| `GET /api/engagements/{id}/evaluation/runs`, `GET /api/evaluation-runs/{id}` | Every run of an engagement, newest first; one run by id, exactly as recorded |
+| `POST /api/engagements/{id}/evaluation/conclusions/not-material` | Partner only. Conclude that the uncorrected misstatements are not material: a new append-only row with the figures, the threshold version, the conclusion and its basis together. Needs `conclusion`, `basis`, `reviewed_run_id` and `materiality_reassessed: true`. Blocked (409) by the hard gate, by the soft gate without a current acknowledgement or with `OAK_PM_GATE=hard`, by an item above PM not yet dealt with, by anything unresolved, and when the run reviewed is stale (D45) |
+| `POST /api/engagements/{id}/evaluation/conclusions/material` | Partner only. Conclude that they are material. Same body. A gate that fires does not block it; an unknown or unfinished evaluation and a stale reviewed run do (D45) |
+| `GET /api/engagements/{id}/evaluation/conclusions` | Every conclusion, newest first, each with its figures and threshold version |
+| `POST /api/engagements/{id}/evaluation/strategy-responses` | Record the answer to the strategy prompt, whether the strategy and plan were revised. Any authenticated identity. Refused unless the trigger fires, which needs `OAK_STRATEGY_TRIGGER_FRACTION` (no default, B5) |
+| `GET /api/engagements/{id}/gates/opinion` | Read-only, for the module that issues the opinion (D18): `open`, `blocked` or `undetermined`, with the figures, the threshold version and why. Blocked when the aggregate is at or above overall materiality, or at or above performance materiality where the firm set that gate to hard |
+| `GET /api/engagements/{id}/gates/sign-off` | Read-only (D18): the whole sign-off decision as `open`, `blocked` or `undetermined`, with the figures and every reason |
+| `GET /api/engagements/{id}/spine-reconciliation` | Read-only (D46): orphan Spine proposals, records whose adjustment the Spine lacks, states the two modules disagree on. Repairs nothing |
+| `POST /api/engagements/{id}/evaluation/soft-gate-acknowledgements` | Partner only: record the acknowledgement of the soft gate on the current figures as an append-only event. Fails closed without a trusted role claim (D39) |
+
+Not yet, by design: no edit (F9), no TCWG extract, no Opinion hand-off, no screen beyond
+the shell. Every misstatement answer carries `state_consistency`, which
+says whether the state here and the Spine's adjustment agree.
+
+## B7 verification (net assets effect)
+
+Run on 4 November 2026 after D31:
+
+- Backend: `ruff check` and `ruff format --check` clean, `mypy` strict clean (55 files),
+  `pytest` 161 passed, 14 skipped (the same 14 database tests, pending O2).
+- `tests\test_effects.py` runs the eighteen-row matrix on sections directly and a
+  hypothesis sweep proving net assets equals the mirror of profit-and-loss and equity lines
+  for any balanced entry; `tests\test_api_misstatements.py` runs the matrix through the
+  Spine double, including the two regressions (a tax line no longer moves profit before
+  tax; a direct equity entry is no longer "classification only"), share application money
+  refused as unresolved, and an entry whose head disappears from the tree showing `null`
+  effects on read rather than a partial total.
+- Not run: the real Financial Spine; its tree was read from CAF's source, not fetched live.
+
+## Stage 3 verification
+
+Run on 5 November 2026:
+
+- Backend: `ruff check` and `ruff format --check` clean, `mypy` strict clean (74 files),
+  `pytest` 312 passed, 21 skipped (every database test, pending O2).
+- `tests\test_states.py` checks all twenty-five state pairs against the diagram, what each
+  final state asks of the Spine, and that the longest note fits the Spine's limit.
+  `tests\test_api_transitions.py` proves, on the stand-in and the Spine double: each valid
+  move with its date; acceptance 11 both ways (a correction moves the adjusted balance by
+  exactly its lines, and a raised, communicated, refused or withdrawn item never does);
+  acceptance 3 and the withdrawal reason; every invalid move refused with nothing written;
+  unknown fields, actors and dates in the body refused; the trail (earlier versions
+  byte-identical, a snapshot per version, `raised_by` constant, `created_by` per move);
+  identity required in both modes; a Spine failing exactly at the decision, unreachable,
+  unconfigured, locked or missing the adjustment; a database failure stopping the move
+  before the Spine is asked; a decision taken in the Spine directly being reported,
+  blocking sign-off and being completable; and the gates following the state.
+- `tests\test_migration_sql.py` proves migration 0007 from its rendered SQL; three
+  `db`-marked tests will prove the CHECKs and the trigger on PostgreSQL once a test
+  database exists. `tests\test_spine_client.py` proves the decision call.
+- Frontend unchanged: `eslint`, `tsc --noEmit`, `prettier --check` clean, `vitest` 5 passed.
+- Not run: PostgreSQL (the trigger's PL/pgSQL has never executed) and the live Financial
+  Spine (its decision endpoint was read from CAF's source and mirrored in the double).
+
+## Closure work on Stages 0 to 5 (D46)
+
+Run on 5 November 2026, after the review in `docs/CLOSURE_REVIEW.md`:
+
+- Built: the two read-only gate endpoints approved as D18; the event-kind CHECK (migration
+  0010) and payload validation approved as D13; the read-only orphan-proposal report;
+  `backend\requirements-lock.txt`.
+- Closed from the specification: B4c, B12, F4. Found to meet it as built: N10, N14, N15.
+- Investigated against the Spine's contract and left open with the findings recorded: the
+  successor version (B10), changing lines (F9), withdrawal (F4, closed).
+- Backend: `ruff check` and `ruff format --check` clean, `mypy` strict clean (86 files),
+  `pytest` 410 passed, 32 skipped (every database test, pending O2).
+  `tests\test_api_closure.py` covers the gates at their boundaries, undetermined and
+  blocked-over-undetermined, read-only, the event rules, and the report on a clean
+  engagement, an orphan left by a failed commit, a missing adjustment and a disputed state.
+- Frontend unchanged: `eslint`, `tsc --noEmit`, `prettier --check` clean, `vitest` 5 passed.
+- Not done, by instruction: no commit, no Stage 6, no Pass 2. Not run: PostgreSQL and the
+  live Financial Spine.
+
+## Stage 5 verification (D45)
+
+Run on 5 November 2026:
+
+- Backend: `ruff check` and `ruff format --check` clean, `mypy` strict clean (83 files),
+  `pytest` 388 passed, 31 skipped (every database test, pending O2).
+- `tests\test_api_conclusions.py` proves, on the stand-in and the Spine double: a
+  conclusion is a new row carrying the reviewed run's figures and threshold version, with
+  the reviewed run untouched; acceptance 10 (no empty conclusion or basis, at the request
+  and by the row's CHECKs); no figure, role or actor accepted in the body; a stale, unknown
+  or foreign reviewed run refused; acceptance 7 at 399,999.99, 400,000.00 and 400,000.01,
+  and on net assets alone; the soft gate until acknowledged, a stale acknowledgement after
+  a change of figures or thresholds, and `OAK_PM_GATE=hard`; acceptance 6 through raised,
+  communicated and refused; no conclusion on an unknown evaluation or a disputed state;
+  dev mode, a non-partner, a missing or look-alike claim, an unlisted peer; the partner
+  check before any gate; a revised conclusion as another row and no row ever changed; a
+  conclusion going stale; a failed commit; and the strategy trigger with and without a
+  declared band.
+- `tests\test_gates.py` proves which reasons block which conclusion and the strategy line.
+  `tests\test_contracts.py` holds the amended route contract. `tests\test_migration_sql.py`
+  proves migration 0009 from its rendered SQL; three `db`-marked tests will prove the
+  CHECKs, the hard-gate trigger and append-only on PostgreSQL once a test database exists.
+- Frontend unchanged: `eslint`, `tsc --noEmit`, `prettier --check` clean, `vitest` 5 passed.
+- Not run: PostgreSQL and the live Financial Spine. No partner conclusion can be saved in
+  any deployment until the firm's proxy presents a role claim (B9).
+
+## Stage 4 verification (D43)
+
+Run on 5 November 2026:
+
+- Backend: `ruff check` and `ruff format --check` clean, `mypy` strict clean (80 files),
+  `pytest` 353 passed, 28 skipped (every database test, pending O2).
+- `tests\test_api_evaluation_runs.py` proves, on the stand-in and the Spine double: a run
+  records the threshold version and the four aggregates equal to the live evaluation; it
+  holds labels and aggregates and never one item's amount; the reassessment prompt is
+  mandatory and no figure can be sent; identity is required in both modes; factual,
+  judgemental, projected and classification-only items are kept apart; corrected and
+  withdrawn items leave the aggregate and refused ones stay; both tests at every boundary
+  of CTT, PM and OM, with a run still recorded when a gate fires; a refused item above PM
+  staying in the individual test; an item material on net assets alone; no run without
+  thresholds, with an unresolved effect, with an unreachable Spine or with a state the
+  Spine disputes; each run keeping its own threshold version through a revision; staleness
+  after a revision, a move or a new misstatement; run numbers per engagement; a run never
+  changed or deleted; 404s; a failed commit recording nothing; and the evaluation answer
+  keeping every earlier block.
+- `tests\test_gates.py` proves the individual test on items directly.
+  `tests\test_migration_sql.py` proves migration 0008 from its rendered SQL;
+  `tests\test_models.py` pins the row's columns; four `db`-marked tests will prove the
+  database rules on PostgreSQL once a test database exists.
+- Frontend unchanged: `eslint`, `tsc --noEmit`, `prettier --check` clean, `vitest` 5 passed.
+- Not run: PostgreSQL and the live Financial Spine. Not built: the conclusion (Stage 5),
+  the evaluation screen (Stage 6), the prior-period carry-forward (Pass 2).
+
+## Stage 3 safety verification (D42)
+
+Run on 5 November 2026:
+
+- **History.** PostgreSQL refuses UPDATE, DELETE and TRUNCATE of `misstatement`,
+  `misstatement_version`, `misstatement_line_class` and `event` for every role, by the
+  triggers of migrations 0002 to 0004 over the function of 0001; the application role holds
+  SELECT and INSERT only. No migration was added: `tests\test_migration_sql.py` proves from
+  the rendered SQL that the protection exists and that nothing later weakens it. The
+  application now refuses the same statements itself (`models\guard.py`), proven on the
+  stand-in by `tests\test_stage3_safety.py`.
+- **Two defects found and fixed.** A commit the database refused was reported to the client
+  as 201; it is now a 503 on every write. A real database refusal at flush during a move
+  produced a 500 instead of the intended 503.
+- **Retry.** With the commit failing after the Spine decided, for each of corrected,
+  refused and withdrawn: the client gets 503; the Spine holds one decision; nothing is
+  recorded here; the disagreement is reported and blocks sign-off; the retry records the
+  state with `decided_now: false`, one decision call in total, one adjustment, and the
+  posting applied exactly once.
+- **Concurrency.** A request made to read stale versions cannot create a duplicate version
+  or a second decision. The row lock that makes this case unreachable on PostgreSQL has
+  never run.
+- Backend: `ruff check` and `ruff format --check` clean, `mypy` strict clean (76 files),
+  `pytest` 325 passed, 24 skipped (every database test, pending O2).
+
+## B2, B8 and B9 — final status, 4 November 2026
+
+Three senses are kept apart: **code complete** (built and tested here), **interim
+assumption** (an accounting or policy reading this module uses and declares, not a
+decision), and **pending externally** (a CA confirmation or an integration nobody here
+can supply).
+
+| Issue | Code complete | Interim assumption | Pending externally |
+|---|---|---|---|
+| B2 | Classification-only items proposed to the Spine as `reclass`, listed in the schedule and the aggregate at nil with their gross size and `classification_only` flag; an unresolved line ends the verdict (D37, D40) | "Classification only" needs nil net-assets effect as well as nil profit effect | CA confirmation of that reading; qualitative evaluation (Pass 2) |
+| B8 | Aggregate gross and net, profit and net assets, with and without projected items and by type; hard and soft gates at exact OM and PM; indeterminate on unresolved items; `OAK_PM_GATE=hard` blocks; the acknowledgement goes stale on changed figures or threshold; the write-path dependency `sign_off_open` with a contract test that fails any future sign-off route lacking it (D38, D40) | Projected amounts count, always disclosed | CA confirmation of that policy; the conclusion write (Stage 4); no Opinion module exists |
+| B9 | Partner-only action enforced and failing closed: dev mode, no configuration, no listed proxy, unlisted peer, missing, blank, duplicated, look-alike or non-partner claim, role in the body; contract test for every partner-only route (D39, D40) | None | The firm's proxy and identity provider presenting the claim (O1) and naming the partner value, until which partner actions are unavailable; the firm's policy for the actions the spec leaves to anyone |
+
+Tests: `tests\test_gates.py`, `tests\test_api_evaluation.py`, `tests\test_contracts.py`,
+`tests\test_identity.py`, `tests\test_config.py`, `tests\test_authorisation.py`,
+`tests\test_api_misstatements.py` (D37 regressions), `tests\test_spine_kind.py`,
+`tests\test_fake_spine.py`. Backend: `ruff check` and `ruff format --check` clean, `mypy`
+strict clean (68 files), `pytest` 251 passed, 18 skipped (every database test, pending O2).
+Frontend unchanged: `eslint`, `tsc --noEmit`, `prettier --check` clean, `vitest` 5 passed.
+Not verified anywhere: PostgreSQL and the live Financial Spine. Not built: any screen, the
+conclusion, the strategy trigger (B5), the state transitions (Stage 3).
+
+## Final review of Features 1 and 2 — 4 November 2026
+
+A read of the code against `docs/MISSTATEMENTS_ROLLUP.md`, not of the earlier reports.
+
+- Fixed: the Spine PM cross-check answered `not_pinned` for a threshold set while the
+  engagement was unpinned even after the engagement was pinned; it now answers
+  `pinned_version_changed` whichever way the pin moved, with a test for both directions.
+  The threshold history answer carried a reduced `authorisation` block without the identity
+  mode; it now carries the same block as every other answer. Two docstrings still called
+  B3 and B13 pending.
+- Backend: `ruff check` and `ruff format --check` clean, `mypy` strict clean (61 files),
+  `pytest` 201 passed, 18 skipped (every database test, pending O2).
+- Frontend: `eslint` clean, `tsc --noEmit` clean, `prettier --check` clean, `vitest` 5
+  passed. The frontend is still the Stage 0 shell; the screens are Stage 6.
+- Not verified anywhere: PostgreSQL behaviour (triggers, grants, CHECKs, deferred key) and
+  the live Financial Spine. Every API test runs on the in-memory stand-in and the Spine
+  double. The migrations are proven from their rendered SQL only.
+- Code-level complete: Feature 1 (the record over the Spine, double entry, effects,
+  snapshot, drift, types, references, identity, append-only) and Feature 2 (thresholds,
+  CTT, PM below OM, versions, recompute, bands and boundaries, Spine PM cross-check, read by
+  id, identity). Still open, by design and documented: B2 (classification-only items are
+  refused), B7's three CA confirmations, B4's three firm decisions, B8 (Stage 5), B9 (no
+  role enforced), B1, B10, B12, F3, F4, F9, O1, O2.
+
+## Authorisation verification (D36)
+
+Run on 4 November 2026:
+
+- `tests\test_authorisation.py` proves every write refuses without an identity and every
+  read works; the acting identity lands on the engagement, each threshold version, the
+  recompute event and the misstatement, and earlier rows keep their own actors; a body that
+  names an actor is refused on every write route; header mode records the proxy's identity
+  and refuses a missing, blank or duplicated header; every answer declares `enforced: false`;
+  and only a proxy identity in production is production grade. `tests\test_migration_sql.py`
+  proves 0006 freezes the engagement's audit columns and narrows the app role's grant; two
+  `db`-marked tests will prove the behaviour on PostgreSQL once a test database exists.
+- Not enforced, and declared so: any role or permission check.
+
+## PM-below-OM verification (D34)
+
+Run on 4 November 2026:
+
+- Backend: `ruff check` and `ruff format --check` clean, `mypy` strict clean (58 files),
+  `pytest` 188 passed, 16 skipped (the database tests, pending O2, now including the
+  `ck_threshold_pm_below_om` rule).
+- `tests\test_api_thresholds.py` proves a PM a paisa below OM is accepted, PM equal to or
+  above OM is refused with SA 320 paragraph 9 named and nothing written (no version, no
+  event), and a refused revision leaves the history, the current version and the trail
+  exactly as they were while a later valid revision still gets the next number.
+  `tests\test_migration_sql.py` proves 0005 adds the CHECK by ALTER and 0003 is unchanged.
+- Not run: migration 0005 against any database.
+
+## Banding verification (D33)
+
+Run on 4 November 2026:
+
+- Backend: `ruff check` and `ruff format --check` clean, `mypy` strict clean (57 files),
+  `pytest` 183 passed, 15 skipped (the database tests, pending O2).
+- `tests\test_banding.py` proves the literal boundaries (below CTT, exactly CTT, exactly PM,
+  a paisa above PM), the inclusive aggregate gates, both effects banded separately with the
+  higher band winning, no band on unresolved effects, classification-only items trivial on
+  amount, and the range check; two hypothesis sweeps cover every amount and every pair of
+  effects. `tests\test_api_misstatements.py` repeats the boundaries and the differing-effects
+  case through the Spine double. `tests\test_api_thresholds.py` demonstrates acceptance 2:
+  a misstatement's band moves from clearly trivial to accumulated to individually
+  significant as the thresholds are revised, with the recompute events recorded.
+- Not run: the real Financial Spine.
+
+## Classification snapshot verification (D32)
+
+Run on 4 November 2026:
+
+- Backend: `ruff check` and `ruff format --check` clean, `mypy` strict clean (57 files),
+  `pytest` 168 passed, 15 skipped (the database tests, pending O2, now including the
+  snapshot table's append-only rule).
+- Six regressions in `tests\test_api_misstatements.py` against the Spine double, which can
+  now remap a ledger, retire or move a head under a new tree version, and re-key a ledger
+  between reads: a remapped ledger leaves an old misstatement's effects unchanged; the drift
+  is reported with the effects the current classification would give; a changed tree does
+  not alter old calculations; a new version receives its own snapshot and the old one is
+  kept; an unmatched line gives unresolved effects; and the snapshot table holds no amount
+  (`tests\test_models.py`, `tests\test_migration_sql.py`).
+- Not run: the real Financial Spine.
+
+## Stage 2 verification
+
+Run on 4 November 2026:
+
+- Backend: `ruff check` and `ruff format --check` clean, `mypy` strict clean (55 files),
+  `pytest` 132 passed, 14 skipped. The skipped tests are the database tests
+  (`test_db_foundation.py` 3, `test_db_rules.py` 11), with the reason shown, because no test
+  database exists yet (pending O2).
+- After the Feature 2 verification, six fixes (D30): threshold versions are numbered and the
+  history ordered by number; events are ordered by an insertion sequence; the Spine PM
+  reading at set time carries a status instead of an ambiguous null; the cross-check is
+  against the recorded Spine version and reports a changed pin; a PostgreSQL CHECK ties the
+  stored CTT to PM times the fraction; a deferred trigger requires a successor to be a later
+  version of the same engagement; and a test proves a superseded version is left exactly as
+  set. The two ordering tests were run thirty times in a row and passed every time.
+- The threshold and event API tests ran on the in-memory stand-in (D24). They prove
+  validation, the absence of a default fraction, the paisa rounding, supersession, the
+  recompute event and its payload, the Spine PM cross-check in every state, the pending band
+  on misstatements, and the authorisation notice. They do not prove the supersede-once
+  trigger, the successor trigger, the CTT consistency CHECK, the column-level grant, the
+  partial unique index, the identity sequence or the deferred foreign key on PostgreSQL;
+  `tests\test_migration_sql.py` proves migration 0003 says the right thing and the
+  `db`-marked tests in `tests\test_db_rules.py` will prove the behaviour once
+  `oak_misstatements_test` exists.
+- Frontend: unchanged since Stage 0.
+- Not run: `scripts\db\*.sql`, any Alembic command against a database, any connection to
+  any database, the real Financial Spine.
+
+## Stage 1 verification
+
+Run on 4 November 2026:
+
+- Backend: `ruff check` and `ruff format --check` clean, `mypy` strict clean (46 files),
+  `pytest` 105 passed, 8 skipped. The skipped tests are the database tests (`test_db_foundation.py`,
+  `test_db_rules.py`), with the reason shown, because no test database exists yet (pending O2).
+- After the read-only verification, four fixes with their tests: a database failure after
+  the Spine accepted a proposal now names the orphan adjustment and the database's own error
+  in the answer and the log, whatever the error class (D22); a Spine error during a read is
+  reported as the engagement's link status, never leaked as a 409 or 422; the engagement
+  list reports a stored link as `recorded`, never `verified`, because it does not ask the
+  Spine; and `tests\test_models.py` pins that the only money columns in this module are the
+  judgemental range (spec section 1).
+- The API tests ran on the in-memory stand-in (architecture D24): they prove the request
+  validation, the Spine calls and their order, the record and its versions, the references,
+  and every refusal. They do not prove the PostgreSQL triggers, grants or the money domain;
+  `tests\test_migration_sql.py` proves the migration's SQL says the right thing, and the
+  `db`-marked tests will prove the behaviour once `oak_misstatements_test` exists.
+- Frontend: unchanged since Stage 0.
+- Not run: `scripts\db\*.sql`, any Alembic command against a database, any connection to
+  any database, the real Financial Spine.
+
+## Stage 0 verification
+
+Run on 4 November 2026:
+
+- Backend: `ruff check` and `ruff format --check` clean, `mypy` strict clean (19 files),
+  `pytest` 35 passed, 3 skipped. The skipped tests are the database tests, with the reason
+  shown, because no test database exists yet. The API was also started on a real socket on
+  port 8003 and answered the health check with the no-store headers.
+- Frontend: `npm run lint`, `npm run format` and `npm run typecheck` clean, `npm test`
+  5 passed in 2 files, under Node 22 through fnm.
+- Not run: `scripts\db\*.sql`, any Alembic command against a database, any connection to
+  any database.
+
+## What is deliberately not built yet
+
+- No `qualitative` table; it arrives with Stage 8. The `evaluation` table has no
+  `py_carried` column yet (Pass 2, B6).
+- No edit after raising (F9), no Opinion hand-off (no such module exists), no TCWG
+  extract or representation attachment (Pass 2). Withdrawal is built on an interim
+  treatment in the Spine (B1).
+- No screens beyond the shell that shows the backend's health (Stage 6).

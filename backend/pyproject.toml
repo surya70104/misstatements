@@ -1,0 +1,71 @@
+[project]
+name = "oak-misstatements"
+version = "0.1.0"
+description = "OAK Audit - Misstatements Rollup (SA 450): the schedule of audit differences, thresholds, aggregation, the gate and the conclusion."
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  "pydantic-settings>=2.4",
+  "sqlalchemy>=2.0.30",
+  "alembic>=1.13",
+  "psycopg[binary]>=3.2",
+  # The Financial Spine, the Binder and WorkMind are reached over HTTP (architecture D1, D11).
+  "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3",
+  "hypothesis>=6.100",
+  "httpx>=0.27",
+  "ruff>=0.6",
+  "mypy>=1.11",
+]
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/oak_misstatements"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra --strict-markers"
+xfail_strict = true
+filterwarnings = [
+  # The in-memory stand-in (architecture D24) has no Decimal type; it proves logic only.
+  "ignore:Dialect sqlite\\+pysqlite does \\*not\\* support Decimal:sqlalchemy.exc.SAWarning",
+]
+markers = [
+  "db: needs the oak_misstatements_test database (skipped when OAK_TEST_DATABASE_URL is unset)",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+# The union of the Spine's and the Binder's rule sets (architecture D2).
+select = [
+  "E", "W", "F",  # pycodestyle, pyflakes
+  "I",            # import order
+  "B",            # bugbear
+  "UP",           # pyupgrade
+  "SIM",          # simplify
+  "DTZ",          # no naive datetimes: every timestamp in an audit trail carries a zone
+  "RUF",
+  "S",            # bandit: no hard-coded secrets, no unsafe calls
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src", "tests", "alembic"]
+plugins = ["pydantic.mypy"]
