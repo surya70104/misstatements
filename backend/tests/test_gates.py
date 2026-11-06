@@ -98,7 +98,126 @@ def test_a_classification_only_item_is_listed_and_contributes_nil() -> None:
     total = aggregate([item("M-1", "0", "0", classification_only=True, band=Band.CLEARLY_TRIVIAL)])
     assert total.classification_only == ("M-1",)
     assert total.counted == ("M-1",)
+    assert total.not_accumulated == ()  # listed at nil, as before (B2, D53)
     assert total.profit.gross == total.net_assets.gross == Decimal("0")
+
+
+# ---- clearly trivial items are not accumulated (spec sections 2 and 4; D53) ---------------
+
+TRIVIAL = Band.CLEARLY_TRIVIAL
+
+
+def test_a_clearly_trivial_item_is_named_and_left_out_of_every_sum() -> None:
+    total = aggregate(
+        [
+            item("M-1", "-60000"),
+            item("M-2", "8000", band=TRIVIAL),
+            item("M-3", "-5000", type="projected", band=TRIVIAL),
+            item("M-4", "-7000", state="refused", refusal_reason="disagree", band=TRIVIAL),
+            item("M-5", "-6000", state="communicated", band=TRIVIAL),
+            item("M-6", "-4000", type="judgemental", band=TRIVIAL),
+        ]
+    )
+    assert total.counted == ("M-1",)
+    assert total.not_accumulated == ("M-2", "M-3", "M-4", "M-5", "M-6")
+    # What they come to together, gross, for information only (D56).
+    assert (total.left_out_profit, total.left_out_net_assets) == (
+        Decimal("30000"),
+        Decimal("30000"),
+    )
+    assert total.projected == ()
+    for measure in (total.profit, total.net_assets):
+        assert (measure.gross, measure.net) == (Decimal("60000"), Decimal("-60000"))
+        assert measure.gross_without_projected == Decimal("60000")
+        assert measure.net_without_projected == Decimal("-60000")
+        assert measure.projected_gross == measure.judgemental_gross == Decimal("0")
+        assert measure.factual_gross == Decimal("60000")
+    assert total.complete is True
+
+
+def test_trivial_items_stay_out_only_while_together_they_are_below_ctt() -> None:
+    """SA 450 paragraph A2 (D57): clearly inconsequential "whether taken individually or
+    in aggregate". Gross, so opposite signs do not cancel; at or above CTT brings all in."""
+    pair = [item("M-1", "-6000", band=TRIVIAL), item("M-2", "6499.99", band=TRIVIAL)]
+    below = aggregate(pair, LINES.ctt)  # 12,499.99 together
+    assert below.not_accumulated == ("M-1", "M-2")
+    assert below.accumulated_together == ()
+    assert below.profit.gross == Decimal("0")
+    assert (below.left_out_profit, below.left_out_net_assets) == (
+        Decimal("12499.99"),
+        Decimal("12499.99"),
+    )
+    at = aggregate([*pair, item("M-3", "-0.01", band=TRIVIAL)], LINES.ctt)  # exactly 12,500
+    assert at.not_accumulated == ()
+    assert at.accumulated_together == at.counted == ("M-1", "M-2", "M-3")
+    assert (at.profit.gross, at.profit.net) == (Decimal("12500.00"), Decimal("499.98"))
+
+
+def test_either_measure_reaching_ctt_brings_the_trivial_items_in() -> None:
+    items = [
+        item("M-1", "0", "8000", band=TRIVIAL),  # a direct equity entry: profit untouched
+        item("M-2", "-1000", "-5000", band=TRIVIAL),
+    ]
+    total = aggregate(items, LINES.ctt)  # profit 1,000 together; net assets 13,000
+    assert total.accumulated_together == ("M-1", "M-2")
+    assert total.profit.gross == Decimal("1000")
+    assert total.net_assets.gross == Decimal("13000")
+
+
+def test_many_trivial_items_reach_the_gates_once_they_are_accumulated() -> None:
+    many = [item(f"M-{n}", "-12499.99", band=TRIVIAL) for n in range(1, 41)]  # 4,99,999.60
+    total = aggregate(many, LINES.ctt)
+    assert total.not_accumulated == ()
+    assert total.profit.gross == Decimal("499999.60")
+    assert gate("soft", total, LINES.pm).status == "fires"
+    assert gate("hard", total, LINES.om).status == "fires"
+    # A projected one among them is accumulated as projected, and is still given apart.
+    mixed = aggregate(
+        [item("M-1", "-7000", band=TRIVIAL), item("M-2", "-7000", type="projected", band=TRIVIAL)],
+        LINES.ctt,
+    )
+    assert mixed.projected == ("M-2",)
+    assert mixed.profit.gross_without_projected == Decimal("7000")
+
+
+def test_without_a_threshold_nothing_is_tested_together() -> None:
+    many = [item(f"M-{n}", "-12499.99", band=TRIVIAL) for n in range(1, 41)]
+    total = aggregate(many)  # no CTT is known: the items keep the band they were given
+    assert total.accumulated_together == ()
+    assert len(total.not_accumulated) == 40
+
+
+def test_a_corrected_or_withdrawn_trivial_item_is_excluded_by_its_state() -> None:
+    total = aggregate(
+        [
+            item("M-1", "-5000", state="corrected", band=TRIVIAL),
+            item("M-2", "-6000", state="withdrawn", band=TRIVIAL),
+        ]
+    )
+    assert total.excluded == (("M-1", "corrected"), ("M-2", "withdrawn"))
+    assert total.not_accumulated == ()
+    assert total.counted == ()
+
+
+def test_an_item_without_a_band_is_never_treated_as_clearly_trivial() -> None:
+    unresolved = aggregate([item("M-1", None, "0", band=None)])
+    assert unresolved.unresolved == ("M-1",)
+    assert unresolved.not_accumulated == ()
+    assert unresolved.complete is False
+    # No thresholds, so no band: nothing can be called clearly trivial, and it is summed.
+    unbanded = aggregate([item("M-1", "-5000", band=None)])
+    assert unbanded.counted == ("M-1",)
+    assert unbanded.profit.gross == Decimal("5000")
+
+
+def test_an_item_is_in_the_aggregate_with_both_effects_or_with_neither() -> None:
+    """The band is the item's (D33: the higher of its two effects' bands). 5,000 on profit
+    and 50,000 on net assets is accumulated, and both effects are summed."""
+    total = aggregate([item("M-1", "-5000", "-50000", band=Band.ACCUMULATED)])
+    assert total.profit.gross == Decimal("5000")
+    assert total.net_assets.gross == Decimal("50000")
+    left_out = aggregate([item("M-1", "-5000", "-6000", band=TRIVIAL)])
+    assert left_out.profit.gross == left_out.net_assets.gross == Decimal("0")
 
 
 def test_an_unresolved_uncorrected_item_makes_the_aggregate_incomplete() -> None:

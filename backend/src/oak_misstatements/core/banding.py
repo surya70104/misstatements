@@ -31,6 +31,12 @@ BAND_BASIS = (
     "clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant "
     "(spec section 4); the item's band is the higher of the two (architecture D33)"
 )
+RANGE_DOUBT_BASIS = (
+    "accumulated, not clearly trivial: the point estimate is below CTT on both effects, but "
+    "the auditor's range reaches CTT, and where there is any uncertainty whether an item is "
+    "clearly trivial it is treated as not clearly trivial (SA 450 paragraph A2; architecture "
+    "D56); the amount accumulated is the point estimate"
+)
 NO_THRESHOLDS_BASIS = (
     "no band: no thresholds have been set for this engagement yet (spec section 4)"
 )
@@ -98,26 +104,48 @@ class BandResult:
 
 
 def band_item(
-    effects: Effects, lines: Lines, *, threshold_id: uuid.UUID, threshold_version_no: int
+    effects: Effects,
+    lines: Lines,
+    *,
+    threshold_id: uuid.UUID,
+    threshold_version_no: int,
+    range_low: Decimal | None = None,
+    range_high: Decimal | None = None,
 ) -> BandResult | None:
     """Both effects banded separately, the item's band the higher of the two; None when
     either effect is unresolved. Classification-only items, both effects nil, come out
-    clearly trivial on amount; their significance is qualitative (spec section 5)."""
+    clearly trivial on amount; their significance is qualitative (spec section 5).
+
+    A judgemental item carries the auditor's range. Where its point estimate is clearly
+    trivial but either end of the range reaches CTT, it is not certain that the item is
+    clearly trivial, and SA 450 paragraph A2 then treats it as not clearly trivial: the
+    item is accumulated, at its point estimate (D56)."""
     if effects.partial or effects.profit_before_tax is None or effects.net_assets is None:
         return None
     profit_amount = abs(effects.profit_before_tax)
     net_assets_amount = abs(effects.net_assets)
     profit_band = band_for(profit_amount, lines)
     net_assets_band = band_for(net_assets_amount, lines)
+    band = higher(profit_band, net_assets_band)
+    basis = BAND_BASIS
+    if (
+        band is Band.CLEARLY_TRIVIAL
+        and not effects.classification_only
+        and range_low is not None
+        and range_high is not None
+        and max(abs(range_low), abs(range_high)) >= lines.ctt
+    ):
+        band = Band.ACCUMULATED
+        basis = RANGE_DOUBT_BASIS
     return BandResult(
-        band=higher(profit_band, net_assets_band),
+        band=band,
         profit_band=profit_band,
         net_assets_band=net_assets_band,
         profit_amount=profit_amount,
         net_assets_amount=net_assets_amount,
         threshold_id=threshold_id,
         threshold_version_no=threshold_version_no,
-        basis=BAND_BASIS,
+        basis=basis,
     )
 
 

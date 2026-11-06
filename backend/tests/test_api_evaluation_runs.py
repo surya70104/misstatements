@@ -60,9 +60,9 @@ def stored_runs(api: TestClient) -> int:
 
 def test_a_run_records_the_threshold_version_and_the_four_aggregates(api: TestClient) -> None:
     engagement_id = ready(api)
-    raise_item(api, engagement_id, "10000.00")
-    raise_item(api, engagement_id, "4000.00", lines=lines([3, 4], "4000.00"))  # profit up
-    raise_item(api, engagement_id, "8000.00", lines=lines(EQUITY, "8000.00"))
+    raise_item(api, engagement_id, "100000.00")
+    raise_item(api, engagement_id, "40000.00", lines=lines([3, 4], "40000.00"))  # profit up
+    raise_item(api, engagement_id, "80000.00", lines=lines(EQUITY, "80000.00"))
     live = evaluation(api, engagement_id)
     assert live["latest_run"] == {
         "status": "none",
@@ -79,8 +79,8 @@ def test_a_run_records_the_threshold_version_and_the_four_aggregates(api: TestCl
     assert recorded["threshold_id"] == live["threshold"]["id"]
     assert recorded["threshold_version_no"] == 1
     # Acceptance 4: gross and net, profit and net assets, each its own column.
-    assert (recorded["agg_gross_pbt"], recorded["agg_net_pbt"]) == ("14000.00", "-6000.00")
-    assert (recorded["agg_gross_na"], recorded["agg_net_na"]) == ("22000.00", "2000.00")
+    assert (recorded["agg_gross_pbt"], recorded["agg_net_pbt"]) == ("140000.00", "-60000.00")
+    assert (recorded["agg_gross_na"], recorded["agg_net_na"]) == ("220000.00", "20000.00")
     assert recorded["agg_gross_pbt"] == live["aggregate"]["profit_before_tax"]["gross"]
     assert recorded["agg_net_na"] == live["aggregate"]["net_assets"]["net"]
     detail = recorded["detail"]
@@ -93,6 +93,7 @@ def test_a_run_records_the_threshold_version_and_the_four_aggregates(api: TestCl
     }
     assert detail["figures"]["profit_before_tax"] == live["aggregate"]["profit_before_tax"]
     assert detail["counted"] == ["M-1", "M-2", "M-3"]
+    assert detail["not_accumulated"] == []
     assert detail["spine"] == {"version_id": str(OPEN_VERSION_ID), "locked": False}
     assert detail["identity_mode"] == "dev"
     assert "F3" in detail["basis"]
@@ -254,12 +255,12 @@ def test_corrected_and_withdrawn_items_leave_the_aggregate_and_refused_ones_stay
     api: TestClient,
 ) -> None:
     engagement_id = ready(api)
-    kept = raise_item(api, engagement_id, "10000.00")
+    kept = raise_item(api, engagement_id, "15000.00")
     corrected = raise_item(api, engagement_id, "20000.00")
     refused = raise_item(api, engagement_id, "30000.00")
     withdrawn = raise_item(api, engagement_id, "40000.00")
     first = run(api, engagement_id).json()
-    assert first["agg_gross_pbt"] == "100000.00"
+    assert first["agg_gross_pbt"] == "105000.00"
     for record in (corrected, refused, withdrawn):
         assert move(api, record["id"], "communicated").status_code == 201
     assert move(api, corrected["id"], "corrected").status_code == 201
@@ -270,7 +271,7 @@ def test_corrected_and_withdrawn_items_leave_the_aggregate_and_refused_ones_stay
     assert "raised, moved or re-banded" in stale["detail"]
     second = run(api, engagement_id).json()
     assert second["run_no"] == 2
-    assert second["agg_gross_pbt"] == "40000.00"  # the raised item and the refused one
+    assert second["agg_gross_pbt"] == "45000.00"  # the raised item and the refused one
     assert second["detail"]["counted"] == ["M-1", "M-3"]
     assert second["detail"]["excluded"] == [
         {"ref": "M-2", "state": "corrected"},
@@ -286,7 +287,7 @@ def test_corrected_and_withdrawn_items_leave_the_aggregate_and_refused_ones_stay
     ]
     assert kept["ref"] == "M-1"
     # The earlier run is exactly as it was recorded.
-    assert api.get(f"/api/evaluation-runs/{first['id']}").json()["agg_gross_pbt"] == "100000.00"
+    assert api.get(f"/api/evaluation-runs/{first['id']}").json()["agg_gross_pbt"] == "105000.00"
     assert evaluation(api, engagement_id)["latest_run"]["status"] == "current"
 
 
@@ -330,7 +331,12 @@ def test_a_run_records_both_tests_at_every_boundary(
     assert detail["items"][0]["band"] == band
     assert detail["tests"] == live["tests"]
     assert detail["sign_off"]["blocked"] is (soft == "fires" or bool(significant))
-    assert recorded.json()["agg_gross_pbt"] == amount
+    # Spec section 4 (D53): below CTT the item is named and not accumulated; from CTT up
+    # it is, and the aggregate is its amount.
+    trivial = band == "clearly_trivial"
+    assert recorded.json()["agg_gross_pbt"] == ("0.00" if trivial else amount)
+    assert detail["not_accumulated"] == (["M-1"] if trivial else [])
+    assert detail["counted"] == ([] if trivial else ["M-1"])
 
 
 def test_a_refused_item_above_pm_stays_in_the_individual_test(api: TestClient) -> None:
@@ -444,6 +450,38 @@ def test_each_run_keeps_the_threshold_version_it_was_made_against(api: TestClien
     assert evaluation(api, engagement_id)["latest_run"]["status"] == "current"
 
 
+def test_a_lower_ctt_brings_an_item_into_the_next_run_and_leaves_the_last_as_it_was(
+    api: TestClient,
+) -> None:
+    """Acceptance 2 with spec section 4 (D53): a revision recomputes every band, so an item
+    that was clearly trivial is accumulated from then on. The run made before the revision
+    is stale and still says what it left out."""
+    engagement_id = ready(api)  # CTT 12,500
+    raise_item(api, engagement_id, "60000.00")
+    raise_item(api, engagement_id, "8000.00")
+    first = run(api, engagement_id).json()
+    assert first["agg_gross_pbt"] == "60000.00"
+    assert (first["detail"]["counted"], first["detail"]["not_accumulated"]) == (["M-1"], ["M-2"])
+    memo = first["detail"]["not_accumulated_total"]
+    assert (memo["profit_before_tax_gross"], memo["at_or_above_ctt"]) == ("8000.00", False)
+    thresholds(api, engagement_id, ctt_fraction="0.02", basis="C-2")  # CTT 5,000
+    stale = evaluation(api, engagement_id)["latest_run"]
+    assert stale["status"] == "stale"
+    assert "thresholds have been revised" in stale["detail"]
+    second = run(api, engagement_id).json()
+    assert second["agg_gross_pbt"] == "68000.00"
+    assert (second["detail"]["counted"], second["detail"]["not_accumulated"]) == (
+        ["M-1", "M-2"],
+        [],
+    )
+    assert [item["band"] for item in second["detail"]["items"]] == ["accumulated", "accumulated"]
+    assert second["detail"]["not_accumulated_total"]["profit_before_tax_gross"] == "0.00"
+    old = api.get(f"/api/evaluation-runs/{first['id']}").json()
+    assert (old["agg_gross_pbt"], old["detail"]["not_accumulated"]) == ("60000.00", ["M-2"])
+    assert [item["band"] for item in old["detail"]["items"]] == ["accumulated", "clearly_trivial"]
+    assert [entry["run_no"] for entry in runs(api, engagement_id)] == [2, 1]
+
+
 def test_a_new_misstatement_makes_the_latest_run_stale(api: TestClient) -> None:
     engagement_id = ready(api)
     raise_item(api, engagement_id, "10000.00")
@@ -469,7 +507,7 @@ def test_runs_are_numbered_per_engagement(api: TestClient) -> None:
 
 def test_a_run_is_never_changed_or_deleted(api: TestClient) -> None:
     engagement_id = ready(api)
-    raise_item(api, engagement_id, "10000.00")
+    raise_item(api, engagement_id, "20000.00")
     recorded = run(api, engagement_id).json()
     factory = cast(FastAPI, api.app).state.session_factory
     with factory() as session:
@@ -488,7 +526,7 @@ def test_a_run_is_never_changed_or_deleted(api: TestClient) -> None:
             session.execute(update(EvaluationRun).values(evaluated_by="x"))
         with pytest.raises(AppendOnlyViolation, match="DELETE is not allowed"):
             session.execute(delete(EvaluationRun))
-    assert api.get(f"/api/evaluation-runs/{recorded['id']}").json()["agg_gross_pbt"] == "10000.00"
+    assert api.get(f"/api/evaluation-runs/{recorded['id']}").json()["agg_gross_pbt"] == "20000.00"
 
 
 def test_unknown_engagements_and_runs_are_404(api: TestClient) -> None:

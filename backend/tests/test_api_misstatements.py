@@ -854,13 +854,26 @@ def test_judgemental_items_band_on_the_point_estimate_and_say_if_the_range_cross
     record = raise_one(
         api, engagement_id, type="judgemental", range_low="5000", range_high="260000"
     ).json()
-    assert record["band"] == "clearly_trivial"  # the point estimate, 10,000, is below CTT
+    # The point estimate, 10,000, is below CTT, but the range reaches it: where it is not
+    # certain that an item is clearly trivial, it is not (SA 450 paragraph A2; D56).
+    assert record["band"] == "accumulated"
+    assert record["banding"]["bands"] == {
+        "profit": "clearly_trivial",
+        "net_assets": "clearly_trivial",
+    }
+    assert "A2" in record["banding"]["basis"]
     assert record["banding"]["range_crosses_pm"] is True  # the range's top is above PM
     assert record["banding"]["projected"] is False
     narrow = raise_one(
         api, engagement_id, type="judgemental", range_low="5000", range_high="15000"
     ).json()
     assert narrow["banding"]["range_crosses_pm"] is False
+    assert narrow["band"] == "accumulated"  # 15,000 is at or above CTT too
+    certain = raise_one(
+        api, engagement_id, type="judgemental", range_low="5000", range_high="12499.99"
+    ).json()
+    assert certain["band"] == "clearly_trivial"  # the whole range is below CTT
+    assert "A2" not in certain["banding"]["basis"]
 
 
 def test_projected_items_keep_their_identification_in_the_band(api: TestClient) -> None:
@@ -941,7 +954,11 @@ def test_regression_a_large_reclassification_stays_in_the_schedule_and_moves_no_
         engagement_id,
         lines=[{"line_no": 1, "dr": "5000000.00"}, {"line_no": 2, "cr": "5000000.00"}],
     )
-    raise_one(api, engagement_id)  # a factual correction of 10,000
+    raise_one(  # a factual correction of 20,000, above the clearly-trivial threshold
+        api,
+        engagement_id,
+        lines=[{"line_no": 5, "dr": "20000.00"}, {"line_no": 3, "cr": "20000.00"}],
+    )
     schedule = api.get(f"/api/engagements/{engagement_id}/misstatements").json()
     assert [row["ref"] for row in schedule] == ["M-1", "M-2"]
     reclass = schedule[0]
@@ -952,7 +969,8 @@ def test_regression_a_large_reclassification_stays_in_the_schedule_and_moves_no_
     evaluation = api.get(f"/api/engagements/{engagement_id}/evaluation").json()
     assert evaluation["aggregate"]["counted"] == ["M-1", "M-2"]
     assert evaluation["aggregate"]["classification_only"] == ["M-1"]
-    assert evaluation["aggregate"]["profit_before_tax"]["gross"] == "10000.00"
-    assert evaluation["aggregate"]["net_assets"]["gross"] == "10000.00"
+    assert evaluation["aggregate"]["not_accumulated"] == []
+    assert evaluation["aggregate"]["profit_before_tax"]["gross"] == "20000.00"
+    assert evaluation["aggregate"]["net_assets"]["gross"] == "20000.00"
     assert evaluation["gates"]["hard"]["status"] == "clear"
     assert evaluation["items"][0]["measure"] == "5000000.00"

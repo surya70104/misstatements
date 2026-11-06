@@ -36,6 +36,7 @@ from oak_misstatements.services.evaluation import (
     evaluate,
     figures,
     item_labels,
+    not_accumulated_total,
     tests_json,
 )
 from oak_misstatements.services.spine_client import SpineClient
@@ -115,6 +116,8 @@ def run_detail(
         "counted": list(total.counted),
         "projected": list(total.projected),
         "classification_only": list(total.classification_only),
+        "not_accumulated": list(total.not_accumulated),
+        "not_accumulated_total": not_accumulated_total(total, threshold),
         "excluded": [{"ref": ref, "state": state} for ref, state in total.excluded],
         "tests": tests_json(evaluation),
         "gates": {

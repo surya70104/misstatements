@@ -76,12 +76,12 @@ def test_both_gates_are_open_on_a_small_complete_evaluation_and_carry_the_figure
     api: TestClient,
 ) -> None:
     engagement_id = ready(api)
-    raise_item(api, engagement_id, "10000.00")
+    raise_item(api, engagement_id, "20000.00")
     opinion, block = gates_of(api, engagement_id)
     for answer in (opinion, block):
         assert answer["status"] == "open"
         assert answer["blocked_by"] == [] and answer["undetermined_because"] == []
-        assert answer["figures"]["profit_before_tax"]["gross"] == "10000.00"
+        assert answer["figures"]["profit_before_tax"]["gross"] == "20000.00"
         live = evaluation(api, engagement_id)["aggregate"]
         for measure in ("profit_before_tax", "net_assets"):
             assert answer["figures"][measure] == live[measure], measure
@@ -90,6 +90,22 @@ def test_both_gates_are_open_on_a_small_complete_evaluation_and_carry_the_figure
         assert answer["conclusion"] == {"status": "none", "determination": None, "run_no": None}
     assert "unmodified opinion" in opinion["scope"]
     assert "acceptance 6 and 7" in block["scope"]
+
+
+def test_the_gates_say_what_their_figures_leave_out_as_clearly_trivial(api: TestClient) -> None:
+    """Spec section 4 (D53): a module reading a gate sees which items its figures leave
+    out as clearly trivial, and need not infer it."""
+    engagement_id = ready(api)
+    raise_item(api, engagement_id, "20000.00")
+    raise_item(api, engagement_id, "5000.00")  # below the clearly-trivial threshold
+    for answer in gates_of(api, engagement_id):
+        assert answer["status"] == "open"
+        assert answer["not_accumulated"] == ["M-2"]
+        assert answer["figures"]["profit_before_tax"]["gross"] == "20000.00"
+        assert answer["complete"] is True
+    empty = ready(api)
+    for answer in gates_of(api, empty):
+        assert answer["not_accumulated"] == []
 
 
 @pytest.mark.parametrize(

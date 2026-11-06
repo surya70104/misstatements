@@ -118,41 +118,264 @@ def test_the_aggregate_is_shown_gross_and_net_for_profit_and_net_assets(api: Tes
     use_spine(api)
     engagement_id = linked(api)
     thresholds(api, engagement_id)
-    raise_item(api, engagement_id, "10000.00")  # Dr rent / Cr provisions: both -10,000
-    raise_item(  # Dr provisions / Cr sales: profit +4,000, net assets +4,000
+    raise_item(api, engagement_id, "100000.00")  # Dr rent / Cr provisions: both -100,000
+    raise_item(  # Dr provisions / Cr sales: profit +40,000, net assets +40,000
         api,
         engagement_id,
-        "4000.00",
-        lines=[{"line_no": 3, "dr": "4000.00"}, {"line_no": 4, "cr": "4000.00"}],
+        "40000.00",
+        lines=[{"line_no": 3, "dr": "40000.00"}, {"line_no": 4, "cr": "40000.00"}],
     )
-    raise_item(  # Dr receivables / Cr general reserve: profit 0, net assets +8,000
+    raise_item(  # Dr receivables / Cr general reserve: profit 0, net assets +80,000
         api,
         engagement_id,
-        "8000.00",
-        lines=[{"line_no": 1, "dr": "8000.00"}, {"line_no": 9, "cr": "8000.00"}],
+        "80000.00",
+        lines=[{"line_no": 1, "dr": "80000.00"}, {"line_no": 9, "cr": "80000.00"}],
     )
     total = evaluation(api, engagement_id)["aggregate"]
     assert total["profit_before_tax"] == {
-        "gross": "14000.00",
-        "net": "-6000.00",
-        "gross_without_projected": "14000.00",
-        "net_without_projected": "-6000.00",
+        "gross": "140000.00",
+        "net": "-60000.00",
+        "gross_without_projected": "140000.00",
+        "net_without_projected": "-60000.00",
         "projected_gross": "0.00",
-        "factual_gross": "14000.00",
+        "factual_gross": "140000.00",
         "judgemental_gross": "0.00",
     }
     assert total["net_assets"] == {
-        "gross": "22000.00",
-        "net": "2000.00",
-        "gross_without_projected": "22000.00",
-        "net_without_projected": "2000.00",
+        "gross": "220000.00",
+        "net": "20000.00",
+        "gross_without_projected": "220000.00",
+        "net_without_projected": "20000.00",
         "projected_gross": "0.00",
-        "factual_gross": "22000.00",
+        "factual_gross": "220000.00",
         "judgemental_gross": "0.00",
     }
     assert total["counted"] == ["M-1", "M-2", "M-3"]
+    assert total["not_accumulated"] == []
     assert total["complete"] is True
     assert "F3" in total["basis"] and "B8" in total["basis"]
+
+
+# ---- clearly trivial items: listed, never accumulated (spec sections 2 and 4; D53) ---------
+
+
+def test_a_clearly_trivial_item_stays_in_the_schedule_and_out_of_the_aggregate(
+    api: TestClient,
+) -> None:
+    use_spine(api)
+    engagement_id = linked(api)
+    thresholds(api, engagement_id)  # CTT 12,500
+    raise_item(api, engagement_id, "60000.00")
+    raise_item(api, engagement_id, "12499.99")  # one paisa below CTT
+    raise_item(api, engagement_id, "12500.00")  # exactly CTT: accumulates
+    answer = evaluation(api, engagement_id)
+    total = answer["aggregate"]
+    assert total["counted"] == ["M-1", "M-3"]
+    assert total["not_accumulated"] == ["M-2"]
+    assert total["profit_before_tax"]["gross"] == "72500.00"
+    assert total["profit_before_tax"]["net"] == "-72500.00"
+    assert total["net_assets"]["gross"] == "72500.00"
+    assert total["complete"] is True
+    assert "not accumulated" in total["basis"] and "D53" in total["basis"]
+    # Spec section 10.1: every misstatement is listed, with its band and its own amounts.
+    assert [(i["ref"], i["band"], i["profit_before_tax"]) for i in answer["items"]] == [
+        ("M-1", "accumulated", "-60000.00"),
+        ("M-2", "clearly_trivial", "-12499.99"),
+        ("M-3", "accumulated", "-12500.00"),
+    ]
+    schedule = api.get(f"/api/engagements/{engagement_id}/misstatements").json()
+    assert [row["ref"] for row in schedule] == ["M-1", "M-2", "M-3"]
+
+
+def test_clearly_trivial_items_that_together_reach_ctt_are_accumulated_and_reach_the_gates(
+    api: TestClient,
+) -> None:
+    """SA 450 paragraph A2 (D57): clearly trivial matters are clearly inconsequential
+    "whether taken individually or in aggregate". Items below CTT one by one are left out
+    only while together they are below CTT; after that every one of them is accumulated,
+    and the gates see them."""
+    use_spine(api)
+    engagement_id = linked(api)
+    thresholds(api, engagement_id)  # CTT 12,500; PM 2,50,000
+    raise_item(api, engagement_id, "12000.00")
+    alone = evaluation(api, engagement_id)["aggregate"]
+    assert (alone["counted"], alone["not_accumulated"]) == ([], ["M-1"])
+    assert alone["profit_before_tax"]["gross"] == "0.00"
+    raise_item(api, engagement_id, "12000.00")  # 24,000 together: no longer clearly trivial
+    both = evaluation(api, engagement_id)
+    total = both["aggregate"]
+    assert (total["counted"], total["not_accumulated"]) == (["M-1", "M-2"], [])
+    assert total["not_accumulated_total"]["accumulated_together"] == ["M-1", "M-2"]
+    assert total["not_accumulated_total"]["at_or_above_ctt"] is True
+    assert total["profit_before_tax"]["gross"] == "24000.00"
+    assert "A2" in total["basis"] and "D57" in total["basis"]
+    # Each is still banded on its own amount (spec section 4: computed, never chosen).
+    assert [item["band"] for item in both["items"]] == ["clearly_trivial", "clearly_trivial"]
+    assert both["gates"]["soft"]["status"] == "clear"
+    for _ in range(19):  # 21 items of 12,000: 2,52,000 in all, above PM
+        raise_item(api, engagement_id, "12000.00")
+    many = evaluation(api, engagement_id)
+    assert len(many["aggregate"]["counted"]) == 21
+    assert many["aggregate"]["profit_before_tax"]["gross"] == "252000.00"
+    assert many["gates"]["soft"]["status"] == "fires"
+    assert many["gates"]["hard"]["status"] == "clear"
+    assert many["sign_off"]["blocked"] is True
+
+
+def test_a_revised_threshold_moves_an_item_into_and_out_of_the_aggregate(
+    api: TestClient,
+) -> None:
+    use_spine(api)
+    engagement_id = linked(api)
+    thresholds(api, engagement_id)  # CTT 12,500
+    raise_item(api, engagement_id, "12000.00")
+    before = evaluation(api, engagement_id)["aggregate"]
+    assert (before["counted"], before["not_accumulated"]) == ([], ["M-1"])
+    thresholds(api, engagement_id, ctt_fraction="0.04", basis="C-2")  # CTT 10,000
+    after = evaluation(api, engagement_id)["aggregate"]
+    assert (after["counted"], after["not_accumulated"]) == (["M-1"], [])
+    assert after["profit_before_tax"]["gross"] == "12000.00"
+
+
+def test_without_thresholds_nothing_is_left_out_as_clearly_trivial(api: TestClient) -> None:
+    use_spine(api)
+    engagement_id = linked(api)
+    raise_item(api, engagement_id, "1000.00")
+    answer = evaluation(api, engagement_id)
+    assert answer["items"][0]["band"] is None
+    assert answer["aggregate"]["not_accumulated"] == []
+    assert answer["aggregate"]["not_accumulated_total"]["ctt"] is None
+    assert answer["aggregate"]["not_accumulated_total"]["at_or_above_ctt"] is False
+    assert answer["aggregate"]["counted"] == ["M-1"]
+    assert answer["gates"]["hard"]["status"] == "no_thresholds"
+    assert answer["sign_off"]["blocked"] is True
+
+
+def test_a_clearly_trivial_item_in_any_uncorrected_state_is_not_accumulated(
+    api: TestClient,
+) -> None:
+    use_spine(api)
+    engagement_id = linked(api)
+    thresholds(api, engagement_id)
+    raise_item(api, engagement_id, "2000.00")
+    told = raise_item(api, engagement_id, "3000.00")
+    refused = raise_item(api, engagement_id, "3500.00")
+    projected = raise_item(api, engagement_id, "3000.00", type="projected")  # 11,500 together
+    for record in (told, refused):
+        moved = api.post(
+            f"/api/misstatements/{record['id']}/transitions", json={"to": "communicated"}
+        )
+        assert moved.status_code == 201, moved.text
+    moved = api.post(
+        f"/api/misstatements/{refused['id']}/transitions",
+        json={"to": "refused", "reason": "management disagrees"},
+    )
+    assert moved.status_code == 201, moved.text
+    assert projected["ref"] == "M-4"
+    total = evaluation(api, engagement_id)["aggregate"]
+    assert total["not_accumulated"] == ["M-1", "M-2", "M-3", "M-4"]
+    assert total["counted"] == [] and total["projected"] == []
+    for measure in ("profit_before_tax", "net_assets"):
+        assert set(total[measure].values()) == {"0.00"}, measure
+
+
+def test_a_clearly_trivial_item_leaves_the_partners_acknowledgement_standing(
+    api: TestClient,
+) -> None:
+    """The acknowledgement is tied to the figures (D39). An item that is not accumulated
+    moves none of them, so the acknowledgement stands; the item is named beside it."""
+    engagement_id = soft_gate_firing(api)
+    proxy = header_mode(api, roles=True)
+    assert acknowledge(proxy, engagement_id, headers=PARTNER).status_code == 201
+    raise_item(proxy, engagement_id, "1000.00", headers=SENIOR)
+    after = evaluation(proxy, engagement_id)
+    assert after["aggregate"]["not_accumulated"] == ["M-2"]
+    assert after["aggregate"]["profit_before_tax"]["gross"] == "250000.00"
+    assert after["gates"]["soft"]["acknowledgement"]["status"] == "acknowledged"
+    assert after["sign_off"]["blocked"] is False
+
+
+def test_a_judgemental_item_whose_range_reaches_ctt_is_not_clearly_trivial(
+    api: TestClient,
+) -> None:
+    """SA 450 paragraph A2 (D56): where there is any uncertainty whether an item is clearly
+    trivial, it is treated as not clearly trivial. A judgemental item whose point estimate
+    is below CTT is accumulated, at that estimate, when its range reaches CTT; one whose
+    whole range is below CTT is clearly trivial and is not accumulated."""
+    use_spine(api)
+    engagement_id = linked(api)
+    thresholds(api, engagement_id)  # CTT 12,500; PM 2,50,000
+
+    def judgemental(low: str, high: str) -> Any:
+        answer = api.post(
+            f"/api/engagements/{engagement_id}/misstatements",
+            json={
+                "type": "judgemental",
+                "description": "Provision for doubtful debts",
+                "raised_from": "wp",
+                "source_ref": "E-9",
+                "lines": [{"line_no": 5, "dr": "8000.00"}, {"line_no": 3, "cr": "8000.00"}],
+                "range_low": low,
+                "range_high": high,
+            },
+        )
+        assert answer.status_code == 201, answer.text
+        return answer.json()
+
+    wide = judgemental("2000.00", "300000.00")
+    assert wide["band"] == "accumulated"
+    assert wide["banding"]["range_crosses_pm"] is True
+    narrow = judgemental("6000.00", "10000.00")
+    assert narrow["band"] == "clearly_trivial"
+    total = evaluation(api, engagement_id)["aggregate"]
+    assert (total["counted"], total["not_accumulated"]) == (["M-1"], ["M-2"])
+    assert total["profit_before_tax"]["gross"] == "8000.00"  # the point estimate
+    assert total["profit_before_tax"]["judgemental_gross"] == "8000.00"
+
+
+def test_what_the_clearly_trivial_items_come_to_together_is_shown_and_tested_against_ctt(
+    api: TestClient,
+) -> None:
+    """D57: the items that are clearly trivial one by one are totalled gross, on each
+    measure, so amounts of opposite sign do not cancel. Below CTT they stay out and the
+    total is shown; exactly at CTT they are accumulated ("at or above")."""
+    use_spine(api)
+    engagement_id = linked(api)
+    thresholds(api, engagement_id)  # CTT 12,500
+    raise_item(api, engagement_id, "5000.00")
+    one = evaluation(api, engagement_id)["aggregate"]["not_accumulated_total"]
+    assert one == {
+        "profit_before_tax_gross": "5000.00",
+        "net_assets_gross": "5000.00",
+        "ctt": "12500.00",
+        "at_or_above_ctt": False,
+        "accumulated_together": [],
+        "basis": one["basis"],
+    }
+    assert "A2" in one["basis"] and "CA" in one["basis"]
+    raise_item(  # profit up: gross, so it adds to the total and does not cancel
+        api,
+        engagement_id,
+        "4000.00",
+        lines=[{"line_no": 1, "dr": "4000.00"}, {"line_no": 4, "cr": "4000.00"}],
+    )
+    below = evaluation(api, engagement_id)["aggregate"]
+    assert below["not_accumulated"] == ["M-1", "M-2"]
+    assert below["not_accumulated_total"]["profit_before_tax_gross"] == "9000.00"
+    assert below["profit_before_tax"]["gross"] == "0.00"
+    raise_item(api, engagement_id, "3500.00")  # 12,500 together: exactly CTT
+    answer = evaluation(api, engagement_id)
+    total = answer["aggregate"]
+    assert total["not_accumulated"] == []
+    assert total["counted"] == ["M-1", "M-2", "M-3"]
+    assert total["not_accumulated_total"]["accumulated_together"] == ["M-1", "M-2", "M-3"]
+    assert total["not_accumulated_total"]["profit_before_tax_gross"] == "12500.00"
+    assert (total["profit_before_tax"]["gross"], total["profit_before_tax"]["net"]) == (
+        "12500.00",
+        "-4500.00",
+    )
+    assert answer["gates"]["soft"]["status"] == "clear"
+    assert answer["sign_off"]["blocked"] is False
 
 
 # ---- the boundaries through the API, factual, projected and mixed -------------------------
@@ -274,6 +497,9 @@ def test_a_classification_only_item_is_listed_at_nil_and_never_moves_a_gate(
     answer = evaluation(api, engagement_id)
     assert answer["aggregate"]["classification_only"] == ["M-1"]
     assert answer["aggregate"]["counted"] == ["M-1"]
+    # Clearly trivial on amount only because both effects are nil: listed at nil, as
+    # before, and not named among the items left out for being below CTT (B2, D53).
+    assert answer["aggregate"]["not_accumulated"] == []
     assert answer["aggregate"]["profit_before_tax"]["gross"] == "0.00"
     assert answer["aggregate"]["net_assets"]["gross"] == "0.00"
     assert answer["gates"]["hard"]["status"] == "clear"
@@ -525,7 +751,7 @@ def test_an_acknowledgement_goes_stale_when_the_figures_or_the_threshold_change(
     engagement_id = soft_gate_firing(api)
     proxy = header_mode(api, roles=True)
     assert acknowledge(proxy, engagement_id, headers=PARTNER).status_code == 201
-    raise_item(proxy, engagement_id, "1000.00", headers=SENIOR)
+    raise_item(proxy, engagement_id, "15000.00", headers=SENIOR)
     stale = evaluation(proxy, engagement_id)
     assert stale["gates"]["soft"]["acknowledgement"]["status"] == "stale"
     assert "aggregate has changed" in stale["gates"]["soft"]["acknowledgement"]["detail"]

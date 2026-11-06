@@ -96,6 +96,8 @@ def _item(
             lines_of(threshold),
             threshold_id=threshold.id,
             threshold_version_no=threshold.version_no,
+            range_low=version.range_low,
+            range_high=version.range_high,
         )
         band = None if result is None else result.band
     return gates.Item(
@@ -130,6 +132,33 @@ def figures(total: gates.Aggregate) -> dict[str, Any]:
     return {
         "profit_before_tax": measure_json(total.profit),
         "net_assets": measure_json(total.net_assets),
+    }
+
+
+NOT_ACCUMULATED_BASIS = (
+    "the gross size, on each measure, of the items that band clearly trivial one by one; "
+    "while it is below the clearly-trivial threshold on both measures those items are left "
+    "out of the aggregate; once it reaches the threshold on either, all of them are "
+    "accumulated, because SA 450 paragraph A2 describes clearly trivial matters as clearly "
+    "inconsequential 'whether taken individually or in aggregate' and treats any uncertainty "
+    "as not clearly trivial (architecture D57); measuring 'in aggregate' gross against the "
+    "threshold itself is the conservative reading, for the CA to confirm (register S14, "
+    "question 2)"
+)
+
+
+def not_accumulated_total(total: gates.Aggregate, threshold: Threshold | None) -> dict[str, Any]:
+    """What the items that are clearly trivial one by one come to together, and whether
+    that brought them into the aggregate (D57)."""
+    ctt = None if threshold is None else threshold.ctt
+    highest = max(total.left_out_profit, total.left_out_net_assets)
+    return {
+        "profit_before_tax_gross": amount(total.left_out_profit),
+        "net_assets_gross": amount(total.left_out_net_assets),
+        "ctt": None if ctt is None else amount(ctt),
+        "at_or_above_ctt": ctt is not None and highest >= ctt,
+        "accumulated_together": list(total.accumulated_together),
+        "basis": NOT_ACCUMULATED_BASIS,
     }
 
 
@@ -177,7 +206,7 @@ def evaluate(
     views = spine_views(session, client, engagement, [version for _m, version in pairs])
     threshold = current_threshold(session, engagement)
     items = [_item(m, v, views[v.id], threshold) for m, v in pairs]
-    total = gates.aggregate(items)
+    total = gates.aggregate(items, None if threshold is None else threshold.ctt)
     om, pm = gates.lines_or_none(None if threshold is None else lines_of(threshold))
     hard = gates.gate("hard", total, om)
     soft = gates.gate("soft", total, pm)

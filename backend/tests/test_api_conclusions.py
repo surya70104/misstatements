@@ -101,7 +101,7 @@ def stored(api: TestClient) -> list[tuple[int, str | None]]:
 def test_a_conclusion_is_a_new_row_carrying_its_figures_and_threshold_version(
     api: TestClient,
 ) -> None:
-    proxy, engagement_id = prepared(api, "10000.00", "4000.00")
+    proxy, engagement_id = prepared(api, "20000.00", "14000.00")
     reviewed = record(proxy, engagement_id)
     before = api.get(f"/api/evaluation-runs/{reviewed['id']}").json()
     assert (before["concluded"], before["determination"], before["conclusion"]) == (
@@ -121,7 +121,7 @@ def test_a_conclusion_is_a_new_row_carrying_its_figures_and_threshold_version(
     # Acceptance 10: it carries the figures it was based on, and the threshold version.
     for key in ("agg_gross_pbt", "agg_net_pbt", "agg_gross_na", "agg_net_na", "threshold_id"):
         assert row[key] == reviewed[key], key
-    assert row["agg_gross_pbt"] == "14000.00"
+    assert row["agg_gross_pbt"] == "34000.00"
     assert row["threshold_version_no"] == 1
     assert row["detail"]["reviewed_run"] == {"id": reviewed["id"], "run_no": 1}
     assert row["detail"]["figures"] == reviewed["detail"]["figures"]
@@ -241,9 +241,9 @@ def test_the_database_rules_refuse_an_empty_or_half_made_conclusion(api: TestCli
 def test_a_conclusion_names_the_run_reviewed_and_is_refused_once_that_run_is_stale(
     api: TestClient,
 ) -> None:
-    proxy, engagement_id = prepared(api, "10000.00")
+    proxy, engagement_id = prepared(api, "20000.00")
     reviewed = record(proxy, engagement_id)
-    raise_item(proxy, engagement_id, "5000.00", headers=SENIOR)  # the figures move
+    raise_item(proxy, engagement_id, "15000.00", headers=SENIOR)  # the figures move
     stale = conclude(proxy, engagement_id, "not-material", reviewed["id"])
     assert stale.status_code == 409
     assert "run 1, the one reviewed, no longer describes the evaluation" in stale.json()["detail"]
@@ -252,8 +252,30 @@ def test_a_conclusion_names_the_run_reviewed_and_is_refused_once_that_run_is_sta
     fresh = record(proxy, engagement_id)
     saved = conclude(proxy, engagement_id, "not-material", fresh["id"])
     assert saved.status_code == 201, saved.text
-    assert saved.json()["agg_gross_pbt"] == "15000.00"
+    assert saved.json()["agg_gross_pbt"] == "35000.00"
     assert saved.json()["detail"]["reviewed_run"]["run_no"] == 2
+
+
+def test_a_clearly_trivial_item_raised_after_the_review_still_refuses_the_conclusion(
+    api: TestClient,
+) -> None:
+    """Spec section 4 (D53): the item is not accumulated, so no figure moves; the run
+    reviewed is stale all the same, because its list of items is no longer the list."""
+    proxy, engagement_id = prepared(api, "20000.00")
+    reviewed = record(proxy, engagement_id)
+    raise_item(proxy, engagement_id, "5000.00", headers=SENIOR)
+    stale = conclude(proxy, engagement_id, "not-material", reviewed["id"])
+    assert stale.status_code == 409
+    assert "raised, moved or re-banded" in stale.json()["detail"]
+    assert stored(api) == [(1, None)]
+    fresh = record(proxy, engagement_id)
+    assert fresh["agg_gross_pbt"] == reviewed["agg_gross_pbt"] == "20000.00"
+    assert fresh["detail"]["counted"] == ["M-1"]
+    assert fresh["detail"]["not_accumulated"] == ["M-2"]
+    assert reviewed["detail"]["not_accumulated"] == []
+    saved = conclude(proxy, engagement_id, "not-material", fresh["id"])
+    assert saved.status_code == 201, saved.text
+    assert saved.json()["detail"]["not_accumulated"] == ["M-2"]
 
 
 def test_a_revised_threshold_makes_the_reviewed_run_stale_too(api: TestClient) -> None:
@@ -375,7 +397,7 @@ def test_the_soft_gate_blocks_not_material_until_the_partner_acknowledges(
 def test_an_acknowledgement_gone_stale_blocks_again(api: TestClient) -> None:
     proxy, engagement_id = prepared(api, "250000.00")
     assert acknowledge(proxy, engagement_id, headers=PARTNER).status_code == 201
-    raise_item(proxy, engagement_id, "1000.00", headers=SENIOR)  # the figures move
+    raise_item(proxy, engagement_id, "15000.00", headers=SENIOR)  # the figures move
     run_id = record(proxy, engagement_id)["id"]
     blocked = conclude(proxy, engagement_id, "not-material", run_id)
     assert blocked.status_code == 409
@@ -598,16 +620,18 @@ def test_a_revised_conclusion_is_another_row_and_no_row_is_ever_changed(api: Tes
 
 
 def test_a_conclusion_goes_stale_when_the_evaluation_moves(api: TestClient) -> None:
-    proxy, engagement_id = prepared(api, "10000.00")
+    proxy, engagement_id = prepared(api, "20000.00")
     run_id = record(proxy, engagement_id)["id"]
     saved = conclude(proxy, engagement_id, "not-material", run_id).json()
     assert evaluation(api, engagement_id)["conclusion"]["status"] == "current"
+    # Clearly trivial, so no figure moves; the conclusion is out of date all the same,
+    # because the items it was reached on are no longer the items there are.
     raise_item(proxy, engagement_id, "5000.00", headers=SENIOR)
     live = evaluation(api, engagement_id)["conclusion"]
     assert live["status"] == "stale"
     assert "out of date" in live["detail"]
     assert live["run"]["id"] == saved["id"]  # still readable, never edited
-    assert api.get(f"/api/evaluation-runs/{saved['id']}").json()["agg_gross_pbt"] == "10000.00"
+    assert api.get(f"/api/evaluation-runs/{saved['id']}").json()["agg_gross_pbt"] == "20000.00"
 
 
 def test_a_failed_commit_saves_no_conclusion(api: TestClient) -> None:
@@ -696,7 +720,7 @@ def test_the_answer_to_the_strategy_prompt_is_recorded_either_way_and_goes_stale
     assert recorded["payload"]["line"] == "300000.00"
     assert strategy(api, engagement_id)["response"]["status"] == "recorded"
     assert respond(api, engagement_id).status_code == 409  # already answered on these figures
-    raise_item(api, engagement_id, "1000.00")
+    raise_item(api, engagement_id, "15000.00")
     assert strategy(api, engagement_id)["response"]["status"] == "stale"
     revised = respond(api, engagement_id, json={"strategy_revised": True})
     assert revised.status_code == 201

@@ -180,7 +180,12 @@ def band_json(
         body["basis"] = NO_EFFECTS_BASIS
         return body
     result = band_item(
-        view.effects, lines, threshold_id=threshold.id, threshold_version_no=threshold.version_no
+        view.effects,
+        lines,
+        threshold_id=threshold.id,
+        threshold_version_no=threshold.version_no,
+        range_low=current.range_low,
+        range_high=current.range_high,
     )
     if result is None:
         body["basis"] = UNRESOLVED_BASIS.format(names=", ".join(view.effects.unresolved) or "none")

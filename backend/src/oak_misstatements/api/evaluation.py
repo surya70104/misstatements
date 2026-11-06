@@ -42,6 +42,7 @@ from oak_misstatements.services.evaluation import (
     figures,
     gate_json,
     item_json,
+    not_accumulated_total,
     require_sign_off_open,
     respond_to_strategy_trigger,
     run_json,
@@ -132,6 +133,8 @@ def evaluation_json(evaluation: Evaluation, settings: Settings) -> dict[str, Any
             "counted": list(total.counted),
             "projected": list(total.projected),
             "classification_only": list(total.classification_only),
+            "not_accumulated": list(total.not_accumulated),
+            "not_accumulated_total": not_accumulated_total(total, evaluation.threshold),
             "unresolved": list(total.unresolved),
             "excluded": [{"ref": ref, "state": state} for ref, state in total.excluded],
             "basis": AGGREGATE_BASIS,
@@ -408,6 +411,9 @@ def _exposure_json(
         # The figures the status rests on (D18): every measure, with and without projected.
         "figures": figures(evaluation.aggregate),
         "complete": evaluation.aggregate.complete,
+        # What those figures leave out as clearly trivial (spec section 4; D53), so that a
+        # module reading the gate can see it and need not infer it.
+        "not_accumulated": list(evaluation.aggregate.not_accumulated),
         "hard_gate": gate_json(evaluation.hard),
         "soft_gate": {
             **gate_json(evaluation.soft),
