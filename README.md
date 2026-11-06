@@ -59,7 +59,7 @@ attachment · intake hooks · projected misstatements from Sampling · the gener
 | 3 | State machine: raised → communicated → corrected / refused / withdrawn; mandatory reasons; corrected posts to the Spine | done on 5 Nov 2026 (D41); see "Stage 3 verification". Every move is a new append-only version; a correction is accepted in the Spine and posts; a refusal and a withdrawal refuse the Spine's adjustment with the reason, so neither posts. Interim and open: withdrawal in the Spine (B1), reason categories (B12), leaving `raised` early (F4), edits (F9) |
 | 4 | Aggregation gross and net, profit and net assets; the evaluation row | aggregate and gates built ahead of schedule on 4 Nov 2026 (D38): `GET /api/engagements/{id}/evaluation`, the write-path check `require_sign_off_open`, the partner-only soft-gate acknowledgement (D39). Completed on 5 Nov 2026 (D43); see "Stage 4 verification": both materiality tests shown, the reassessment prompt, and the append-only `evaluation` row, one per run (migration 0008). The conclusion and the strategy trigger (B5) are Stage 5 |
 | 5 | Gates: OM hard gate, PM soft gate, strategy trigger, individually-significant block; the conclusion | done on 5 Nov 2026 (D45); see "Stage 5 verification". The conclusion is a new append-only `evaluation` row carrying its figures and threshold version (migration 0009), partner-only, naming the run reviewed; a conclusion of not material is blocked by every gate in the write path and by a database trigger at overall materiality; the strategy trigger is built with no default band (B5). Readings to confirm: B14, B15 |
-| 6 | The schedule, misstatement detail and evaluation screens | |
+| 6 | The schedule, misstatement detail and evaluation screens | built, reviewed and its gaps closed on 5 Nov 2026 (D47 to D52); see "Stage 6 closure verification". Nine screens over 24 of the 26 routes, used on live rows in an isolated preview. **Pass 1 implementation complete (`docs/CLOSURE_REVIEW.md` section 13); production acceptance pending:** the conclusion and the partner's acknowledgement have not been made by a named partner (V12), and nothing has been seen against the live Spine. In parts: Part 1 done on 5 Nov 2026 (D47); see "Stage 6 part 1 verification": routing, the typed API client, formatting, the shared loading, empty and error states, the layout, the engagement list, and the schedule address. Part 2 done on 5 Nov 2026 (D48); see "Stage 6 part 2 verification": the schedule screen with its ten columns, its filters by band, type and state, and the running totals against CTT, PM and OM; and the misstatement detail address. Part 3 done on 5 Nov 2026 (D49); see "Stage 6 part 3 verification": the misstatement detail screen with its identification, Dr/Cr lines and classification, effects, state history, and the moves of the state machine with their mandatory reasons. Part 4 done on 5 Nov 2026 (D50); see "Stage 6 part 4 verification": the evaluation screen with the aggregate against the three lines, the gates, the run history, recording a run, the strategy prompt, and the conclusion shown with what blocks it. The two partner-only writes are shown and never sent |
 | 7 | Pass 1 acceptance run: criteria 1, 2, 3, 4, 6, 7, 10, 11 | |
 | 8–14 | Pass 2 | |
 
@@ -254,6 +254,208 @@ Run on 5 November 2026:
 - Frontend unchanged: `eslint`, `tsc --noEmit`, `prettier --check` clean, `vitest` 5 passed.
 - Not run: PostgreSQL (the trigger's PL/pgSQL has never executed) and the live Financial
   Spine (its decision endpoint was read from CAF's source and mirrored in the double).
+
+## Clearly trivial items and the percentage display (D53, D54)
+
+Built on 5 November 2026, after the Stage 6 closure work below.
+
+**The test results in this section are the latest known (5 November 2026).** Every other
+count in this file is the count on the date of its own section and is kept as a record.
+
+- **A clearly trivial misstatement is not accumulated** (spec sections 2 and 4; D53). The
+  aggregate, and so every gate, run, acknowledgement and conclusion, leaves out an
+  uncorrected item below the clearly-trivial threshold and names it in
+  `aggregate.not_accumulated`. It stays in the schedule. Since D57 this holds only while
+  such items together stay below the threshold (see below). Of the nine questions the spec
+  does not answer, one is still with the CA (`docs/DECISIONS_PENDING.md`, S14 question 2).
+- **A percentage below a line never reads 100%** (D54): 99.9% is shown instead.
+- Backend: `pytest` on PostgreSQL **469 passed, none skipped**; on the stand-in 437 passed,
+  32 skipped. `ruff check`, `ruff format --check` and `mypy` strict are clean (89 files).
+- Frontend: `vitest` **319 passed in 18 files**; `tsc --noEmit`, `eslint src tests` and
+  `prettier --check .` are clean; `npm run build` succeeds.
+- The Pass 1 workflow was walked twice in a browser on the isolated preview, through the
+  forms and buttons (D55), and the D57 display was checked in a third session. Not seen
+  with a named partner or against the live Financial Spine.
+- **From SA 450 paragraph A2 (D56, D57):** a judgemental item whose range reaches the
+  clearly-trivial threshold is accumulated; and items that are clearly trivial one by one
+  are left out only while together, gross, they are below that threshold. Once together
+  they reach it, all of them are accumulated and the gates see them. The measure of "in
+  aggregate" is a reading for the CA to confirm.
+- `docs/DECISIONS_PENDING.md` ends with the resolution pass and a final targeted review:
+  49 items were open, 31 are closed and **18 remain**, each with who or what it waits on
+  and why it cannot be closed inside this project.
+- Requests at the same moment were checked with `backend\tests\concurrency_check.py`, in a
+  scratch schema of the test database that is dropped afterwards (D58).
+- `docs/CLOSURE_REVIEW.md` section 13 is the Pass 1 closure: the seven deliverables, the
+  acceptance criteria, what was fixed, and every decision and dependency still open. Its
+  verdict: the implementation is complete; production acceptance waits on a named
+  partner, the live Spine and the CA.
+
+The figures in the next section, and in every section after it, are those of their own
+dates, before this change.
+
+## Stage 6 closure verification (D52)
+
+Run on 5 November 2026, after the closure work on S1 to S12 and V9 to V11. The matrix is
+`docs/CLOSURE_REVIEW.md` section 11.
+
+- Frontend: `vitest` **310 passed in 18 files**, three runs in a row. `tsc --noEmit`,
+  `eslint src tests` and `prettier --check .` are clean. `npm run build` succeeds. No
+  dependency was added.
+- Backend: `pytest` on PostgreSQL **450 passed, none skipped**; on the stand-in 418
+  passed, 32 skipped. `ruff check`, `ruff format --check` and `mypy` strict are clean (88
+  files). The backend's source and migrations are unchanged since the last commit; the two
+  backend files touched are test tooling, `tests\test_frontend_fixtures.py` and
+  `tests\preview_server.py`.
+- Fixture tests: 122 captured answers of the real API, checked on both backends. They cover
+  the five new screens, the partner's two forms (captured with the app behind a trusted
+  proxy with a role claim) and the eight display branches that had none.
+- **Live, in an isolated preview that kept nothing:** an engagement, thresholds and their
+  revision, six misstatements, every move of the state machine, an evaluation run, the soft
+  gate and the hard gate, the event trail and the reconciliation were all done from the
+  screens against a running backend on PostgreSQL. The three partner-only writes were
+  refused with a 403. Afterwards the test database held no row.
+- **Not verified:** a partner's acknowledgement or conclusion through a browser, which
+  needs the firm's identity provider; the strategy prompt on a running backend, which needs
+  a value for `OAK_STRATEGY_TRIGGER_FRACTION` (B5); anything against the live Financial
+  Spine. No migration has been applied to `oak_misstatements`. Nothing is committed.
+
+### Looking at the screens on live rows without keeping anything
+
+```
+cd backend
+.venv\Scripts\python.exe -m tests.preview_server --port 8014
+```
+
+Build the frontend first (`npm run build` in `frontend`), then open
+<http://127.0.0.1:8014>. Everything done there is inside one transaction on
+`oak_misstatements_test` that is rolled back when the process ends. The Financial Spine is
+the test double; to pin an engagement use the double's engagement
+`11111111-1111-4111-8111-111111111111` and version
+`aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1`. Do not run the test suite on PostgreSQL while the
+preview is open.
+
+## Stage 6 final verification (D51)
+
+Run on 5 November 2026, after the four parts. The full review is `docs/CLOSURE_REVIEW.md`
+section 10.
+
+- Frontend: `vitest` **221 passed in 14 files**. `tsc --noEmit`, `eslint src tests` and
+  `prettier --check .` are clean. `npm run build` succeeds. No dependency was added in
+  Stage 6.
+- Backend: `pytest` on PostgreSQL **447 passed, none skipped**; on the stand-in 415
+  passed, 32 skipped. `ruff check`, `ruff format --check` and `mypy` strict are clean (87
+  files). The backend's source and migrations are unchanged since the last commit; the one
+  file Stage 6 added is `backend\tests\test_frontend_fixtures.py`.
+- New in this review: one test walks engagement list, schedule, detail, evaluation and back
+  by the links on the screens; one follows every link on every screen and finds no dead
+  one; three read every rupee amount off the screens and require each to be a figure the
+  backend sent, digit for digit.
+- In a browser, with the API's captured answers standing in for it: no screen scrolls
+  sideways at 1280, 768 or 375 pixels; no error or warning is logged on a pass through
+  every screen; no write was sent to the running backend.
+- One defect found and fixed: a dash too pale to read on the misstatement detail.
+- **What Stage 6 does not do** (register S1 to S3): no screen sets or documents
+  thresholds, none creates an engagement or raises a misstatement, and the conclusion and
+  the soft-gate acknowledgement are shown and cannot be recorded from a screen.
+- **Not done:** no migration has been applied to `oak_misstatements`; no record was written
+  to either database; nothing was committed; no screen has been seen on live data (V9), and
+  no write has been sent from a screen to a live backend (V10).
+
+## Stage 6 part 4 verification (D50)
+
+Run on 5 November 2026:
+
+- Frontend: `vitest` **212 passed in 13 files** (146 before; every earlier test is kept).
+  `tsc --noEmit`, `eslint src tests` and `prettier --check .` are clean. No dependency was
+  added.
+- The evaluation screen is tested against the API's own answers for fifteen moments of
+  six engagements: every gate clear, firing, and indeterminate; with and without projected
+  items; an incomplete aggregate; no run, a current run, a stale run and two runs; the
+  strategy prompt before and after its answer; and a conclusion recorded, stale and
+  replaced. The conclusion fixtures were captured with the app in header mode behind a
+  trusted proxy, with a partner's role claim. The two tests that a write goes out only once
+  were checked by removing the guard: they then fail.
+- Backend, unchanged apart from the fixture test module: `pytest` on PostgreSQL **447
+  passed, none skipped**; on the stand-in 415 passed, 32 skipped. `ruff check`,
+  `ruff format --check` and `mypy` strict are clean (87 files).
+- In the browser the screen was looked at with the captured fixtures standing in for the
+  API's answers, at 1280 and 375 pixels: with no gate firing, with the hard gate firing,
+  with two conclusions, recording a run, and inspecting a run. One defect was found and
+  fixed there: at 375 pixels an inspected run made the page scroll sideways. The run was
+  answered by the fixture inside the page: **no write was sent to the running backend.**
+- **Not done:** no migration has been applied to `oak_misstatements`. No record was written
+  to either database. Neither write has been sent from the screen to a live backend. The
+  two partner-only writes cannot be exercised in development mode by design.
+
+## Stage 6 part 3 verification (D49)
+
+Run on 5 November 2026:
+
+- Frontend: `vitest` **146 passed in 11 files** (97 before; the four tests of the
+  header-only detail page were replaced by the tests of the detail itself, and one app
+  test's assertion about that page was updated). `tsc --noEmit`, `eslint src tests` and
+  `prettier --check .` are clean. No dependency was added.
+- Every state and every move is tested against the API's own answers: the same misstatement
+  read as raised, communicated and corrected; a judgemental one refused; a projected one
+  withdrawn; a classification-only one, before and after the Spine reclassified a ledger;
+  one read with the Spine unreachable; and the backend's refusals. The test that a move
+  goes out only once was checked by removing the guard: it then fails.
+- Backend, unchanged apart from the fixture test module: `pytest` on PostgreSQL **445
+  passed, none skipped**; on the stand-in 413 passed, 32 skipped. `ruff check`,
+  `ruff format --check` and `mypy` strict are clean (87 files).
+- In the browser the detail page, a move from raised to communicated with its processing
+  state, a refused misstatement and one read with the Spine unreachable were looked at with
+  the captured fixtures standing in for the API's answers, at 1280 and 375 pixels. The move
+  was answered by the fixture inside the page: **no write was sent to the running backend.**
+- **Not done:** no migration has been applied to `oak_misstatements`. No record was written
+  to either database. A move has not been sent from the screen to a live backend.
+
+## Stage 6 part 2 verification (D48)
+
+Run on 5 November 2026:
+
+- Frontend: `vitest` **97 passed in 9 files** (58 before; the seven tests of the header-only
+  schedule page were replaced by the tests of the schedule itself). `tsc --noEmit`,
+  `eslint src tests` and `prettier --check .` are clean. No dependency was added.
+- The schedule is tested against the API's own answers: one engagement carrying every type,
+  state and band, one with nothing raised, and the first again with the Spine unreachable.
+  `backend\tests\test_frontend_fixtures.py` produces and checks them; it passes on
+  PostgreSQL and on the stand-in and leaves the test database empty.
+- Backend, unchanged apart from that one test module: `pytest` on PostgreSQL **444 passed,
+  none skipped**; on the stand-in 412 passed, 32 skipped. `ruff check`,
+  `ruff format --check` and `mypy` strict are clean (87 files).
+- In the browser the schedule, the pinned totals, the three filters, the detail address and
+  the way back were looked at with the captured fixtures standing in for the API's answers,
+  at 1440, 1280, 1024 and 375 pixels: the page never scrolls sideways. That is a check of
+  appearance and behaviour, not of live data: the running backend's database holds no
+  engagement, and none was created.
+- **Not done:** no migration has been applied to `oak_misstatements`. No record was written
+  to either database.
+
+## Stage 6 part 1 verification (D47)
+
+Run on 5 November 2026:
+
+- Frontend: `vitest` **58 passed in 7 files** (routing, API errors, formatting, the shared
+  states, the engagement list, the schedule header, the shell; the five earlier tests are
+  among them and unchanged in meaning). `tsc --noEmit`, `eslint src tests` and
+  `prettier --check .` are clean. No dependency was added.
+- The fixtures the screens are tested against are the API's own answers, produced and
+  checked by `backend\tests\test_frontend_fixtures.py`. It passes on PostgreSQL and on the
+  stand-in and leaves the test database empty.
+- Backend, unchanged apart from that one test module: `pytest` on PostgreSQL **443 passed,
+  none skipped**; on the stand-in 411 passed, 32 skipped. `ruff check`,
+  `ruff format --check` and `mypy` strict are clean (87 files).
+- In the browser, against a running backend: the engagement list loaded with
+  `GET /api/engagements` answering 200 and showed its empty state, because that backend's
+  database held no engagement; an unknown engagement address showed the backend's own 404
+  message with a retry. The filled list and the schedule header were looked at in the
+  browser with the captured test fixture standing in for the two answers, at desktop width
+  and at 375 pixels. That is a check of appearance, not of live data.
+- **Not done:** no migration has been applied to `oak_misstatements`, so a backend pointed
+  at it cannot answer the list. No engagement was created anywhere for the purpose of the
+  check. The page has no favicon, so the browser logs one 404 for `/favicon.ico`.
 
 ## PostgreSQL verification on the test database
 
@@ -550,4 +752,12 @@ Run on 4 November 2026:
 - No edit after raising (F9), no Opinion hand-off (no such module exists), no TCWG
   extract or representation attachment (Pass 2). Withdrawal is built on an interim
   treatment in the Spine (B1).
-- No screens beyond the shell that shows the backend's health (Stage 6).
+- Of the screens (Stage 6), the engagement list (D47), the schedule (D48), the
+  misstatement detail with its moves (D49) and the evaluation (D50) exist, were reviewed
+  together (D51), and were completed by the closure work (D52): creating an engagement,
+  recording a misstatement, thresholds, the Financial Spine link and reconciliation, the
+  event trail, and the partner's two forms. Nothing recorded is ever edited from a screen:
+  a misstatement moves by a new version, thresholds by a new version, a conclusion by a new
+  row. Still not built: a way to pick a ledger or a Schedule III head when recording a
+  misstatement, since the backend has no route that lists them (register S13). The
+  partner's two forms can be used only where a partner can be named (B9a, O1).

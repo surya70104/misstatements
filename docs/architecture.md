@@ -469,6 +469,9 @@ become reclassifications and the Spine's treatment of them changes with it.
 
 ## D38 · The aggregate and the gates, built ahead of Stage 5 — 4 Nov 2026 (B8 interim)
 
+*Amended 5 Nov 2026 by D53: an uncorrected item whose band is clearly trivial is not
+accumulated. Everything else below stands.*
+
 `core/gates.py` (pure) and `services/evaluation.py`, read by `GET
 /api/engagements/{id}/evaluation`. Nothing is stored; every read recomputes from the
 Spine's live lines, each version's recorded classification and the current threshold
@@ -940,3 +943,554 @@ be refused in the Spine, before the Spine version can be locked.
 
 **Not done, by instruction:** no commit; no Stage 6; no Pass 2.
 
+## D47 · Stage 6, part 1: the frontend foundation and the engagement list — 5 Nov 2026
+
+The first part of Stage 6 builds what every screen stands on, and one screen. Nothing in
+the backend changed: no route, model, migration or rule.
+
+- **Routing without a dependency.** `frontend/src/router.ts` is a hash router of some forty
+  lines, the Binder's convention. Two addresses exist: `#/` (the engagements) and
+  `#/engagements/{id}` (one engagement's schedule). An address it does not know shows the
+  engagement list. No router package was added.
+- **The API client is a typed mirror, and a refusal is shown in the backend's words.**
+  `frontend/src/api.ts` declares the shapes the backend answers and one `ApiError`. Its
+  message is the backend's `detail`; a validation failure is read as "field: message"; a
+  `pending_decision` is carried through and named on the screen; a backend that cannot be
+  reached says so and names port 8003. The client decides nothing.
+- **Figures are never passed through floating point.** `frontend/src/format.ts` formats the
+  API's decimal strings as text: Indian digit grouping, the rupee sign, a negative sign
+  before the sign of the currency, zeros padded and digits never rounded away. A percentage
+  is computed exactly with integers, rounded half up, at presentation only (D16).
+- **One of three states, always.** `useResource` holds a load as loading, ready or failed,
+  and `components/states.tsx` gives each its appearance: a polite status, an empty state
+  with its explanation, an alert with the failing request and a retry.
+- **The engagement list** reads `GET /api/engagements` and shows, for each engagement, its
+  label, whether it is linked to the Financial Spine and pinned to a version, its number of
+  misstatements, whether thresholds are set, who created it and when. The label opens the
+  schedule address.
+- **The schedule page is a header only.** It reads `GET /api/engagements/{id}` and shows
+  what the backend says about the engagement, including the verified state of the Spine
+  link. Where the schedule will be it says that the schedule is not built. No row, total
+  or filter is shown in any made-up form.
+- **The frontend's test fixtures are the API's real answers.** The screens are tested
+  against JSON in `frontend/tests/fixtures`. `backend/tests/test_frontend_fixtures.py`
+  produces those files by driving the real application, and fails when a committed fixture
+  no longer equals what the API answers (identifiers and timestamps masked). A fixture
+  written by hand could describe a backend that does not exist; these cannot drift
+  unnoticed. The engagements in them are labelled as test engagements and name no client.
+
+**Not built in this part:** the schedule's rows, running totals and filters; the
+misstatement detail screen; the evaluation screen; any screen that writes. The list offers
+no way to create an engagement, because the spec names three screens and that is not one of
+them; whether to add one is a question for the review, not a decision taken here.
+
+## D48 · Stage 6, part 2: the schedule of misstatements — 5 Nov 2026
+
+The schedule address now shows the schedule (spec sections 6.1 and 10.1), replacing the
+header-only page of D47. Nothing in the backend changed: no route, model, migration or rule.
+The only backend file touched is the test that produces the frontend's fixtures.
+
+- **Three reads, no new route.** The page asks for the engagement, its misstatements
+  (`GET /api/engagements/{id}/misstatements`) and its evaluation
+  (`GET /api/engagements/{id}/evaluation`) together. If any one fails, nothing partial is
+  shown: a schedule without its totals, or totals without the rows, would mislead.
+- **The ten columns of section 6.1.** Reference, type, description, Dr/Cr lines, effect on
+  profit before tax, effect on net assets, band, state, working paper reference, who raised
+  it. The lines are the Spine's as the API sends them; the effects and the band are the
+  backend's. An effect the backend could not determine is shown as not available with the
+  backend's reason, never as nil. A classification-only item, a judgemental range that
+  crosses PM and a state that disagrees with the Spine are each said in words.
+- **The running totals are the evaluation's aggregate.** Gross and net, profit before tax
+  and net assets, in rupees, exactly as `aggregate` gives them. The screen adds nothing up.
+  It says what was counted and what was not, names the projected items with the totals
+  without them (spec section 3.2), flags totals the backend marks incomplete, and gives the
+  backend's own description of how the aggregate is computed.
+- **The percentages are presentation (D16).** Each total as a percentage of CTT, PM and OM
+  is computed on the screen, exactly, with integers, rounded half up to one decimal place;
+  the size of the figure is what is compared, so a net figure below zero reads as a positive
+  percentage. No API gives these percentages, and D16 already places them at presentation.
+  With no thresholds set there is no percentage, and none is invented.
+- **Filters choose rows, and only rows.** Band, type and state filter the list already
+  loaded; the band filter has a fourth value for items the backend could not band. The
+  totals stay the backend's aggregate of the whole engagement and are not recomputed for
+  the rows shown: summing a filtered subset on the screen would be a second aggregation
+  rule, and the screen says that the filters do not change the totals. This is this
+  module's reading of "running totals ... always visible" (spec section 10.1).
+- **Always visible.** On a screen of tablet width or more the totals stay in view while
+  the schedule scrolls beneath them. On a phone they sit at the top and scroll with the
+  page, since a pinned panel would leave no room for the schedule.
+- **No sideways scrolling.** From 1280 pixels the schedule is a table. Below that each
+  misstatement is a block with every value labelled by its column, the same markup laid out
+  differently.
+- **The detail address exists and shows a header only.** `#/misstatements/{id}` reads
+  `GET /api/misstatements/{id}` and shows the reference, type, state, band and description,
+  with a way back to the schedule. It says that the detail is not built.
+- **Fixtures.** The fixture test now also drives one engagement through every type, every
+  state and every band, an engagement with nothing raised, and the first again with the
+  Spine unreachable, and writes the API's answers for each. All of it runs in the test
+  transaction and is rolled back.
+
+**Not built in this part:** the misstatement detail (lines, effects, state trail, working
+paper); the evaluation screen with the gates and the conclusion; any screen that writes. No
+form to create an engagement or to raise a misstatement was added, by instruction.
+
+**Assumptions to confirm:** that the running totals are the aggregate of the uncorrected
+misstatements of the whole engagement (the backend's F3 reading), unaffected by the
+filters; that one decimal place is the right precision for the percentages; that the gate
+status belongs on the evaluation screen and not above the schedule.
+
+## D49 · Stage 6, part 3: the misstatement detail and its moves — 5 Nov 2026
+
+The detail address now shows the whole misstatement (spec sections 6.1 and 10.2) and is
+the first screen that writes: it sends the moves of the state machine. Nothing in the
+backend changed: no route, model, migration or rule. The only backend file touched is the
+test that produces the frontend's fixtures.
+
+- **One read, one write, both existing.** The page reads `GET /api/misstatements/{id}` and
+  sends `POST /api/misstatements/{id}/transitions`. It asks for nothing else.
+- **Identification.** Reference, type, description, state, band with the threshold version
+  it was computed against, working paper reference, where it was raised from, who raised it
+  and when. A judgemental item shows the auditor's range, and says when the backend finds
+  that the range crosses PM; a projected item names its sample and projection basis.
+- **Dr/Cr lines with their classification.** Each line as the Spine holds it: ledger, the
+  group it sits under, the Schedule III head, the statement and the section the effects are
+  computed on, debit or credit. The Spine's adjustment is shown beside them: status, kind,
+  reference, gross size, who proposed and decided it and the decision note. The screen adds
+  nothing up.
+- **Effects, each with the backend's explanation.** The effect on profit before tax and on
+  net assets, each with its own band and with `profit_basis` and `net_assets_basis` as the
+  backend wrote them; the effect on each caption; the band with `band_basis`. An effect the
+  backend could not determine is disclosed with its reason and is never shown as nil. When
+  the Spine now classifies a ledger differently from the classification recorded at raising
+  (D32), the page says which ledger, how, and what the effects would be on the current
+  classification; the effects themselves do not change.
+- **The versions are the history.** Every move added a version and none is ever changed
+  (D9, D41), so the state trail is the list of versions: the state recorded, who recorded
+  it, when, and the reason for a refusal or a withdrawal. A state the Spine disagrees with
+  is flagged with the backend's explanation.
+- **Which moves are offered is a mirror of the diagram; whether a move happens is the
+  backend's.** The API does not say which moves are open from a state, so the screen holds
+  the diagram of spec section 3.3 (`NEXT_STATES` in `labels.ts`: raised to communicated;
+  communicated to corrected, refused or withdrawn; nothing from a final state) to decide
+  which buttons to show. That is all it decides. The backend checks every move, and a
+  refusal is shown in its words, so a screen that offered a wrong move could not make it.
+- **A move is chosen, then confirmed.** Every move is irreversible, so choosing one opens
+  what it will do and a second control confirms it. A refusal and a withdrawal require a
+  reason that is not blank before they can be confirmed, as the backend requires; the
+  backend's limit of 1,500 characters is mirrored on the field. The reason goes out without
+  the spaces around it.
+- **Once.** While a move is processing every control is disabled and says so, and a guard
+  held outside the render makes a second confirmation in the same instant send nothing.
+  This is tested, and the test was checked: with the guard taken out, it fails.
+- **After a move.** The backend's answer to a move is the misstatement as it then stands,
+  with every version, so the page shows that answer at once rather than reading again. The
+  schedule is read afresh every time it is opened, so it shows the move too. What the move
+  asked of the Spine, and the note the Spine recorded, are reported.
+- **Nothing can be edited.** No field of a recorded version is offered for change. The only
+  input on the page is the reason of a move being confirmed.
+- **Fixtures.** The fixture test now also takes one misstatement through raised,
+  communicated and corrected, a judgemental one to refused and a projected one to
+  withdrawn, and writes the API's answer at each step: every read, every move, and every
+  refusal met on the way (a move the diagram does not draw, a refusal with no reason, a
+  blank reason, a move from a final state, the Spine unreachable). Two different
+  identities act, so the history shows who did what. All of it is rolled back.
+
+**Not built in this part:** the qualitative checklist of spec section 10.2, which is Pass 2
+(D19) and has no backend; the evaluation screen with the gates and the conclusion; any way
+to create or edit a misstatement.
+
+**Assumptions to confirm:** that any signed-in identity may make a move from the screen,
+which is what the backend allows today (authorisation is not enforced: B9); that asking for
+a confirmation before every move, not only the three final ones, is wanted; the wording of
+what each move does, which restates spec section 3.3 and D41.
+
+## D50 · Stage 6, part 4: the evaluation screen — 5 Nov 2026
+
+The third screen of spec section 10: `#/engagements/{id}/evaluation`, reached from the
+schedule and leading back to it. Nothing in the backend changed: no route, model, migration
+or rule. The only backend file touched is the test that produces the frontend's fixtures.
+
+- **Six reads, two writes, all existing.** The page reads the engagement, the evaluation,
+  the runs, the conclusions and the two gates other modules read
+  (`/gates/opinion`, `/gates/sign-off`). If any read fails nothing partial is shown. It
+  sends `POST .../evaluation/runs` and `POST .../evaluation/strategy-responses`, the two
+  evaluation writes the backend opens to any signed-in identity.
+- **The aggregate.** Gross and net, profit before tax and net assets, with and without the
+  projected items, and the gross contribution of factual, judgemental and projected items,
+  exactly as the evaluation gives them. The screen adds nothing up. It names what was
+  counted and what was not, and flags an aggregate the backend marks incomplete.
+- **Against the three lines.** CTT, PM and OM with the threshold version, and each figure
+  as a percentage of each line (presentation, D16, exact, as on the schedule). **Whether a
+  figure is at or above a line is not decided on the screen.** The soft gate names the
+  measures at or above PM and the hard gate those at or above OM (`fires_on`); the table
+  marks exactly those. A test gives the screen figures at the line with gates that name
+  nothing, and nothing is marked. No gate exists at CTT, which is a line for single items,
+  so no mark is shown there.
+- **The gates.** The hard gate and the soft gate with their line, highest measure, the
+  measures they fire on, whether they depend on the projected items (B8), the firm's
+  setting for the soft gate and the state of the partner's acknowledgement; the opinion
+  gate and the sign-off gate as other modules read them, open, blocked or undetermined,
+  with every reason the backend gives; and the items that block on their own. Every status
+  and reason is the backend's, and its own descriptions of each gate are shown.
+- **A status this screen does not know is never good news.** The status words live in one
+  place (`labels.ts`); a code with no word is shown as it was sent and flagged.
+- **Runs.** The history lists every evaluation row, newest first, with its four aggregates,
+  threshold version, who recorded it and when. Only the latest row can still describe the
+  evaluation, and the backend says whether it does (`latest_run`: current or stale, with
+  the reason); an earlier row is marked as earlier. Any row can be inspected: its
+  thresholds, its figures without the projected items, the gates and the sign-off decision
+  as they were, and each misstatement's state, type and band at that moment, exactly as
+  recorded.
+- **Recording a run.** The request carries one thing, that materiality was reassessed
+  first (SA 450 paragraph 10), and a person must state it each time: the control is unticked
+  again after every run. No figure is sent. The backend refuses a run it cannot compute in
+  full, and its reason is shown. After a run the six reads are made again and the screen is
+  not blanked while they are (`useResource.refresh`).
+- **The strategy prompt.** Shown as the backend evaluates it: not configured (B5), or its
+  line, the measures at it, and whether it has been answered on the current figures. The
+  answer is offered only when the backend says one is needed, and is what the specification
+  names: whether the strategy and plan were revised, "recorded either way", with an
+  optional note. The choice has no default.
+- **The conclusion is shown, not recorded.** The latest conclusion with its determination,
+  words, basis, figures, threshold version, who concluded and which run was reviewed;
+  whether it is current or stale, for the backend's reason; the earlier conclusions; and,
+  for each kind of conclusion, whether the backend's gates would refuse it now and why.
+- **Partner-only actions are never sent.** The soft-gate acknowledgement and the
+  conclusion are reserved to the engagement partner (D39, D45). The screen has no control
+  for either and the API client has no function for either, which a test asserts. Where the
+  backend reports that no trusted role claim is configured, each is shown as unavailable
+  with the backend's explanation; where one is configured, each is shown as reserved to the
+  partner and not offered on this screen.
+- **Once.** Both writes share one guard (`useSubmit`): while a write is in flight every
+  control is disabled and a second confirmation sends nothing. Tested, and the tests were
+  checked by removing the guard, which fails them.
+- **Fixtures.** The fixture test now captures, for each scenario, everything the screen
+  reads in one file: nothing raised; no gate firing, before a run, after it, stale, and
+  with two runs; the Spine unreachable; the strategy prompt before and after its answer;
+  the aggregate at PM; at OM only with a projected item; an item above PM; and, with the
+  app run behind a trusted proxy the way production is, a conclusion recorded by a partner,
+  gone stale, and replaced. An event's sequence number is now masked in the comparison
+  with the identifiers and times, since the database issues a new one on every run.
+
+**Not built in this part:** the forms for the two partner-only writes; the prior-period
+carry-forward of spec section 10.3 (current and cumulative), which is Pass 2 and has no
+backend; any way to set or revise thresholds.
+
+**Assumptions to confirm:** that the conclusion and the soft-gate acknowledgement are to
+be shown and not recorded from this screen in this part; that no mark is wanted at CTT;
+that the marks should follow the gates' `fires_on`, which is tested on the figures that
+include the projected items; that a person should have to state the reassessment of
+materiality afresh for every run.
+
+## D51 · Stage 6, part 5: the screens reviewed together — 5 Nov 2026
+
+A review of the whole specification against the four screens and the API, recorded in full
+in `docs/CLOSURE_REVIEW.md` section 10. Nothing in the backend changed.
+
+- **One path, on answers that belong together.** The fixture test now also writes the
+  engagement list and the evaluation as they stood for the engagement whose schedule and
+  misstatement were already captured, so a single test walks list, schedule, detail, back,
+  evaluation and back by the links on the screens, on one engagement's real answers.
+- **No dead link, by test.** A test starts at the engagement list, follows every link on
+  every screen it reaches, and requires each address to be one the router knows and each
+  screen to load without a failure. It finds the four addresses and no other.
+- **Amounts are traced, not trusted.** A test reads every rupee amount off the schedule,
+  the detail and the evaluation, with every run opened, takes the formatting off again,
+  and requires each to be a decimal the backend sent, digit for digit, with exactly two
+  decimal places. The largest amount the money domain can hold is formatted without losing
+  a paisa, where a float would. The source contains no floating-point arithmetic.
+- **One defect fixed.** The dash shown for the side a Dr/Cr line does not carry was too
+  pale to read (2.6 to 1 against white); it now meets 4.5 to 1. Found by computing the
+  contrast of every piece of text on every screen in a browser; nothing else fell short.
+- **Checked in a browser** at 1280, 768 and 375 pixels with the captured answers standing
+  in for the API: no screen scrolls sideways; a pass through every screen, an unknown
+  address, a filter, an opened run and a chosen move logs no error or warning; no write
+  was sent.
+- **Partner-only writes.** Confirmed by test that no control and no client function exists
+  for the acknowledgement or the conclusion. The backend's own refusal of a non-partner
+  (403, captured) is the enforcement; the screens add none and remove none.
+
+**What the review found that Stage 6 does not do**, each now a row in the register: no
+screen for thresholds (S1); none to create an engagement or raise a misstatement (S2); the
+conclusion and the acknowledgement shown and not recorded (S3); and, outside the spec, one
+page title for every screen, focus not moved on navigation, and no favicon (S12). Stage 6
+uses 13 of the API's 26 routes.
+
+**Verdict.** The three screens of spec section 10 exist and are tested, without the Pass 2
+parts. Stage 6 is complete against the instructions it was built to. It is not complete
+against the spec's words in one respect that is Pass 1: "the conclusion field" is shown and
+cannot be filled in from the screen (S3). Nothing has been seen on live data (V9, V10).
+
+## D52 · Closing Stage 6: the remaining screens, the partner's forms, and a live preview — 5 Nov 2026
+
+One remediation of S1 to S12 and V9 to V11, recorded item by item in
+`docs/CLOSURE_REVIEW.md` section 11. Nothing in the backend's source or migrations changed.
+
+- **Five screens were added, each over routes that already existed.** New engagement;
+  record a misstatement; thresholds; Financial Spine (the link and the reconciliation);
+  events. Every engagement screen carries the same tabs, so each is reached from every
+  other. The screens now use 24 of the API's 26 routes.
+- **A form sends what a person declared, as the text that was typed.** Amounts and the
+  fraction go out as strings. The recording form does not add up debits and credits: the
+  backend checks the balance (acceptance 1) and its refusal is shown in its own words.
+- **Thresholds are never edited.** The form is the same for the first version and for a
+  revision; a revision is how a reassessment of materiality is recorded, and the screen
+  shows the recompute the backend wrote (acceptance 2). The clearly-trivial amount is the
+  backend's and is not previewed.
+- **No ledger picker.** The API has no route that lists the Spine's ledgers or heads, so a
+  line is entered by its import line number, or by name, groups and head. No route was
+  added: that is a decision (register S13).
+- **The partner's two forms are offered where the backend says a partner can be named.**
+  `authorisation.partner_actions.available` decides whether a form appears; the backend
+  decides whether the person sending it is the partner, and its 403 is shown as sent. A
+  conclusion the backend reports its gates would refuse cannot be chosen. The run reviewed
+  is the latest one, and only while the backend calls it current. The client sends no
+  role, no user and no figure, which a test asserts. This reverses D50's "shown, not
+  recorded" and the two tests that pinned it: both were re-aimed, not deleted.
+- **"Always visible" now means every width (S7).** The running totals are pinned on a
+  phone too, set smaller so that they fit; an amount too long for the screen scrolls inside
+  the panel, never the page.
+- **Accessibility (S12).** A title per screen; focus moved to the content when the screen
+  changes, not on the first load; a control that skips to the content; a favicon. Checked
+  with real key presses and by computing the contrast of every piece of text.
+- **What the specification does not decide was left as it was.** Whether totals follow
+  filters (S5), the precision of a percentage (S6), a mark at CTT (S8), a confirmation
+  before each move (S9), who may make the ordinary writes (S10). Each keeps the safe
+  behaviour and names who decides.
+- **The eight untested branches (V11) are tested on real answers.** The fixture test moves
+  the Spine double into each situation and captures what the backend then says.
+- **A preview that keeps nothing (V9, V10).** `backend/tests/preview_server.py` serves the
+  real application over `oak_misstatements_test` inside one transaction that is never
+  committed, with the Spine double, the development identity and the built frontend on one
+  port, one request at a time. It exists because the alternative asked for, a separate
+  preview database, is not available without a superuser and a change to the settings
+  guard that refuses any database but the two. It was used once, stopped, and the test
+  database was read afterwards: no row in any table.
+- **No partner was simulated.** One request drafted for the live check carried a role
+  header; it was refused before it ran and removed. The partner's writes were verified
+  live only as refusals.
+
+**Not built:** a ledger picker (S13); anything of Pass 2.
+
+**Stage 6 is not declared complete.** The conclusion and the acknowledgement cannot be made
+end to end until a partner can be named (V12); the live Spine and the main database are
+untouched (V5, V6); S5, S6, S8, S9, S10 and S13 wait on people.
+
+*As at D52. Superseded: since D55 and section 13 of `docs/CLOSURE_REVIEW.md` the position
+is stated as "the Pass 1 implementation is complete; production acceptance is pending".
+The items named here have since been closed or consolidated; the register lists the 18
+that are open.*
+
+## D53 · Clearly trivial items are not accumulated — 5 Nov 2026 (S14)
+
+**Why.** Spec section 2, the row for SA 450 paragraph 5, says "everything above it
+accumulates"; section 4 says of the clearly trivial band "Below it, not accumulated". D38
+summed every uncorrected item whatever its band, so a clearly trivial item was inside the
+aggregate, the gates, the runs and the conclusions (register S14). Built on the instruction
+of 5 November 2026 to apply the specification's wording. It is not a decision of the CA:
+the eight questions of S14 stay open, and each has an interim treatment below.
+
+*As at D53. Interim treatment 2 below no longer describes the module: D57 accumulates
+clearly trivial items once together they reach the threshold. A ninth question was added
+by D55 and answered in code by D56. Of the nine, only question 2 is still open, narrowed
+to how "in aggregate" is measured.*
+
+**The rule.** `core/gates.py`, `accumulates()`: an uncorrected, resolved item is summed
+unless its band is clearly trivial. `aggregate()` sums only those, and names the others in
+`Aggregate.not_accumulated`. The evaluation's `aggregate.not_accumulated` and a run's
+`detail.not_accumulated` carry the references; `AGGREGATE_BASIS` says so in words. Nothing
+else changed: no model, no migration, no route, no database rule. The database's hard-gate
+check reads the stored aggregates and needs no change.
+
+**What is kept exactly as it was.**
+
+- Corrected and withdrawn items are excluded by their state (F3) and are not named as
+  clearly trivial.
+- A refused item counts (F3), a projected item counts (B8 interim) and a judgemental item
+  counts on its point estimate (D14), each unless its band is clearly trivial.
+- An unresolved item has no band, is never treated as clearly trivial (D33), and leaves
+  the aggregate incomplete and the gates indeterminate.
+- A classification-only item bands clearly trivial only because both effects are nil. It
+  stays listed at nil in `counted` and `classification_only` (B2), and is not named in
+  `not_accumulated`. No figure depends on this.
+- With no thresholds there is no band: nothing is left out, and no gate is evaluated.
+- The individual tests (individually significant; at or above OM alone) never used the
+  aggregate and are unchanged.
+- Every misstatement stays in the schedule and in the evaluation's list of items, with its
+  band and its own amounts (spec section 10.1).
+
+**Interim treatments of the CA's questions** (S14; none is a decision):
+
+1. *Item or measure.* The band is the item's, the higher of its two effects' bands (D33,
+   itself an assumption). An item is in the aggregate with both effects or with neither.
+2. *Trivial in aggregate.* The spec's wording as written: items left out are compared with
+   no line, however many there are. They are named; no total of them is shown and no
+   warning is raised, because the spec asks for neither.
+3. *Classification-only.* Listed at nil, as before.
+4. *The schedule.* Every item stays listed.
+5. *Communicated or refused and clearly trivial.* Left out like any other clearly trivial
+   item; the state changes nothing. The TCWG and representation lists are Pass 2.
+6. *Projected and clearly trivial.* Left out like a factual one. B8 is otherwise untouched.
+7. *Escalated below CTT* (F5). Not built: escalation is Pass 2. When it is built the rule
+   needs an exception, which `accumulates()` is the one place for.
+8. *A revised CTT.* Bands are computed on read (D33), so a revision moves items into and
+   out of the aggregate at once. Tested.
+
+**Consistency, checked by test.**
+
+- *Gates.* The hard gate, the soft gate, the PM gate set to hard and the strategy trigger
+  read the one aggregate. Twenty-one items of 12,000 fire nothing; one item at PM fires.
+- *Runs.* A run stores the figures and the labels of every item, clearly trivial ones
+  included. Raising a clearly trivial item moves no figure and still makes the latest run
+  stale, because the list of items is no longer the list.
+- *Acknowledgements and strategy answers.* Each is tied to the figures (D39, D45). A
+  clearly trivial item moves none, so the acknowledgement or answer stands.
+- *Conclusions.* The run reviewed must still describe the evaluation, so a clearly trivial
+  item raised after the review refuses the conclusion until a new run is reviewed; the
+  figures on the new row are the reviewed ones.
+- *Earlier records.* Nothing was added to `figures()`, so a run recorded before this
+  change is stale only if it had counted a clearly trivial amount. Neither database held a
+  run when the change was made.
+
+**The screens.** The running totals and the aggregate panel say how many misstatements are
+accumulated, name those that are "clearly trivial, not accumulated", and say that such an
+item stays in the schedule and is in no total and no gate. An inspected run shows what it
+left out. The basis is shown in the backend's words.
+
+**Tests.** Backend: thirteen tests no longer held. Twelve used an ordinary small item of
+10,000 or less, below the CTT of 12,500, and now use amounts that accumulate; the
+thirteenth, the boundary test, now pins 12,499.99 as not accumulated and 12,500.00 as
+accumulated. Twelve tests were added: five on `core/gates.py`, six on the evaluation API
+and one on the conclusion. Frontend: the captured
+answers were regenerated from the API; four scenario amounts whose purpose was to move the
+figures were raised above CTT (5,000 to 15,000 twice, 8,000 to 18,000 twice); the screen
+tests read the new figures and two were added.
+
+## D54 · A percentage below a line never reads 100% — 5 Nov 2026 (S6)
+
+`percentOf()` in `frontend/src/format.ts` rounds half up to one decimal place, so a figure
+from 99.95% of a line read "100.0%" although the line was not reached. The screen then
+disagreed with the backend, which decides whether a line is reached. Now a figure strictly
+below the line shows the largest percentage below 100 at that precision ("99.9%"); at or
+above the line nothing changed. The arithmetic stays exact, with integers; the precision
+and the rounding are unchanged and remain the CA's (S6). Presentation only (D16): nothing
+is stored or sent, and no gate reads a percentage.
+
+## D55 · Pass 1 closure: what a gate, a run and the conclusion form say — 5 Nov 2026
+
+Small changes made while closing Pass 1. None changes a rule; each makes something the
+module already knew visible where it was missing.
+
+- **The gate endpoints name what their figures leave out.** `GET .../gates/opinion` and
+  `.../gates/sign-off` (D18, D46) carry `not_accumulated`, the clearly trivial items of
+  D53. A module that reads a gate was given figures and `complete: true` with nothing to
+  say that some items were outside them.
+- **An inspected run says whether it summed each item.** The column read "Counted: Yes"
+  for every uncorrected item, a clearly trivial one included, beside the line that named
+  it as not accumulated. It now reads from the run's own `counted` and `not_accumulated`
+  lists ("No: clearly trivial"); a run that has neither list says only whether the item
+  was uncorrected. Found in the browser, not by a test; a test now pins it.
+- **The conclusion form shows the figures that will be saved** (spec section 6.4: "with
+  the figures auto-inserted"): the four aggregates and the threshold version of the run
+  reviewed, which the backend has just said still describes the evaluation. None is shown
+  when there is no current run. Display only; no figure is sent.
+- **The preview can show the strategy prompt.** `tests/preview_server.py` takes
+  `--strategy-fraction`, a test value for that preview alone. It sets nothing for any real
+  run: with no fraction declared the trigger is still not evaluated, and what the fraction
+  should be is still B5.
+- **One more question for the CA under S14** (question 9): a judgemental item is banded on
+  its point estimate (D14, D33), so one whose estimate is below CTT is not accumulated even
+  where its range reaches above PM. Built as it was; a test pins it and says it is not an
+  answer. *(As at D55. Superseded by D56: such an item is now accumulated, and the test
+  pins that.)*
+
+## D56 · Two treatments taken from SA 450 paragraph A2 — 5 Nov 2026 (S14, questions 2 and 9)
+
+*Item 2 below was superseded the same day by D57: showing the total and a note was not
+enough. Item 1 stands.*
+
+**Source.** ISA 450 as published by the FRC (ISA (UK) 450, https://www.frc.org.uk/docs/4512/html), read on 5 Nov 2026, and ICAI's exposure draft of SA 450, which carries the same requirements. ICAI's final SA 450 text was not read; the CA should confirm the wording against it. Paragraph 5: the auditor accumulates misstatements "other than those
+that are clearly trivial". Paragraph A2: "When there is any uncertainty about whether one
+or more items are clearly trivial, the matter is considered not to be clearly trivial", and
+clearly trivial matters are described as inconsequential individually or in aggregate.
+Neither treatment below is a decision of the CA; each is the conservative reading of that
+paragraph, and each moves the module toward accumulating more, never less.
+
+1. **A judgemental item whose range reaches CTT is not clearly trivial** (question 9).
+   `core/banding.py`, `band_item()`: where both effects of a judgemental item band clearly
+   trivial on the point estimate but either end of the auditor's range, in absolute terms,
+   is at or above CTT, the item's band is accumulated and its basis says why. The amount
+   accumulated is the point estimate, as for every judgemental item (D14). A range wholly
+   below CTT leaves the item clearly trivial. Classification-only items are untouched. This
+   amends D33 for that one case; nothing is stored, so it applies on the next read.
+2. **What the clearly trivial items come to together is shown, and it is said when together
+   they reach CTT** (question 2). `core/gates.py` totals the items left out, gross, on each
+   measure; the evaluation and each run carry `not_accumulated_total` with the two totals,
+   CTT and `at_or_above_ctt`. The screens show the totals and, when the flag is set, a note
+   that the items together reach the threshold. *(As at D56; superseded by D57, under
+   which such items are accumulated.)* **It changes no figure, no gate and no
+   block**, and it is not in `figures()`, so nothing recorded is made stale by it. Whether
+   such items should then be accumulated is still the CA's: the module now puts the fact in
+   front of the auditor instead of leaving it invisible.
+
+The other accounting readings (F3, B8, B14, B15a, B2) were checked against the same text
+and stand as built; the register records the paragraph each rests on.
+
+## D57 · Clearly trivial items that together reach CTT are accumulated — 5 Nov 2026 (S14, question 2)
+
+**Source.** SA 450 as reproduced by ICAI's Board of Studies ("SA 450, Evaluations of Misstatements Identified during an Audit", © The Institute of Chartered Accountants of India, 15 June 2021, live.icai.org), read on 5 Nov 2026. The official copy at kb.icai.org could not be opened: its server presents a certificate for another ICAI address, and certificate checks were not switched off. The paragraphs quoted here are numbered as in the standard and agree word for word with ISA 450; the CA should still compare them with the official copy.
+
+**Paragraph A2.** "The auditor may designate an amount below which misstatements would be clearly trivial and would not need to be accumulated because the auditor expects that the accumulation of such amounts clearly would not have a material effect on the financial statements. … Matters that are 'clearly trivial' will be of a wholly different (smaller) order of magnitude than materiality determined in accordance with SA 320, and will be matters that are clearly inconsequential, whether taken individually or in aggregate and whether judged by any criteria of size, nature or circumstances. When there is any uncertainty about whether one or more items are clearly trivial, the matter is considered not to be clearly trivial."
+
+**What it settles.** The question was whether items that are each below CTT must be
+accumulated when together they are not small. A2 answers it. The threshold exists only
+because the auditor expects that accumulating such amounts "clearly would not have a
+material effect"; a clearly trivial matter is one that is clearly inconsequential "whether
+taken individually or in aggregate"; and any uncertainty about "one or more items" means
+they are not clearly trivial. Items below CTT one by one are therefore not clearly trivial
+once, together, they are not clearly inconsequential. D56 showed their total and raised a
+note but still left them out of every figure and gate, so thirty items of 12,000 reached
+no gate. That did not reflect A2 and is corrected.
+
+**The rule built.** `core/gates.py`, `aggregate(items, ctt)`: the uncorrected items that
+band clearly trivial one by one (classification-only items aside) are totalled gross, on
+profit before tax and on net assets. While the total is below CTT on both measures they
+are left out and named, as under D53. Once it is at or above CTT on either measure, all of
+them are accumulated: they enter `counted`, every figure and every gate, and are named in
+`not_accumulated_total.accumulated_together`. Each keeps its own band, clearly trivial,
+because the band is computed from the item's amount (spec section 4). With no thresholds
+there is no CTT and nothing is tested together.
+
+**Why CTT, gross, on either measure.** The standard gives no number for "in aggregate". The
+amount the auditor designated as clearly trivial is the only measure of triviality the
+engagement has, so a total at or above it cannot be called clearly trivial without the
+uncertainty A2 resolves against triviality. Gross, because A2 speaks of the accumulation of
+such amounts and section 4.1 of the spec forbids netting between misstatements. Either
+measure, because section 4.1 evaluates profit and net assets separately. Each choice is the
+one that accumulates sooner. **These three choices are a reading, not the standard's words,
+and are for the CA to confirm** (register S14, question 2, now narrowed to this).
+
+**Consequences.** The rule has a step: one more small item can bring the whole group in.
+That follows from A2 speaking of "one or more items" together. The figures then change, so
+an acknowledgement or a strategy answer given before goes stale and a run made before is
+stale, as for any other change. Nothing recorded earlier is touched. No model, migration,
+route or database rule changed.
+
+**Tests.** Unit: below CTT together they stay out; exactly at CTT all come in; either
+measure suffices; opposite signs do not cancel; projected items among them stay projected;
+without a threshold nothing is tested together. API: one item of 12,000 is left out, two
+are accumulated, twenty-one reach the soft gate and block sign-off.
+
+## D58 · Requests at the same moment, checked in a scratch schema — 5 Nov 2026 (V3)
+
+The engagement row lock (D43, D45) had been proven one request at a time. Two transactions
+can only meet over committed rows, and this module's tables allow no delete, so the suite,
+which rolls everything back, could not show it. `backend/tests/concurrency_check.py` creates
+a scratch schema in `oak_misstatements_test`, builds the tables there from the models, runs
+the real application against it with the Spine double, and drops the schema in a `finally`.
+The `public` schema is not written and `oak_misstatements` is not connected to.
+
+Eight requests released together raise eight misstatements, each with its own reference,
+and record eight evaluation runs, each with its own number; none fails. It is a tool run by
+hand, not part of the suite, because it creates and drops a schema. It runs as the owner
+role and without the migrations' triggers, which the lock does not depend on.
