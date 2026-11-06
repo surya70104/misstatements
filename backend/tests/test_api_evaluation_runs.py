@@ -123,6 +123,7 @@ def test_a_run_holds_labels_and_aggregates_and_never_a_single_items_amount(
             "band": "clearly_trivial",
             "classification_only": False,
             "uncorrected": True,
+            "escalated": False,
         },
         {
             "ref": "M-2",
@@ -132,6 +133,7 @@ def test_a_run_holds_labels_and_aggregates_and_never_a_single_items_amount(
             "band": "clearly_trivial",
             "classification_only": False,
             "uncorrected": True,
+            "escalated": False,
         },
     ]
     # No key of any item names a Dr, a Cr, an effect or a measure.
@@ -144,6 +146,7 @@ def test_a_run_holds_labels_and_aggregates_and_never_a_single_items_amount(
             "band",
             "classification_only",
             "uncorrected",
+            "escalated",
         }
     assert "lines" not in recorded["detail"] and "items" not in recorded["detail"]["figures"]
     columns = {column.name for column in EvaluationRun.__table__.columns}

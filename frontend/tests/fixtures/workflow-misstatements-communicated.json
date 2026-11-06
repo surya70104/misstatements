@@ -1,10 +1,10 @@
 [
   {
-    "id": "a36ca8e1-5523-4b0f-9ea0-663d86217cc1",
-    "engagement_id": "3c1d670d-6538-4b04-834a-aa4194cf1417",
+    "id": "988962dd-f155-4502-bfca-f470ec7fb285",
+    "engagement_id": "f845454c-ac67-4b91-9a16-f60c1def2403",
     "ref": "M-1",
     "created_by": "senior@firm",
-    "created_at": "2026-11-05T20:58:59.708942+05:30",
+    "created_at": "2026-11-06T11:09:02",
     "current": {
       "version_no": 2,
       "type": "factual",
@@ -13,23 +13,23 @@
       "raised_from": "wp",
       "source_ref": "E-4.2",
       "state": "communicated",
-      "communicated_at": "2026-11-05T20:59:00.309160+05:30",
+      "communicated_at": "2026-11-06T11:09:02.615722",
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "e143b17d-3e16-4ba9-b54d-ce5f22c30c39",
+      "spine_adjustment_id": "61f08f85-c7c0-429e-8dd1-613182615d28",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "manager@firm",
-      "created_at": "2026-11-05T20:58:59.708942+05:30"
+      "created_at": "2026-11-06T11:09:02"
     },
     "spine": {
       "status": "ok",
       "detail": null,
-      "adjustment_id": "e143b17d-3e16-4ba9-b54d-ce5f22c30c39",
+      "adjustment_id": "61f08f85-c7c0-429e-8dd1-613182615d28",
       "adjustment_status": "proposed",
       "kind": "correction",
       "finding_ref": "M-1",
@@ -118,12 +118,16 @@
         "profit": "60000.00",
         "net_assets": "60000.00"
       },
-      "threshold_id": "882dddd5-c0cb-4d2c-ae34-8cf93061fd70",
+      "threshold_id": "bd70c748-0e97-4bb1-97ec-68db84c50053",
       "threshold_version_no": 1,
       "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
       "projected": false,
       "range_crosses_pm": null,
       "classification_only": false
+    },
+    "qualitative": {
+      "escalated": false,
+      "factors": []
     },
     "authorisation": {
       "enforced": false,

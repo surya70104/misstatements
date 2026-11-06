@@ -6,8 +6,15 @@
 import type { ReactNode } from 'react'
 
 import type { Evaluation, Gate, GateExposure } from '../../api'
-import { NOT_AVAILABLE, rupees } from '../../format'
-import { exposureStatus, gateStatus, measureLabel, responseStatus } from '../../labels'
+import { count, NOT_AVAILABLE, rupees } from '../../format'
+import {
+  BAND_LABEL,
+  exposureStatus,
+  gateStatus,
+  measureLabel,
+  NOT_BANDED,
+  responseStatus,
+} from '../../labels'
 import { Panel } from '../panels'
 import { Pill } from '../states'
 import { AcknowledgementForm, PartnerOnly } from './PartnerForms'
@@ -119,6 +126,7 @@ export function GatesPanel({
   const nothingIndividual =
     individual.individually_significant.length === 0 &&
     individual.at_or_above_om.length === 0 &&
+    individual.escalated.length === 0 &&
     blocking.length === 0 &&
     unbanded.length === 0 &&
     inconsistent.length === 0
@@ -173,8 +181,8 @@ export function GatesPanel({
         >
           {nothingIndividual && (
             <p className="text-slate-600">
-              No uncorrected item is individually significant, blocks sign-off, lacks a band or
-              disagrees with the Financial Spine.
+              No uncorrected item is individually significant, escalated, blocks sign-off, lacks a
+              band or disagrees with the Financial Spine.
             </p>
           )}
           {individual.individually_significant.length > 0 && (
@@ -186,6 +194,20 @@ export function GatesPanel({
             <p>
               At or above overall materiality on their own: {individual.at_or_above_om.join(', ')}.
             </p>
+          )}
+          {individual.escalated.length > 0 && (
+            <div>
+              <p>Escalated on a qualitative factor, listed individually whatever their amount:</p>
+              <ul aria-label="Escalated items" className="mt-1 list-disc space-y-1 pl-5">
+                {individual.escalated.map((item) => (
+                  <li key={item.ref}>
+                    {item.ref}: {item.band === null ? NOT_BANDED : BAND_LABEL[item.band]} by amount;{' '}
+                    {count(item.factors.length, 'factor')} recorded
+                  </li>
+                ))}
+              </ul>
+              <Explained summary="How escalation works">{individual.escalation_basis}</Explained>
+            </div>
           )}
           {blocking.length > 0 && (
             <p className="text-amber-900">

@@ -65,6 +65,7 @@ def test_upgrade_creates_exactly_the_stage_1_and_2_tables() -> None:
         "event",
         "misstatement_line_class",
         "evaluation",
+        "qualitative",
     ]
 
 
@@ -494,3 +495,47 @@ def test_the_event_kinds_are_held_at_the_database_by_0010() -> None:
     down = rendered("downgrade")
     assert "ALTER TABLE event DROP CONSTRAINT ck_event_kind_known" in down
     assert down.index("DROP CONSTRAINT ck_event_kind_known") < down.index("DROP TABLE event;")
+
+
+# ---- 0011: the qualitative checklist's record (architecture D59) ----------------------------
+
+
+def test_the_qualitative_table_is_append_only_and_held_to_the_seven_factors_by_0011() -> None:
+    sql = rendered("upgrade")
+    block = table_block(sql, "qualitative")
+    for column in (
+        "misstatement_id",
+        "entry_no",
+        "factor",
+        "applies",
+        "note",
+        "escalated_by",
+        "at",
+    ):
+        assert f"{column} " in block, column
+    assert "CONSTRAINT fk_qualitative_misstatement FOREIGN KEY(misstatement_id)" in block
+    assert "ON DELETE RESTRICT" in block
+    assert "CONSTRAINT uq_qualitative_entry UNIQUE (misstatement_id, entry_no)" in block
+    for factor in (
+        "law_or_covenant",
+        "earnings_trend",
+        "ratio",
+        "fraud",
+        "related_party",
+        "segment_or_remuneration",
+        "loss_to_profit",
+    ):
+        assert f"'{factor}'" in block, factor
+    assert "CONSTRAINT ck_qualitative_note_not_blank CHECK (length(trim(note)) > 0)" in block
+    assert (
+        "CREATE TRIGGER trg_qualitative_append_only BEFORE UPDATE OR DELETE ON qualitative "
+        "FOR EACH ROW EXECUTE FUNCTION oak_misstatements_append_only()"
+    ) in sql
+    assert "CREATE TRIGGER trg_qualitative_no_truncate BEFORE TRUNCATE ON qualitative" in sql
+    assert "GRANT SELECT, INSERT ON qualitative TO oak_misstatements_app" in sql
+    for line in sql.splitlines():
+        if "GRANT" in line and "qualitative" in line:
+            assert "UPDATE" not in line and "DELETE" not in line, line
+    down = rendered("downgrade")
+    assert "DROP TABLE qualitative;" in down
+    assert down.index("DROP TABLE qualitative;") < down.index("DROP TABLE misstatement;")

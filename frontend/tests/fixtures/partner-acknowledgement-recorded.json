@@ -1,7 +1,7 @@
 {
-  "engagement_id": "06dfd19a-58df-43ff-96e2-d5fb10c13e0d",
+  "engagement_id": "977c2c42-14cd-485c-9619-73ebf3a54f5b",
   "threshold": {
-    "id": "e82817f8-7455-4e65-9479-689b34fbf5b8",
+    "id": "3574e021-d834-45e5-b8eb-503be66d431e",
     "version_no": 1,
     "om": "400000.00",
     "pm": "250000.00",
@@ -42,9 +42,10 @@
       "accumulated_together": [],
       "basis": "the gross size, on each measure, of the items that band clearly trivial one by one; while it is below the clearly-trivial threshold on both measures those items are left out of the aggregate; once it reaches the threshold on either, all of them are accumulated, because SA 450 paragraph A2 describes clearly trivial matters as clearly inconsequential 'whether taken individually or in aggregate' and treats any uncertainty as not clearly trivial (architecture D57); measuring 'in aggregate' gross against the threshold itself is the conservative reading, for the CA to confirm (register S14, question 2)"
     },
+    "escalated": [],
     "unresolved": [],
     "excluded": [],
-    "basis": "every misstatement not corrected and not withdrawn (raised, communicated, refused; the F3 reading) that is not clearly trivial contributes its effect on profit before tax and, separately, on net assets; an item whose band is clearly trivial is not accumulated and is named (spec section 4: 'below it, not accumulated'; the band is the item's, the higher of its two effects' bands; architecture D33, D53), unless the clearly trivial items together reach the clearly-trivial threshold, gross, on either measure, when all of them are accumulated (SA 450 paragraph A2: clearly trivial matters are clearly inconsequential 'whether taken individually or in aggregate'; architecture D57); gross sums absolute effects with no netting between misstatements, net sums them signed (spec section 4.1); each is given with and without the projected items (spec section 3.2; pending decision B8); a classification-only item contributes nil and is listed; an item whose effects are unresolved is named and the aggregate marked incomplete (architecture D38)"
+    "basis": "every misstatement not corrected and not withdrawn (raised, communicated, refused; the F3 reading) that is not clearly trivial contributes its effect on profit before tax and, separately, on net assets; an item whose band is clearly trivial is not accumulated and is named (spec section 4: 'below it, not accumulated'; the band is the item's, the higher of its two effects' bands; architecture D33, D53), unless the clearly trivial items together reach the clearly-trivial threshold, gross, on either measure, when all of them are accumulated (SA 450 paragraph A2: clearly trivial matters are clearly inconsequential 'whether taken individually or in aggregate'; architecture D57); an escalated item, one with a qualitative factor recorded, is accumulated whatever its band and listed individually (spec section 5; acceptance 8; architecture D59); gross sums absolute effects with no netting between misstatements, net sums them signed (spec section 4.1); each is given with and without the projected items (spec section 3.2; pending decision B8); a classification-only item contributes nil and is listed; an item whose effects are unresolved is named and the aggregate marked incomplete (architecture D38)"
   },
   "gates": {
     "hard": {
@@ -76,12 +77,12 @@
         "status": "acknowledged",
         "detail": "acknowledged on these figures",
         "event": {
-          "seq": 2211,
-          "id": "c33d9603-93b8-4b2d-a1f9-e1f31a8f1e8f",
-          "engagement_id": "06dfd19a-58df-43ff-96e2-d5fb10c13e0d",
+          "seq": 2,
+          "id": "d76d674b-17e7-4655-8f3b-92f137d6457f",
+          "engagement_id": "977c2c42-14cd-485c-9619-73ebf3a54f5b",
           "kind": "soft_gate_acknowledged",
           "payload": {
-            "threshold_id": "e82817f8-7455-4e65-9479-689b34fbf5b8",
+            "threshold_id": "3574e021-d834-45e5-b8eb-503be66d431e",
             "threshold_version_no": 1,
             "pm": "250000.00",
             "pm_gate": "soft",
@@ -116,7 +117,7 @@
             "identity_mode": "header"
           },
           "actor": "partner@firm",
-          "at": "2026-11-05T20:59:08.049440+05:30"
+          "at": "2026-11-06T11:09:08"
         }
       }
     },
@@ -138,7 +139,9 @@
     "individual": {
       "individually_significant": [],
       "at_or_above_om": [],
-      "basis": "every uncorrected item whose band is individually significant (above PM; spec section 4), whatever its state, a refused one included; and, among all uncorrected items, those whose own effect on profit before tax or on net assets is at or above overall materiality (SA 450 paragraph 11: material individually or in aggregate, both tests shown; architecture D43)"
+      "basis": "every uncorrected item whose band is individually significant (above PM; spec section 4), whatever its state, a refused one included; and, among all uncorrected items, those whose own effect on profit before tax or on net assets is at or above overall materiality (SA 450 paragraph 11: material individually or in aggregate, both tests shown; architecture D43)",
+      "escalated": [],
+      "escalation_basis": "an item is escalated while at least one factor of the qualitative checklist is recorded against it, each with its reason (spec section 5); an escalated item is listed individually regardless of its size (acceptance 8) and is accumulated whatever its band, because a matter is clearly trivial only when it is clearly inconsequential 'whether judged by any criteria of size, nature or circumstances' (SA 450 paragraph A2; register F5; architecture D59); which factors apply is a person's judgement and is never detected (spec section 12)"
     },
     "aggregate": {
       "status": "clear",
@@ -179,7 +182,7 @@
   },
   "items": [
     {
-      "id": "b5cb3a0f-f14a-45f9-9b92-bae8ecf38a60",
+      "id": "66b38870-b60c-4688-89f9-b28542b2c01d",
       "ref": "M-1",
       "type": "factual",
       "projected": false,
@@ -188,6 +191,7 @@
       "profit_before_tax": "-150000.00",
       "net_assets": "-150000.00",
       "classification_only": false,
+      "escalated": false,
       "measure": "150000.00",
       "band": "accumulated",
       "spine_status": "ok",
@@ -195,7 +199,7 @@
       "expected_spine_adjustment_status": "proposed"
     },
     {
-      "id": "d62d7490-083c-41e4-9bb9-566e5646b0bb",
+      "id": "700e8b95-11d8-46fc-8bca-2744acc3da60",
       "ref": "M-2",
       "type": "factual",
       "projected": false,
@@ -204,6 +208,7 @@
       "profit_before_tax": "-100000.00",
       "net_assets": "-100000.00",
       "classification_only": false,
+      "escalated": false,
       "measure": "100000.00",
       "band": "accumulated",
       "spine_status": "ok",
@@ -215,10 +220,10 @@
     "status": "current",
     "detail": "the latest run describes the evaluation as it stands",
     "run": {
-      "id": "89456040-c264-452c-bc15-1c77d5f9021b",
-      "engagement_id": "06dfd19a-58df-43ff-96e2-d5fb10c13e0d",
+      "id": "60aee9df-8af5-4122-a79d-acf200ee613b",
+      "engagement_id": "977c2c42-14cd-485c-9619-73ebf3a54f5b",
       "run_no": 1,
-      "threshold_id": "e82817f8-7455-4e65-9479-689b34fbf5b8",
+      "threshold_id": "3574e021-d834-45e5-b8eb-503be66d431e",
       "threshold_version_no": 1,
       "agg_gross_pbt": "250000.00",
       "agg_net_pbt": "-250000.00",
@@ -226,14 +231,97 @@
       "agg_net_na": "-250000.00",
       "materiality_reassessed": true,
       "evaluated_by": "senior@firm",
-      "at": "2026-11-05T20:59:08.049440+05:30",
+      "at": "2026-11-06T11:09:08",
       "concluded": false,
       "determination": null,
       "conclusion": null,
       "basis": null,
       "concluded_by": null,
       "detail": {
-        "basis": "every misstatement not corrected and not withdrawn (raised, communicated, refused; the F3 reading) that is not clearly trivial contributes its effect on profit before tax and, separately, on net assets; an item whose band is clearly trivial is not accumulated and is named (spec section 4: 'below it, not accumulated'; the band is the item's, the higher of its two effects' bands; architecture D33, D53), unless the clearly trivial items together reach the clearly-trivial threshold, gross, on either measure, when all of them are accumulated (SA 450 paragraph A2: clearly trivial matters are clearly inconsequential 'whether taken individually or in aggregate'; architecture D57); gross sums absolute effects with no netting between misstatements, net sums them signed (spec section 4.1); each is given with and without the projected items (spec section 3.2; pending decision B8); a classification-only item contributes nil and is listed; an item whose effects are unresolved is named and the aggregate marked incomplete (architecture D38)",
+        "threshold": {
+          "id": "3574e021-d834-45e5-b8eb-503be66d431e",
+          "version_no": 1,
+          "om": "400000.00",
+          "pm": "250000.00",
+          "ctt": "12500.00"
+        },
+        "figures": {
+          "profit_before_tax": {
+            "gross": "250000.00",
+            "net": "-250000.00",
+            "gross_without_projected": "250000.00",
+            "net_without_projected": "-250000.00",
+            "projected_gross": "0.00",
+            "factual_gross": "250000.00",
+            "judgemental_gross": "0.00"
+          },
+          "net_assets": {
+            "gross": "250000.00",
+            "net": "-250000.00",
+            "gross_without_projected": "250000.00",
+            "net_without_projected": "-250000.00",
+            "projected_gross": "0.00",
+            "factual_gross": "250000.00",
+            "judgemental_gross": "0.00"
+          }
+        },
+        "basis": "every misstatement not corrected and not withdrawn (raised, communicated, refused; the F3 reading) that is not clearly trivial contributes its effect on profit before tax and, separately, on net assets; an item whose band is clearly trivial is not accumulated and is named (spec section 4: 'below it, not accumulated'; the band is the item's, the higher of its two effects' bands; architecture D33, D53), unless the clearly trivial items together reach the clearly-trivial threshold, gross, on either measure, when all of them are accumulated (SA 450 paragraph A2: clearly trivial matters are clearly inconsequential 'whether taken individually or in aggregate'; architecture D57); an escalated item, one with a qualitative factor recorded, is accumulated whatever its band and listed individually (spec section 5; acceptance 8; architecture D59); gross sums absolute effects with no netting between misstatements, net sums them signed (spec section 4.1); each is given with and without the projected items (spec section 3.2; pending decision B8); a classification-only item contributes nil and is listed; an item whose effects are unresolved is named and the aggregate marked incomplete (architecture D38)",
+        "items": [
+          {
+            "ref": "M-1",
+            "version_no": 1,
+            "state": "raised",
+            "type": "factual",
+            "band": "accumulated",
+            "classification_only": false,
+            "uncorrected": true,
+            "escalated": false
+          },
+          {
+            "ref": "M-2",
+            "version_no": 1,
+            "state": "raised",
+            "type": "factual",
+            "band": "accumulated",
+            "classification_only": false,
+            "uncorrected": true,
+            "escalated": false
+          }
+        ],
+        "counted": [
+          "M-1",
+          "M-2"
+        ],
+        "projected": [],
+        "classification_only": [],
+        "not_accumulated": [],
+        "not_accumulated_total": {
+          "profit_before_tax_gross": "0.00",
+          "net_assets_gross": "0.00",
+          "ctt": "12500.00",
+          "at_or_above_ctt": false,
+          "accumulated_together": [],
+          "basis": "the gross size, on each measure, of the items that band clearly trivial one by one; while it is below the clearly-trivial threshold on both measures those items are left out of the aggregate; once it reaches the threshold on either, all of them are accumulated, because SA 450 paragraph A2 describes clearly trivial matters as clearly inconsequential 'whether taken individually or in aggregate' and treats any uncertainty as not clearly trivial (architecture D57); measuring 'in aggregate' gross against the threshold itself is the conservative reading, for the CA to confirm (register S14, question 2)"
+        },
+        "escalated": [],
+        "excluded": [],
+        "tests": {
+          "individual": {
+            "individually_significant": [],
+            "at_or_above_om": [],
+            "basis": "every uncorrected item whose band is individually significant (above PM; spec section 4), whatever its state, a refused one included; and, among all uncorrected items, those whose own effect on profit before tax or on net assets is at or above overall materiality (SA 450 paragraph 11: material individually or in aggregate, both tests shown; architecture D43)",
+            "escalated": [],
+            "escalation_basis": "an item is escalated while at least one factor of the qualitative checklist is recorded against it, each with its reason (spec section 5); an escalated item is listed individually regardless of its size (acceptance 8) and is accumulated whatever its band, because a matter is clearly trivial only when it is clearly inconsequential 'whether judged by any criteria of size, nature or circumstances' (SA 450 paragraph A2; register F5; architecture D59); which factors apply is a person's judgement and is never detected (spec section 12)"
+          },
+          "aggregate": {
+            "status": "clear",
+            "om": "400000.00",
+            "fires_on": [],
+            "highest_measure": "250000.00",
+            "depends_on_projected": false,
+            "basis": "fires when any measure (profit or net assets, gross or the absolute net) is at or above the line (spec section 7, 'at or above'); tested with and without the projected items, and says whether it depends on them (pending decision B8); indeterminate when the known items do not reach the line but an uncorrected item could not be aggregated (architecture D38)"
+          }
+        },
         "gates": {
           "hard": {
             "status": "clear",
@@ -242,109 +330,31 @@
           },
           "soft": {
             "status": "fires",
-            "pm_gate": "soft",
             "fires_on": [
               "profit.gross",
               "profit.net",
               "net_assets.gross",
               "net_assets.net"
             ],
-            "acknowledgement": "required",
-            "depends_on_projected": false
+            "depends_on_projected": false,
+            "pm_gate": "soft",
+            "acknowledgement": "required"
           }
         },
-        "items": [
-          {
-            "ref": "M-1",
-            "band": "accumulated",
-            "type": "factual",
-            "state": "raised",
-            "version_no": 1,
-            "uncorrected": true,
-            "classification_only": false
-          },
-          {
-            "ref": "M-2",
-            "band": "accumulated",
-            "type": "factual",
-            "state": "raised",
-            "version_no": 1,
-            "uncorrected": true,
-            "classification_only": false
-          }
-        ],
-        "spine": {
-          "locked": false,
-          "version_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"
-        },
-        "tests": {
-          "aggregate": {
-            "om": "400000.00",
-            "basis": "fires when any measure (profit or net assets, gross or the absolute net) is at or above the line (spec section 7, 'at or above'); tested with and without the projected items, and says whether it depends on them (pending decision B8); indeterminate when the known items do not reach the line but an uncorrected item could not be aggregated (architecture D38)",
-            "status": "clear",
-            "fires_on": [],
-            "highest_measure": "250000.00",
-            "depends_on_projected": false
-          },
-          "individual": {
-            "basis": "every uncorrected item whose band is individually significant (above PM; spec section 4), whatever its state, a refused one included; and, among all uncorrected items, those whose own effect on profit before tax or on net assets is at or above overall materiality (SA 450 paragraph 11: material individually or in aggregate, both tests shown; architecture D43)",
-            "at_or_above_om": [],
-            "individually_significant": []
-          }
-        },
-        "counted": [
-          "M-1",
-          "M-2"
-        ],
-        "figures": {
-          "net_assets": {
-            "net": "-250000.00",
-            "gross": "250000.00",
-            "factual_gross": "250000.00",
-            "projected_gross": "0.00",
-            "judgemental_gross": "0.00",
-            "net_without_projected": "-250000.00",
-            "gross_without_projected": "250000.00"
-          },
-          "profit_before_tax": {
-            "net": "-250000.00",
-            "gross": "250000.00",
-            "factual_gross": "250000.00",
-            "projected_gross": "0.00",
-            "judgemental_gross": "0.00",
-            "net_without_projected": "-250000.00",
-            "gross_without_projected": "250000.00"
-          }
-        },
-        "excluded": [],
         "sign_off": {
           "blocked": true,
           "reasons": [
             "soft gate: aggregate at or above performance materiality on profit.gross, profit.net, net_assets.gross, net_assets.net and the partner has not acknowledged these figures"
           ]
         },
-        "projected": [],
-        "threshold": {
-          "id": "e82817f8-7455-4e65-9479-689b34fbf5b8",
-          "om": "400000.00",
-          "pm": "250000.00",
-          "ctt": "12500.00",
-          "version_no": 1
+        "spine": {
+          "version_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+          "locked": false
         },
         "identity_mode": "header",
-        "not_accumulated": [],
         "strategy_trigger": {
           "status": "not_configured",
           "response": "not_required"
-        },
-        "classification_only": [],
-        "not_accumulated_total": {
-          "ctt": "12500.00",
-          "basis": "the gross size, on each measure, of the items that band clearly trivial one by one; while it is below the clearly-trivial threshold on both measures those items are left out of the aggregate; once it reaches the threshold on either, all of them are accumulated, because SA 450 paragraph A2 describes clearly trivial matters as clearly inconsequential 'whether taken individually or in aggregate' and treats any uncertainty as not clearly trivial (architecture D57); measuring 'in aggregate' gross against the threshold itself is the conservative reading, for the CA to confirm (register S14, question 2)",
-          "at_or_above_ctt": false,
-          "net_assets_gross": "0.00",
-          "accumulated_together": [],
-          "profit_before_tax_gross": "0.00"
         }
       }
     }
@@ -367,12 +377,12 @@
     }
   },
   "acknowledgement_event": {
-    "seq": 2211,
-    "id": "c33d9603-93b8-4b2d-a1f9-e1f31a8f1e8f",
-    "engagement_id": "06dfd19a-58df-43ff-96e2-d5fb10c13e0d",
+    "seq": 2,
+    "id": "d76d674b-17e7-4655-8f3b-92f137d6457f",
+    "engagement_id": "977c2c42-14cd-485c-9619-73ebf3a54f5b",
     "kind": "soft_gate_acknowledged",
     "payload": {
-      "threshold_id": "e82817f8-7455-4e65-9479-689b34fbf5b8",
+      "threshold_id": "3574e021-d834-45e5-b8eb-503be66d431e",
       "threshold_version_no": 1,
       "pm": "250000.00",
       "pm_gate": "soft",
@@ -407,6 +417,6 @@
       "identity_mode": "header"
     },
     "actor": "partner@firm",
-    "at": "2026-11-05T20:59:08.049440+05:30"
+    "at": "2026-11-06T11:09:08"
   }
 }

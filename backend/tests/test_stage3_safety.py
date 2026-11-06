@@ -77,6 +77,7 @@ def test_the_guard_covers_every_append_only_table() -> None:
         "misstatement_line_class",
         "event",
         "evaluation",
+        "qualitative",
     } == APPEND_ONLY_TABLES
 
 

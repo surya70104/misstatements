@@ -1,9 +1,9 @@
 {
-  "id": "4d205e14-19c0-4479-9654-bca34cc962cf",
-  "engagement_id": "3c1d670d-6538-4b04-834a-aa4194cf1417",
+  "id": "559af877-1924-48ed-9a64-c8d8551bdd2f",
+  "engagement_id": "f845454c-ac67-4b91-9a16-f60c1def2403",
   "ref": "M-4",
   "created_by": "senior@firm",
-  "created_at": "2026-11-05T20:58:59.708942+05:30",
+  "created_at": "2026-11-06T11:09:03",
   "current": {
     "version_no": 1,
     "type": "factual",
@@ -16,19 +16,19 @@
     "decided_at": null,
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "da169624-3a8f-478d-9bc7-00e5ee94093b",
+    "spine_adjustment_id": "69d900fd-47eb-4380-8476-80ff9f1daa37",
     "spine_kind": "reclass",
     "range_low": null,
     "range_high": null,
     "sample_ref": null,
     "projection_basis": null,
     "created_by": "senior@firm",
-    "created_at": "2026-11-05T20:58:59.708942+05:30"
+    "created_at": "2026-11-06T11:09:03"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "da169624-3a8f-478d-9bc7-00e5ee94093b",
+    "adjustment_id": "69d900fd-47eb-4380-8476-80ff9f1daa37",
     "adjustment_status": "proposed",
     "kind": "reclass",
     "finding_ref": "M-4",
@@ -157,12 +157,76 @@
       "profit": "0.00",
       "net_assets": "0.00"
     },
-    "threshold_id": "882dddd5-c0cb-4d2c-ae34-8cf93061fd70",
+    "threshold_id": "bd70c748-0e97-4bb1-97ec-68db84c50053",
     "threshold_version_no": 1,
     "basis": "clearly trivial on amount: both effects are nil, so the item moves balances between captions only; proposed to the Spine as a reclassification; its significance is qualitative (spec section 5, Pass 2) and its gross size is shown as measure (D37)",
     "projected": false,
     "range_crosses_pm": null,
     "classification_only": true
+  },
+  "qualitative": {
+    "escalated": false,
+    "factors": [],
+    "escalation_basis": "an item is escalated while at least one factor of the qualitative checklist is recorded against it, each with its reason (spec section 5); an escalated item is listed individually regardless of its size (acceptance 8) and is accumulated whatever its band, because a matter is clearly trivial only when it is clearly inconsequential 'whether judged by any criteria of size, nature or circumstances' (SA 450 paragraph A2; register F5; architecture D59); which factors apply is a person's judgement and is never detected (spec section 12)",
+    "checklist": [
+      {
+        "factor": "law_or_covenant",
+        "text": "affects compliance with a law, regulation or loan covenant",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "earnings_trend",
+        "text": "masks a change in earnings or a trend",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "ratio",
+        "text": "changes a ratio used to evaluate the entity, including the eleven Schedule III ratios",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "fraud",
+        "text": "relates to a fraud or a suspected fraud",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "related_party",
+        "text": "relates to a related party transaction",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "segment_or_remuneration",
+        "text": "affects segment information, or management remuneration",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "loss_to_profit",
+        "text": "turns a loss into a profit, or the reverse",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      }
+    ],
+    "history": []
   },
   "authorisation": {
     "enforced": false,
@@ -194,14 +258,14 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "da169624-3a8f-478d-9bc7-00e5ee94093b",
+      "spine_adjustment_id": "69d900fd-47eb-4380-8476-80ff9f1daa37",
       "spine_kind": "reclass",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-05T20:58:59.708942+05:30"
+      "created_at": "2026-11-06T11:09:03"
     }
   ]
 }

@@ -1,5 +1,10 @@
 # Pass 1 handover — Misstatements Rollup (SA 450)
 
+*Note added 6 November 2026. This report describes Pass 1 as it stood on 5 November. Since
+then the Pass 1 work has been committed, and Pass 2 has begun, on instruction, with
+qualitative factors and escalation (architecture D59). Statements below that Pass 2 has
+not started and that the work is uncommitted were true on 5 November.*
+
 Prepared 5 November 2026 from the specification (`docs/MISSTATEMENTS_ROLLUP.md`), `README.md`,
 `docs/DECISIONS_PENDING.md`, `docs/CLOSURE_REVIEW.md` and `docs/architecture.md`. This is a
 documentation-only report. It closes nothing, reclassifies nothing and approves nothing.

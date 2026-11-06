@@ -445,3 +445,27 @@ not resolved: its question stays open, once, under the ID named.
   for net assets would be a new accounting rule, and entries on it are rare and refused.
 - **V5 to V8** share one dependency but are not one check; merging them would hide work.
 - **B10a to B10c** concern one subject but are three separate answers.
+
+## Pass 2, feature 1: qualitative factors and escalation — 6 November 2026 (architecture D59)
+
+Pass 2 began on 6 November 2026, on instruction, with spec section 5. This section records
+what that feature leaves to people. It does not change the Pass 1 count above (18 open).
+
+**F5 is now built**, as an interim reading: an escalated item is accumulated whatever its
+band and is listed individually. It was "not built" until now. The reading rests on SA 450
+paragraph A2 ("whether judged by any criteria of size, nature or circumstances"); it is not
+a CA approval.
+
+| # | Question | Who | What is built meanwhile |
+|---|---|---|---|
+| Q1 | Is an escalated item accumulated even when it is below CTT? (F5) | CA | Yes: never left out as clearly trivial, and outside the group that D57 totals |
+| Q2 | Does an escalated item block sign-off, or need the partner's acknowledgement? Spec section 7 lists the gates and does not name escalation | CA and the lead | No: it is listed individually and blocks nothing |
+| Q3 | May a factor be recorded or cleared on a misstatement in a final state (corrected, refused, withdrawn)? | Lead | Yes, in any state; only an uncorrected item is listed in the evaluation |
+| Q4 | Who may record and who may clear a factor? | Firm (with B9b) | Any authenticated identity, as for the module's other writes |
+| Q5 | Is a reason required to clear a factor? The specification asks for a recorded reason to escalate and is silent on clearing | Lead | Yes: the reason is mandatory both ways, and both stay in the history |
+| M1 | Applying migration 0011 to `oak_misstatements_test`, and later to `oak_misstatements` | Whoever approves migrations (with O2) | **Applied to `oak_misstatements_test` on 6 Nov 2026, on approval**; the PostgreSQL suite passes with it (486 passed). Not applied to `oak_misstatements`, which still waits (O2) |
+
+**Screens added the same day (architecture D60).** They decide none of the questions above
+and show what is built: the checklist is offered in every state (Q3), to any signed-in
+identity (Q4), a reason is asked for both ways (Q5), and the evaluation lists an escalated
+item without blocking sign-off (Q2).

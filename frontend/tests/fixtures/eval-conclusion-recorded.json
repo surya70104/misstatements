@@ -1,8 +1,8 @@
 {
-  "id": "c701e4b3-85f2-427c-8c8e-d79439d9ed67",
-  "engagement_id": "ae119dc0-f0fa-4cc6-a799-3ea7a7a6cb2a",
+  "id": "5c5749c4-d6fd-43d8-b4e0-77e1eb4e7bfa",
+  "engagement_id": "889eb4d5-c727-49dc-b275-eec959c126d9",
   "run_no": 2,
-  "threshold_id": "6b2e6e2b-f06e-4395-90fd-dfded719d7d4",
+  "threshold_id": "128863e6-7029-476d-8353-955fee414712",
   "threshold_version_no": 1,
   "agg_gross_pbt": "60000.00",
   "agg_net_pbt": "-60000.00",
@@ -10,7 +10,7 @@
   "agg_net_na": "-60000.00",
   "materiality_reassessed": true,
   "evaluated_by": "partner@firm",
-  "at": "2026-11-05T20:59:03.975556+05:30",
+  "at": "2026-11-06T11:09:05",
   "concluded": true,
   "determination": "not_material",
   "conclusion": "Uncorrected misstatements are not material, individually or in aggregate.",
@@ -18,7 +18,7 @@
   "concluded_by": "partner@firm",
   "detail": {
     "threshold": {
-      "id": "6b2e6e2b-f06e-4395-90fd-dfded719d7d4",
+      "id": "128863e6-7029-476d-8353-955fee414712",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00",
@@ -44,7 +44,7 @@
         "judgemental_gross": "0.00"
       }
     },
-    "basis": "every misstatement not corrected and not withdrawn (raised, communicated, refused; the F3 reading) that is not clearly trivial contributes its effect on profit before tax and, separately, on net assets; an item whose band is clearly trivial is not accumulated and is named (spec section 4: 'below it, not accumulated'; the band is the item's, the higher of its two effects' bands; architecture D33, D53), unless the clearly trivial items together reach the clearly-trivial threshold, gross, on either measure, when all of them are accumulated (SA 450 paragraph A2: clearly trivial matters are clearly inconsequential 'whether taken individually or in aggregate'; architecture D57); gross sums absolute effects with no netting between misstatements, net sums them signed (spec section 4.1); each is given with and without the projected items (spec section 3.2; pending decision B8); a classification-only item contributes nil and is listed; an item whose effects are unresolved is named and the aggregate marked incomplete (architecture D38)",
+    "basis": "every misstatement not corrected and not withdrawn (raised, communicated, refused; the F3 reading) that is not clearly trivial contributes its effect on profit before tax and, separately, on net assets; an item whose band is clearly trivial is not accumulated and is named (spec section 4: 'below it, not accumulated'; the band is the item's, the higher of its two effects' bands; architecture D33, D53), unless the clearly trivial items together reach the clearly-trivial threshold, gross, on either measure, when all of them are accumulated (SA 450 paragraph A2: clearly trivial matters are clearly inconsequential 'whether taken individually or in aggregate'; architecture D57); an escalated item, one with a qualitative factor recorded, is accumulated whatever its band and listed individually (spec section 5; acceptance 8; architecture D59); gross sums absolute effects with no netting between misstatements, net sums them signed (spec section 4.1); each is given with and without the projected items (spec section 3.2; pending decision B8); a classification-only item contributes nil and is listed; an item whose effects are unresolved is named and the aggregate marked incomplete (architecture D38)",
     "items": [
       {
         "ref": "M-1",
@@ -53,7 +53,8 @@
         "type": "factual",
         "band": "accumulated",
         "classification_only": false,
-        "uncorrected": true
+        "uncorrected": true,
+        "escalated": false
       }
     ],
     "counted": [
@@ -70,12 +71,15 @@
       "accumulated_together": [],
       "basis": "the gross size, on each measure, of the items that band clearly trivial one by one; while it is below the clearly-trivial threshold on both measures those items are left out of the aggregate; once it reaches the threshold on either, all of them are accumulated, because SA 450 paragraph A2 describes clearly trivial matters as clearly inconsequential 'whether taken individually or in aggregate' and treats any uncertainty as not clearly trivial (architecture D57); measuring 'in aggregate' gross against the threshold itself is the conservative reading, for the CA to confirm (register S14, question 2)"
     },
+    "escalated": [],
     "excluded": [],
     "tests": {
       "individual": {
         "individually_significant": [],
         "at_or_above_om": [],
-        "basis": "every uncorrected item whose band is individually significant (above PM; spec section 4), whatever its state, a refused one included; and, among all uncorrected items, those whose own effect on profit before tax or on net assets is at or above overall materiality (SA 450 paragraph 11: material individually or in aggregate, both tests shown; architecture D43)"
+        "basis": "every uncorrected item whose band is individually significant (above PM; spec section 4), whatever its state, a refused one included; and, among all uncorrected items, those whose own effect on profit before tax or on net assets is at or above overall materiality (SA 450 paragraph 11: material individually or in aggregate, both tests shown; architecture D43)",
+        "escalated": [],
+        "escalation_basis": "an item is escalated while at least one factor of the qualitative checklist is recorded against it, each with its reason (spec section 5); an escalated item is listed individually regardless of its size (acceptance 8) and is accumulated whatever its band, because a matter is clearly trivial only when it is clearly inconsequential 'whether judged by any criteria of size, nature or circumstances' (SA 450 paragraph A2; register F5; architecture D59); which factors apply is a person's judgement and is never detected (spec section 12)"
       },
       "aggregate": {
         "status": "clear",
@@ -114,7 +118,7 @@
       "response": "not_required"
     },
     "reviewed_run": {
-      "id": "9931ca17-6099-4757-b868-3f9bbb81a360",
+      "id": "93a270af-2736-472a-98a3-996fa9626c84",
       "run_no": 1
     }
   },

@@ -69,7 +69,9 @@ AGGREGATE_BASIS = (
     "higher of its two effects' bands; architecture D33, D53), unless the clearly trivial "
     "items together reach the clearly-trivial threshold, gross, on either measure, when all "
     "of them are accumulated (SA 450 paragraph A2: clearly trivial matters are clearly "
-    "inconsequential 'whether taken individually or in aggregate'; architecture D57); "
+    "inconsequential 'whether taken individually or in aggregate'; architecture D57); an "
+    "escalated item, one with a qualitative factor recorded, is accumulated whatever its "
+    "band and listed individually (spec section 5; acceptance 8; architecture D59); "
     "gross sums absolute effects with no netting between misstatements, net sums them signed "
     "(spec section 4.1); each is given with and without the projected items (spec section "
     "3.2; pending decision B8); a classification-only item contributes nil and is listed; an "
@@ -99,6 +101,7 @@ class Item:
     band: Band | None
     refusal_reason: str | None = None
     spine_adjustment_status: str | None = None  # None when the Spine could not be read
+    escalated: bool = False  # a factor of the qualitative checklist is recorded (D59)
 
     @property
     def uncorrected(self) -> bool:
@@ -146,6 +149,8 @@ class Aggregate:
     left_out_net_assets: Decimal = ZERO
     # Clearly trivial one by one, accumulated because together they reach CTT (D57).
     accumulated_together: tuple[str, ...] = ()
+    # Uncorrected items with a qualitative factor recorded: listed individually (D59).
+    escalated: tuple[str, ...] = ()
 
     @property
     def complete(self) -> bool:
@@ -178,8 +183,11 @@ def _measure(items: list[Item], pick: str) -> Measure:
 def accumulates(item: Item) -> bool:
     """Spec section 4: below the clearly-trivial threshold, not accumulated (D53). The band
     is the item's own, so an item with no band (no thresholds) is not left out, and neither
-    is a classification-only item, which is listed at nil whatever its band (B2)."""
-    return item.band is not Band.CLEARLY_TRIVIAL or item.classification_only
+    is a classification-only item, which is listed at nil whatever its band (B2). An
+    escalated item is never left out either: a matter is clearly trivial only when it is
+    clearly inconsequential by "size, nature or circumstances" (SA 450 paragraph A2), and a
+    recorded qualitative factor says its nature is not (spec section 5; F5; D59)."""
+    return item.band is not Band.CLEARLY_TRIVIAL or item.classification_only or item.escalated
 
 
 def aggregate(items: list[Item], ctt: Decimal | None = None) -> Aggregate:
@@ -214,6 +222,7 @@ def aggregate(items: list[Item], ctt: Decimal | None = None) -> Aggregate:
         left_out_profit=trivial_profit,
         left_out_net_assets=trivial_net_assets,
         accumulated_together=tuple(item.ref for item in trivial) if together else (),
+        escalated=tuple(item.ref for item in uncorrected if item.escalated),
     )
 
 

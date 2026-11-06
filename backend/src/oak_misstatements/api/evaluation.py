@@ -135,6 +135,7 @@ def evaluation_json(evaluation: Evaluation, settings: Settings) -> dict[str, Any
             "classification_only": list(total.classification_only),
             "not_accumulated": list(total.not_accumulated),
             "not_accumulated_total": not_accumulated_total(total, evaluation.threshold),
+            "escalated": list(total.escalated),
             "unresolved": list(total.unresolved),
             "excluded": [{"ref": ref, "state": state} for ref, state in total.excluded],
             "basis": AGGREGATE_BASIS,

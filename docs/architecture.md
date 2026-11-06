@@ -1494,3 +1494,102 @@ Eight requests released together raise eight misstatements, each with its own re
 and record eight evaluation runs, each with its own number; none fails. It is a tool run by
 hand, not part of the suite, because it creates and drops a schema. It runs as the owner
 role and without the migrations' triggers, which the lock does not depend on.
+
+## D59 · Pass 2: the qualitative checklist and escalation — 6 Nov 2026 (spec 5, 9; acceptance 8; F5)
+
+Pass 2 begins here, on instruction. The backend came first; the screens followed the same
+day (D60).
+
+**The record.** Table `qualitative` (migration 0011, model `QualitativeFactor`): the spec's
+`misstatement · factor · note · escalated_by · at`, plus two columns that let an append-only
+table express "update" and "remove". `applies` is true when an entry records a factor and
+false when it clears one; `entry_no` orders a misstatement's entries and is issued under the
+engagement row lock. The factors that apply now are those whose latest entry records them.
+Nothing is updated or deleted: the database triggers and the application guard refuse it,
+as for every other record. The factor is held to the seven of spec section 5 by a CHECK;
+the reason is never blank, for a recording and for a clearing.
+
+**The checklist** (`core/qualitative.py`) is the specification's seven, in its order and
+words: law, regulation or loan covenant; a change in earnings or a trend; a ratio, including
+the eleven Schedule III ratios; fraud or suspected fraud; a related party; segment
+information or management remuneration; a loss turned into a profit, or the reverse. Which
+apply is a person's judgement. Nothing detects one (spec section 12).
+
+**Escalation.** A misstatement is escalated while at least one factor applies.
+
+- *Listed individually* (acceptance 8): the evaluation's `tests.individual.escalated` names
+  each uncorrected escalated item with its factors and its band; `aggregate.escalated` and
+  each run's `detail.escalated` carry the references; every misstatement answer carries
+  `qualitative: {escalated, factors}`, so the schedule shows it.
+- *Accumulated whatever its band.* `gates.accumulates()` never leaves an escalated item out
+  as clearly trivial. This is F5's reading, now built, and it rests on SA 450 paragraph A2:
+  a matter is clearly trivial only when clearly inconsequential "whether judged by any
+  criteria of size, nature or circumstances". An escalated item is therefore outside the
+  group that D57 totals.
+- *The band is unchanged.* It is still computed from the amount (spec section 4: "never
+  chosen"); escalation is a separate fact beside it.
+- *Runs.* `escalated` is one of the labels a run records, so escalating or clearing makes
+  the latest run stale; where it moves a figure, an acknowledgement goes stale too.
+
+**Not built, because the specification does not say it.** An escalated item does not block
+sign-off and asks for no acknowledgement: section 7 lists the gates and escalation is not
+among them. Whether it should is recorded as an open question, not assumed.
+
+**The API.** `GET /api/misstatements/{id}/qualitative` (the checklist, whether escalated,
+the history); `POST /api/misstatements/{id}/qualitative` with `{factor, note}` (record, or
+record again with a new reason); `POST /api/misstatements/{id}/qualitative/{factor}/clear`
+with `{note}`. A write appends an entry and answers 201. Refused: a factor outside the
+seven, a blank reason, an actor or a timestamp in the body (422); clearing a factor that is
+not recorded, or recording one again with the same reason (409). Any authenticated identity
+may write, as for the module's other writes; who should is B9b.
+
+**Migration 0011.** Applied to `oak_misstatements_test` on 6 November 2026, on approval, by
+the PostgreSQL suite (which applies every unapplied migration to the test database). It is
+not applied to `oak_misstatements`, which has no tables and still waits for approval (O2).
+
+## D60 · The screens of the qualitative checklist — 6 Nov 2026 (spec 5, 10.1, 10.2; acceptance 8)
+
+**One read.** A misstatement read on its own (`GET /api/misstatements/{id}`, and the answer
+to raising or moving one) now carries the whole checklist in `qualitative`: `escalated`,
+`factors`, `escalation_basis`, the seven `checklist` rows and the `history`. A row of the
+schedule carries `escalated` and `factors` alone. The checklist's own endpoint answers the
+same words with `misstatement_id` and `ref` (`services/qualitative.py`: `detail_json`,
+`checklist_json`). So the detail screen needs no second request and holds no copy of the
+seven factors: their wording is the backend's.
+
+**Misstatement detail** (`components/misstatement/QualitativeFactors.tsx`, after the computed
+effects, as spec section 10.2 orders it). The seven factors in the backend's order and
+words, each recorded or not; a recorded one shows its reason, who recorded it and when.
+A person chooses Record, New reason or Clear on a factor and must give a reason: the
+confirm button stays disabled while the reason is blank, and the backend refuses a blank one
+whatever the screen does. The write's answer is the checklist as it now stands and replaces
+the one shown, with no second read. The history lists every entry, oldest first. A refusal
+is shown in the backend's words and the form is kept. A write goes out once however often
+it is confirmed. The header shows an "Escalated" pill beside the band, which stays the
+amount's. Nothing suggests a factor (spec section 12).
+
+**Schedule** (`components/ScheduleTable.tsx`). An escalated row shows "Escalated" beside its
+band with the number of factors recorded, whatever the band.
+
+**Evaluation** (`components/evaluation/GatesPanel.tsx`, "Individual items"). The escalated
+items the backend lists (`tests.individual.escalated`) are named, each with its band by
+amount, and the backend's basis is shown. This is where acceptance 8's "listed individually"
+is read. Sign-off is not blocked by it (Q2 is open).
+
+**The checklist is offered in every state**, as the backend allows (Q3 is open).
+
+**Fixtures and tests.** Fourteen new captured answers (`qualitative-*.json`), produced by
+`test_the_qualitative_fixtures_are_the_apis_real_answers`: the detail before, while and
+after escalation, the answer to each write, three refusals, and the schedule and evaluation
+of the engagement while escalated. `frontend/tests/Qualitative.test.tsx` holds 23 tests.
+
+**Verified, 6 November 2026.** Backend `pytest` on PostgreSQL (`oak_misstatements_test`,
+rolled back): 486 passed, 0 skipped. In memory: 454 passed, 32 skipped. `ruff`, `mypy`
+strict clean (96 files). Frontend `vitest` 342 passed (19 files); `tsc`, `eslint`,
+`prettier --check` clean; the production build succeeds. In a real browser, on the isolated
+preview (the real application over the test database in one transaction that was never
+committed; Spine test double; development identity): a factor recorded through the form on
+a clearly trivial item, the schedule's mark and the totals moving from one item to two, the
+evaluation's list, and the factor cleared through the form. Two misstatements were seeded
+through the preview's API first. Not done: a named partner, the live Financial Spine, a
+screen-reader session.

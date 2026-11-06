@@ -127,6 +127,56 @@ export type TransitionOutcome = {
   adjustment_status: string | null
 }
 
+// ---- the qualitative checklist (spec section 5; backend D59) ----
+
+// A factor recorded against a misstatement now, with its reason. `text` is the backend's
+// wording of the factor.
+export type QualitativeFactor = {
+  factor: string
+  text: string
+  note: string
+  escalated_by: string
+  at: string | null
+}
+
+// One factor of the checklist: whether it is recorded now and, when it is, why and by whom.
+export type QualitativeRow = {
+  factor: string
+  text: string
+  applies: boolean
+  note: string | null
+  escalated_by: string | null
+  at: string | null
+}
+
+// One entry of the append-only history: a factor recorded (`applies`) or cleared.
+export type QualitativeEntry = {
+  entry_no: number
+  factor: string
+  applies: boolean
+  note: string
+  escalated_by: string
+  at: string | null
+}
+
+// What a misstatement carries. Escalated while at least one factor is recorded. The whole
+// checklist, its history and the backend's explanation come only when one misstatement is
+// read; the schedule's rows carry `escalated` and `factors` alone.
+export type Qualitative = {
+  escalated: boolean
+  factors: QualitativeFactor[]
+  escalation_basis?: string
+  checklist?: QualitativeRow[]
+  history?: QualitativeEntry[]
+}
+
+// The answer to reading the checklist and to every write on it: the checklist as it stands.
+export type QualitativeChecklist = Required<Qualitative> & {
+  misstatement_id: string
+  ref: string
+  authorisation: Authorisation
+}
+
 export type Misstatement = {
   id: string
   engagement_id: string
@@ -177,6 +227,8 @@ export type Misstatement = {
     range_crosses_pm: boolean | null
     classification_only: boolean
   }
+  // Escalated while a factor of the qualitative checklist is recorded (spec section 5).
+  qualitative: Qualitative
   authorisation: Authorisation
   // Only when one misstatement is read: every version, oldest first. The versions are the
   // state trail: each move adds one and none is ever changed.
@@ -254,6 +306,8 @@ export type EvaluationRun = {
       band: Band | null
       classification_only: boolean
       uncorrected: boolean
+      // Absent on a run recorded before the qualitative checklist was built (D59).
+      escalated?: boolean
     }[]
     counted?: string[]
     projected?: string[]
@@ -327,7 +381,15 @@ export type Evaluation = {
     }
   }
   tests: {
-    individual: { individually_significant: string[]; at_or_above_om: string[]; basis: string }
+    individual: {
+      individually_significant: string[]
+      at_or_above_om: string[]
+      // Uncorrected items with a qualitative factor recorded: listed individually whatever
+      // their size (spec section 5; acceptance 8), each with its factors and its band.
+      escalated: { ref: string; factors: string[]; band: Band | null }[]
+      escalation_basis: string
+      basis: string
+    }
     aggregate: { status: string; depends_on_projected: boolean; basis: string }
   }
   individually_significant: { blocking: string[]; unbanded: string[] }
@@ -530,6 +592,34 @@ export function respondToStrategyPrompt(
  */
 export function transitionMisstatement(id: string, body: TransitionRequest): Promise<Misstatement> {
   return post<Misstatement>(`/api/misstatements/${encodeURIComponent(id)}/transitions`, body)
+}
+
+function qualitativePath(id: string, rest = ''): string {
+  return `/api/misstatements/${encodeURIComponent(id)}/qualitative${rest}`
+}
+
+/**
+ * Record a factor of the qualitative checklist against a misstatement, with its reason, or
+ * record it again with a new reason. The misstatement is escalated from then on. Who acts is
+ * never sent: the backend takes it from the authenticated identity.
+ */
+export function recordQualitativeFactor(
+  id: string,
+  body: { factor: string; note: string },
+): Promise<QualitativeChecklist> {
+  return post<QualitativeChecklist>(qualitativePath(id), body)
+}
+
+/** Clear a recorded factor, with the reason. The earlier entries stay in the history. */
+export function clearQualitativeFactor(
+  id: string,
+  factor: string,
+  body: { note: string },
+): Promise<QualitativeChecklist> {
+  return post<QualitativeChecklist>(
+    qualitativePath(id, `/${encodeURIComponent(factor)}/clear`),
+    body,
+  )
 }
 
 // ---- thresholds (spec section 4) ----

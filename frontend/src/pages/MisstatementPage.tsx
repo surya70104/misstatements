@@ -1,16 +1,19 @@
 // One misstatement's detail (spec sections 6.1 and 10.2): what it is, its Dr/Cr lines with
 // their classification, its computed effects, its state trail, and the moves it can make.
 //
-// Display only, apart from the moves. Every figure and every explanation is the backend's,
-// read from `GET /api/misstatements/{id}`. A move is sent to the backend, which decides it;
-// the answer is the record as it now stands and replaces what is shown. The schedule reads
-// the backend afresh each time it is opened, so it shows the move as well.
+// Display only, apart from the moves and the qualitative checklist. Every figure and every
+// explanation is the backend's, read from `GET /api/misstatements/{id}`. A move is sent to
+// the backend, which decides it; the answer is the record as it now stands and replaces what
+// is shown. The schedule reads the backend afresh each time it is opened, so it shows the
+// move as well.
 //
-// The qualitative checklist of spec section 10.2 is Pass 2 and is not shown.
+// The qualitative checklist (spec sections 5 and 10.2) comes with the misstatement. A write
+// on it answers with the checklist as it now stands, which replaces the one shown.
 import { getMisstatement } from '../api'
 import { AccountingLines } from '../components/misstatement/AccountingLines'
 import { FinancialEffects } from '../components/misstatement/FinancialEffects'
 import { Identification } from '../components/misstatement/Identification'
+import { QualitativeFactors } from '../components/misstatement/QualitativeFactors'
 import { StateHistory } from '../components/misstatement/StateHistory'
 import { WorkflowActions } from '../components/misstatement/WorkflowActions'
 import { ErrorState, Loading, Pill } from '../components/states'
@@ -72,6 +75,7 @@ export function MisstatementPage({ id }: { id: string }) {
                 ) : (
                   <Pill tone={BAND_TONE[resource.data.band]}>{BAND_LABEL[resource.data.band]}</Pill>
                 )}
+                {resource.data.qualitative.escalated && <Pill tone="attention">Escalated</Pill>}
               </div>
               <p className="mt-1 max-w-3xl text-sm text-slate-700">
                 {resource.data.current.description}
@@ -89,6 +93,23 @@ export function MisstatementPage({ id }: { id: string }) {
             <Identification misstatement={resource.data} />
             <AccountingLines misstatement={resource.data} />
             <FinancialEffects misstatement={resource.data} />
+            {/* Keyed by misstatement so one record's half-typed reason never reaches another. */}
+            <QualitativeFactors
+              key={`qualitative:${id}`}
+              misstatement={resource.data}
+              onChanged={(checklist) => {
+                replace({
+                  ...resource.data,
+                  qualitative: {
+                    escalated: checklist.escalated,
+                    factors: checklist.factors,
+                    escalation_basis: checklist.escalation_basis,
+                    checklist: checklist.checklist,
+                    history: checklist.history,
+                  },
+                })
+              }}
+            />
             <div className="grid items-start gap-5 lg:grid-cols-2">
               <StateHistory misstatement={resource.data} />
               {/* Keyed by misstatement so one record's half-typed reason never reaches another. */}

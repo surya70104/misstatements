@@ -1,10 +1,10 @@
 [
   {
-    "id": "50175ad5-5562-46c6-a269-6d7fb54ed34d",
-    "engagement_id": "193873b9-e9e5-49aa-ae41-75ec67e3b9fb",
+    "id": "79759036-5da7-45cb-9688-7d3d11fd9afc",
+    "engagement_id": "e5e35e04-afce-41d9-99c3-c91097f68b64",
     "ref": "M-1",
     "created_by": "senior@firm",
-    "created_at": "2026-11-05T20:59:06.569854+05:30",
+    "created_at": "2026-11-06T11:09:06",
     "current": {
       "version_no": 3,
       "type": "judgemental",
@@ -13,23 +13,23 @@
       "raised_from": "wp",
       "source_ref": "E-4.2",
       "state": "refused",
-      "communicated_at": "2026-11-05T20:59:06.724734+05:30",
-      "decided_at": "2026-11-05T20:59:06.752186+05:30",
+      "communicated_at": "2026-11-06T11:09:06.996469",
+      "decided_at": "2026-11-06T11:09:07.014326",
       "refusal_reason": "Management considers the provision adequate",
       "withdrawal_reason": null,
-      "spine_adjustment_id": "141d222b-cc59-45df-9564-af8a0691f367",
+      "spine_adjustment_id": "18e7ce4a-ff0e-4696-a5ce-b3942882774c",
       "spine_kind": "correction",
       "range_low": "200000.00",
       "range_high": "300000.00",
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-05T20:59:06.569854+05:30"
+      "created_at": "2026-11-06T11:09:07"
     },
     "spine": {
       "status": "ok",
       "detail": null,
-      "adjustment_id": "141d222b-cc59-45df-9564-af8a0691f367",
+      "adjustment_id": "18e7ce4a-ff0e-4696-a5ce-b3942882774c",
       "adjustment_status": "refused",
       "kind": "correction",
       "finding_ref": "M-1",
@@ -118,12 +118,16 @@
         "profit": "240000.00",
         "net_assets": "240000.00"
       },
-      "threshold_id": "1a014843-1477-4f6e-9cdd-cf4d3d6e64ea",
+      "threshold_id": "f1e50565-e4e2-4158-85be-30492a690410",
       "threshold_version_no": 1,
       "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
       "projected": false,
       "range_crosses_pm": true,
       "classification_only": false
+    },
+    "qualitative": {
+      "escalated": false,
+      "factors": []
     },
     "authorisation": {
       "enforced": false,
@@ -144,11 +148,11 @@
     }
   },
   {
-    "id": "434f0d4f-f915-4561-98ec-6207b29a0108",
-    "engagement_id": "193873b9-e9e5-49aa-ae41-75ec67e3b9fb",
+    "id": "c8395709-c54d-4359-86a0-935fa9a1e214",
+    "engagement_id": "e5e35e04-afce-41d9-99c3-c91097f68b64",
     "ref": "M-2",
     "created_by": "senior@firm",
-    "created_at": "2026-11-05T20:59:06.569854+05:30",
+    "created_at": "2026-11-06T11:09:07",
     "current": {
       "version_no": 3,
       "type": "factual",
@@ -157,23 +161,23 @@
       "raised_from": "wp",
       "source_ref": "E-4.2",
       "state": "corrected",
-      "communicated_at": "2026-11-05T20:59:06.803172+05:30",
-      "decided_at": "2026-11-05T20:59:07.119133+05:30",
+      "communicated_at": "2026-11-06T11:09:07.054927",
+      "decided_at": "2026-11-06T11:09:07.312415",
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "58dc495f-7eff-43cf-b972-5940a68f49fe",
+      "spine_adjustment_id": "5215feb6-0822-4fb8-bf68-66ee3110dc96",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-05T20:59:06.569854+05:30"
+      "created_at": "2026-11-06T11:09:07"
     },
     "spine": {
       "status": "ok",
       "detail": null,
-      "adjustment_id": "58dc495f-7eff-43cf-b972-5940a68f49fe",
+      "adjustment_id": "5215feb6-0822-4fb8-bf68-66ee3110dc96",
       "adjustment_status": "accepted",
       "kind": "correction",
       "finding_ref": "M-2",
@@ -262,12 +266,16 @@
         "profit": "30000.00",
         "net_assets": "30000.00"
       },
-      "threshold_id": "1a014843-1477-4f6e-9cdd-cf4d3d6e64ea",
+      "threshold_id": "f1e50565-e4e2-4158-85be-30492a690410",
       "threshold_version_no": 1,
       "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
       "projected": false,
       "range_crosses_pm": null,
       "classification_only": false
+    },
+    "qualitative": {
+      "escalated": false,
+      "factors": []
     },
     "authorisation": {
       "enforced": false,
@@ -288,11 +296,11 @@
     }
   },
   {
-    "id": "182c1913-4b7c-4ba1-a789-b7da1b3f23c4",
-    "engagement_id": "193873b9-e9e5-49aa-ae41-75ec67e3b9fb",
+    "id": "b71eb6ea-bc0f-481d-8f0e-513d513cfd76",
+    "engagement_id": "e5e35e04-afce-41d9-99c3-c91097f68b64",
     "ref": "M-3",
     "created_by": "senior@firm",
-    "created_at": "2026-11-05T20:59:06.569854+05:30",
+    "created_at": "2026-11-06T11:09:07",
     "current": {
       "version_no": 1,
       "type": "factual",
@@ -305,19 +313,19 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "d569a032-9fb8-457a-b2c7-b6abee2204da",
+      "spine_adjustment_id": "a9f9e0ad-e11e-4af5-8d88-2e401f13dfe2",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-05T20:59:06.569854+05:30"
+      "created_at": "2026-11-06T11:09:07"
     },
     "spine": {
       "status": "ok",
       "detail": null,
-      "adjustment_id": "d569a032-9fb8-457a-b2c7-b6abee2204da",
+      "adjustment_id": "a9f9e0ad-e11e-4af5-8d88-2e401f13dfe2",
       "adjustment_status": "proposed",
       "kind": "correction",
       "finding_ref": "M-3",
@@ -438,12 +446,16 @@
       "band": null,
       "bands": null,
       "amounts": null,
-      "threshold_id": "1a014843-1477-4f6e-9cdd-cf4d3d6e64ea",
+      "threshold_id": "f1e50565-e4e2-4158-85be-30492a690410",
       "threshold_version_no": 1,
       "basis": "no band: the effects are unresolved (Salaries, Salaries), and nothing is banded on a guess (architecture D31, D32, D33)",
       "projected": false,
       "range_crosses_pm": null,
       "classification_only": false
+    },
+    "qualitative": {
+      "escalated": false,
+      "factors": []
     },
     "authorisation": {
       "enforced": false,

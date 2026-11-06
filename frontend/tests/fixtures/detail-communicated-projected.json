@@ -1,9 +1,9 @@
 {
-  "id": "56b65f25-779c-4b0e-aeb7-d5ee6c8194d9",
-  "engagement_id": "3c1d670d-6538-4b04-834a-aa4194cf1417",
+  "id": "0cc933fa-3829-4d19-acea-87dccba7abf2",
+  "engagement_id": "f845454c-ac67-4b91-9a16-f60c1def2403",
   "ref": "M-3",
   "created_by": "senior@firm",
-  "created_at": "2026-11-05T20:58:59.708942+05:30",
+  "created_at": "2026-11-06T11:09:03",
   "current": {
     "version_no": 2,
     "type": "projected",
@@ -12,23 +12,23 @@
     "raised_from": "wp",
     "source_ref": "R-5.3",
     "state": "communicated",
-    "communicated_at": "2026-11-05T20:59:00.841699+05:30",
+    "communicated_at": "2026-11-06T11:09:03.043077",
     "decided_at": null,
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "e9425a94-8695-494a-a0df-fb67ed5f38bc",
+    "spine_adjustment_id": "57047a92-ad5f-4f98-a5d9-e36cebb50041",
     "spine_kind": "correction",
     "range_low": null,
     "range_high": null,
     "sample_ref": "S-12",
     "projection_basis": "Ratio of error to sample value, applied to the population",
     "created_by": "senior@firm",
-    "created_at": "2026-11-05T20:58:59.708942+05:30"
+    "created_at": "2026-11-06T11:09:03"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "e9425a94-8695-494a-a0df-fb67ed5f38bc",
+    "adjustment_id": "57047a92-ad5f-4f98-a5d9-e36cebb50041",
     "adjustment_status": "proposed",
     "kind": "correction",
     "finding_ref": "M-3",
@@ -117,12 +117,76 @@
       "profit": "45000.00",
       "net_assets": "45000.00"
     },
-    "threshold_id": "882dddd5-c0cb-4d2c-ae34-8cf93061fd70",
+    "threshold_id": "bd70c748-0e97-4bb1-97ec-68db84c50053",
     "threshold_version_no": 1,
     "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
     "projected": true,
     "range_crosses_pm": null,
     "classification_only": false
+  },
+  "qualitative": {
+    "escalated": false,
+    "factors": [],
+    "escalation_basis": "an item is escalated while at least one factor of the qualitative checklist is recorded against it, each with its reason (spec section 5); an escalated item is listed individually regardless of its size (acceptance 8) and is accumulated whatever its band, because a matter is clearly trivial only when it is clearly inconsequential 'whether judged by any criteria of size, nature or circumstances' (SA 450 paragraph A2; register F5; architecture D59); which factors apply is a person's judgement and is never detected (spec section 12)",
+    "checklist": [
+      {
+        "factor": "law_or_covenant",
+        "text": "affects compliance with a law, regulation or loan covenant",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "earnings_trend",
+        "text": "masks a change in earnings or a trend",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "ratio",
+        "text": "changes a ratio used to evaluate the entity, including the eleven Schedule III ratios",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "fraud",
+        "text": "relates to a fraud or a suspected fraud",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "related_party",
+        "text": "relates to a related party transaction",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "segment_or_remuneration",
+        "text": "affects segment information, or management remuneration",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "loss_to_profit",
+        "text": "turns a loss into a profit, or the reverse",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      }
+    ],
+    "history": []
   },
   "authorisation": {
     "enforced": false,
@@ -154,14 +218,14 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "e9425a94-8695-494a-a0df-fb67ed5f38bc",
+      "spine_adjustment_id": "57047a92-ad5f-4f98-a5d9-e36cebb50041",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": "S-12",
       "projection_basis": "Ratio of error to sample value, applied to the population",
       "created_by": "senior@firm",
-      "created_at": "2026-11-05T20:58:59.708942+05:30"
+      "created_at": "2026-11-06T11:09:03"
     },
     {
       "version_no": 2,
@@ -171,18 +235,18 @@
       "raised_from": "wp",
       "source_ref": "R-5.3",
       "state": "communicated",
-      "communicated_at": "2026-11-05T20:59:00.841699+05:30",
+      "communicated_at": "2026-11-06T11:09:03.043077",
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "e9425a94-8695-494a-a0df-fb67ed5f38bc",
+      "spine_adjustment_id": "57047a92-ad5f-4f98-a5d9-e36cebb50041",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": "S-12",
       "projection_basis": "Ratio of error to sample value, applied to the population",
       "created_by": "senior@firm",
-      "created_at": "2026-11-05T20:58:59.708942+05:30"
+      "created_at": "2026-11-06T11:09:03"
     }
   ]
 }

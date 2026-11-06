@@ -1,0 +1,248 @@
+{
+  "id": "085dd299-5f11-4a36-9226-5b249d3c4670",
+  "engagement_id": "ab580e20-b228-4c44-8d5e-89066b44047b",
+  "ref": "M-2",
+  "created_by": "senior@firm",
+  "created_at": "2026-11-06T11:09:09",
+  "current": {
+    "version_no": 1,
+    "type": "factual",
+    "description": "Sale to a related party not invoiced",
+    "raised_by": "senior@firm",
+    "raised_from": "wp",
+    "source_ref": "E-4.2",
+    "state": "raised",
+    "communicated_at": null,
+    "decided_at": null,
+    "refusal_reason": null,
+    "withdrawal_reason": null,
+    "spine_adjustment_id": "b1fb9ee8-fa94-4ec7-a948-d8f0d8f40da0",
+    "spine_kind": "correction",
+    "range_low": null,
+    "range_high": null,
+    "sample_ref": null,
+    "projection_basis": null,
+    "created_by": "senior@firm",
+    "created_at": "2026-11-06T11:09:09"
+  },
+  "spine": {
+    "status": "ok",
+    "detail": null,
+    "adjustment_id": "b1fb9ee8-fa94-4ec7-a948-d8f0d8f40da0",
+    "adjustment_status": "proposed",
+    "kind": "correction",
+    "finding_ref": "M-2",
+    "proposed_by": "spine-dev@localhost",
+    "proposed_at": "2026-11-04T10:00:00+05:30",
+    "decided_by": null,
+    "decided_at": null,
+    "decision_note": null,
+    "measure": "3000.00",
+    "tree_version_now": "double-division1-2026-11-04",
+    "lines": [
+      {
+        "ledger_key": "rent",
+        "ledger_name": "Rent",
+        "parent_chain": [
+          "Indirect Expenses"
+        ],
+        "head_id": "pl.expenses.other",
+        "nature": "PL",
+        "section": "pl_before_tax",
+        "dr": "3000.00",
+        "cr": "0.00"
+      },
+      {
+        "ledger_key": "provision for expenses",
+        "ledger_name": "Provision for expenses",
+        "parent_chain": [
+          "Provisions"
+        ],
+        "head_id": "bs.liabilities.current.provisions",
+        "nature": "BS",
+        "section": "liabilities",
+        "dr": "0.00",
+        "cr": "3000.00"
+      }
+    ]
+  },
+  "state_consistency": {
+    "consistent": true,
+    "state": "raised",
+    "expected_adjustment_status": "proposed",
+    "adjustment_status": "proposed",
+    "detail": null
+  },
+  "effects": {
+    "profit_before_tax": "-3000.00",
+    "profit_basis": "credits less debits on profit-and-loss heads above the Schedule III profit-before-tax line (item IX); tax expense (items X, XIII) and discontinuing operations (XII) are excluded (architecture D31)",
+    "profit_partial": false,
+    "net_assets": "-3000.00",
+    "net_assets_basis": "assets less liabilities: the signed movement, debit positive, of every line on an asset head (item II) or a liability head (items I(3), I(4)); equity heads (I(1)) are outside the sum, so a direct equity entry moves net assets; tax lines count only when the entry carries them, nothing is imputed (architecture D31)",
+    "partial": false,
+    "unresolved": [],
+    "captions": [
+      {
+        "head_id": "pl.expenses.other",
+        "nature": "PL",
+        "signed": "3000.00"
+      },
+      {
+        "head_id": "bs.liabilities.current.provisions",
+        "nature": "BS",
+        "signed": "-3000.00"
+      }
+    ],
+    "classification_only": false,
+    "spine_version_at_raise": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+    "tree_version_at_raise": "double-division1-2026-11-04"
+  },
+  "classification": {
+    "spine_version_at_raise": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+    "tree_version_at_raise": "double-division1-2026-11-04",
+    "tree_version_now": "double-division1-2026-11-04",
+    "drift": [],
+    "unmatched": [],
+    "effects_on_current_classification": null
+  },
+  "band": "clearly_trivial",
+  "band_basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
+  "banding": {
+    "band": "clearly_trivial",
+    "bands": {
+      "profit": "clearly_trivial",
+      "net_assets": "clearly_trivial"
+    },
+    "amounts": {
+      "profit": "3000.00",
+      "net_assets": "3000.00"
+    },
+    "threshold_id": "a8b9787f-f471-4676-9252-273a22739445",
+    "threshold_version_no": 1,
+    "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
+    "projected": false,
+    "range_crosses_pm": null,
+    "classification_only": false
+  },
+  "qualitative": {
+    "escalated": true,
+    "factors": [
+      {
+        "factor": "related_party",
+        "text": "relates to a related party transaction",
+        "note": "Sale to a firm owned by a director; see E-12",
+        "escalated_by": "manager@firm",
+        "at": "2026-11-06T11:09:09"
+      }
+    ],
+    "escalation_basis": "an item is escalated while at least one factor of the qualitative checklist is recorded against it, each with its reason (spec section 5); an escalated item is listed individually regardless of its size (acceptance 8) and is accumulated whatever its band, because a matter is clearly trivial only when it is clearly inconsequential 'whether judged by any criteria of size, nature or circumstances' (SA 450 paragraph A2; register F5; architecture D59); which factors apply is a person's judgement and is never detected (spec section 12)",
+    "checklist": [
+      {
+        "factor": "law_or_covenant",
+        "text": "affects compliance with a law, regulation or loan covenant",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "earnings_trend",
+        "text": "masks a change in earnings or a trend",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "ratio",
+        "text": "changes a ratio used to evaluate the entity, including the eleven Schedule III ratios",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "fraud",
+        "text": "relates to a fraud or a suspected fraud",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "related_party",
+        "text": "relates to a related party transaction",
+        "applies": true,
+        "note": "Sale to a firm owned by a director; see E-12",
+        "escalated_by": "manager@firm",
+        "at": "2026-11-06T11:09:09"
+      },
+      {
+        "factor": "segment_or_remuneration",
+        "text": "affects segment information, or management remuneration",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "loss_to_profit",
+        "text": "turns a loss into a profit, or the reverse",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      }
+    ],
+    "history": [
+      {
+        "entry_no": 1,
+        "factor": "related_party",
+        "applies": true,
+        "note": "Sale to a firm owned by a director; see E-12",
+        "escalated_by": "manager@firm",
+        "at": "2026-11-06T11:09:09"
+      }
+    ]
+  },
+  "authorisation": {
+    "enforced": false,
+    "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+    "identity_mode": "dev",
+    "production_grade": false,
+    "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+    "partner_actions": {
+      "enforced": true,
+      "available": false,
+      "actions": [
+        "soft_gate_acknowledgement",
+        "conclusion"
+      ],
+      "source": null,
+      "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
+    }
+  },
+  "versions": [
+    {
+      "version_no": 1,
+      "type": "factual",
+      "description": "Sale to a related party not invoiced",
+      "raised_by": "senior@firm",
+      "raised_from": "wp",
+      "source_ref": "E-4.2",
+      "state": "raised",
+      "communicated_at": null,
+      "decided_at": null,
+      "refusal_reason": null,
+      "withdrawal_reason": null,
+      "spine_adjustment_id": "b1fb9ee8-fa94-4ec7-a948-d8f0d8f40da0",
+      "spine_kind": "correction",
+      "range_low": null,
+      "range_high": null,
+      "sample_ref": null,
+      "projection_basis": null,
+      "created_by": "senior@firm",
+      "created_at": "2026-11-06T11:09:09"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
-  "engagement_id": "edef94ed-913e-43f1-bfb0-6467204eae60",
+  "engagement_id": "7da158b5-33fe-457b-8ece-12e374d23113",
   "threshold": {
-    "id": "b75d968b-2675-45b4-b51d-9266617702a3",
+    "id": "b5075d1e-8cbc-4ac1-88de-99da958455ff",
     "version_no": 1,
     "om": "400000.00",
     "pm": "250000.00",
@@ -39,6 +39,7 @@
       "accumulated_together": [],
       "basis": "the gross size, on each measure, of the items that band clearly trivial one by one; while it is below the clearly-trivial threshold on both measures those items are left out of the aggregate; once it reaches the threshold on either, all of them are accumulated, because SA 450 paragraph A2 describes clearly trivial matters as clearly inconsequential 'whether taken individually or in aggregate' and treats any uncertainty as not clearly trivial (architecture D57); measuring 'in aggregate' gross against the threshold itself is the conservative reading, for the CA to confirm (register S14, question 2)"
     },
+    "escalated": [],
     "unresolved": [
       "M-1",
       "M-2",
@@ -56,7 +57,7 @@
         "state": "withdrawn"
       }
     ],
-    "basis": "every misstatement not corrected and not withdrawn (raised, communicated, refused; the F3 reading) that is not clearly trivial contributes its effect on profit before tax and, separately, on net assets; an item whose band is clearly trivial is not accumulated and is named (spec section 4: 'below it, not accumulated'; the band is the item's, the higher of its two effects' bands; architecture D33, D53), unless the clearly trivial items together reach the clearly-trivial threshold, gross, on either measure, when all of them are accumulated (SA 450 paragraph A2: clearly trivial matters are clearly inconsequential 'whether taken individually or in aggregate'; architecture D57); gross sums absolute effects with no netting between misstatements, net sums them signed (spec section 4.1); each is given with and without the projected items (spec section 3.2; pending decision B8); a classification-only item contributes nil and is listed; an item whose effects are unresolved is named and the aggregate marked incomplete (architecture D38)"
+    "basis": "every misstatement not corrected and not withdrawn (raised, communicated, refused; the F3 reading) that is not clearly trivial contributes its effect on profit before tax and, separately, on net assets; an item whose band is clearly trivial is not accumulated and is named (spec section 4: 'below it, not accumulated'; the band is the item's, the higher of its two effects' bands; architecture D33, D53), unless the clearly trivial items together reach the clearly-trivial threshold, gross, on either measure, when all of them are accumulated (SA 450 paragraph A2: clearly trivial matters are clearly inconsequential 'whether taken individually or in aggregate'; architecture D57); an escalated item, one with a qualitative factor recorded, is accumulated whatever its band and listed individually (spec section 5; acceptance 8; architecture D59); gross sums absolute effects with no netting between misstatements, net sums them signed (spec section 4.1); each is given with and without the projected items (spec section 3.2; pending decision B8); a classification-only item contributes nil and is listed; an item whose effects are unresolved is named and the aggregate marked incomplete (architecture D38)"
   },
   "gates": {
     "hard": {
@@ -103,7 +104,9 @@
     "individual": {
       "individually_significant": [],
       "at_or_above_om": [],
-      "basis": "every uncorrected item whose band is individually significant (above PM; spec section 4), whatever its state, a refused one included; and, among all uncorrected items, those whose own effect on profit before tax or on net assets is at or above overall materiality (SA 450 paragraph 11: material individually or in aggregate, both tests shown; architecture D43)"
+      "basis": "every uncorrected item whose band is individually significant (above PM; spec section 4), whatever its state, a refused one included; and, among all uncorrected items, those whose own effect on profit before tax or on net assets is at or above overall materiality (SA 450 paragraph 11: material individually or in aggregate, both tests shown; architecture D43)",
+      "escalated": [],
+      "escalation_basis": "an item is escalated while at least one factor of the qualitative checklist is recorded against it, each with its reason (spec section 5); an escalated item is listed individually regardless of its size (acceptance 8) and is accumulated whatever its band, because a matter is clearly trivial only when it is clearly inconsequential 'whether judged by any criteria of size, nature or circumstances' (SA 450 paragraph A2; register F5; architecture D59); which factors apply is a person's judgement and is never detected (spec section 12)"
     },
     "aggregate": {
       "status": "indeterminate",
@@ -170,7 +173,7 @@
   },
   "items": [
     {
-      "id": "cb913e78-a4a6-4471-bd08-58231f127f78",
+      "id": "68b983ce-455d-4b45-b2e6-c0da599594ea",
       "ref": "M-1",
       "type": "factual",
       "projected": false,
@@ -179,6 +182,7 @@
       "profit_before_tax": null,
       "net_assets": null,
       "classification_only": false,
+      "escalated": false,
       "measure": null,
       "band": null,
       "spine_status": "unreachable",
@@ -186,7 +190,7 @@
       "expected_spine_adjustment_status": "proposed"
     },
     {
-      "id": "27112e4a-8e5e-4aa9-9bfe-ae23dd143b53",
+      "id": "8efbd34a-db87-4df6-917f-1ff5f00143e4",
       "ref": "M-2",
       "type": "factual",
       "projected": false,
@@ -195,6 +199,7 @@
       "profit_before_tax": null,
       "net_assets": null,
       "classification_only": false,
+      "escalated": false,
       "measure": null,
       "band": null,
       "spine_status": "unreachable",
@@ -202,7 +207,7 @@
       "expected_spine_adjustment_status": "proposed"
     },
     {
-      "id": "d3baf2ee-8577-4a1a-a41b-1cedb1eaf9ff",
+      "id": "c8bd7f29-57e3-406c-9168-e1addf0ce3fe",
       "ref": "M-3",
       "type": "judgemental",
       "projected": false,
@@ -211,6 +216,7 @@
       "profit_before_tax": null,
       "net_assets": null,
       "classification_only": false,
+      "escalated": false,
       "measure": null,
       "band": null,
       "spine_status": "unreachable",
@@ -218,7 +224,7 @@
       "expected_spine_adjustment_status": "refused"
     },
     {
-      "id": "a76711c6-4b7d-4eb0-9f0b-ec1a4cd78d91",
+      "id": "230abe52-eda1-449c-92f0-28a4ff5b1190",
       "ref": "M-4",
       "type": "projected",
       "projected": true,
@@ -227,6 +233,7 @@
       "profit_before_tax": null,
       "net_assets": null,
       "classification_only": false,
+      "escalated": false,
       "measure": null,
       "band": null,
       "spine_status": "unreachable",
@@ -234,7 +241,7 @@
       "expected_spine_adjustment_status": "proposed"
     },
     {
-      "id": "a39768fe-f932-499b-8a6e-2239c406d0c4",
+      "id": "81cbd813-ce43-4021-ad25-a8fc4ffc17f6",
       "ref": "M-5",
       "type": "factual",
       "projected": false,
@@ -243,6 +250,7 @@
       "profit_before_tax": null,
       "net_assets": null,
       "classification_only": false,
+      "escalated": false,
       "measure": null,
       "band": null,
       "spine_status": "unreachable",
@@ -250,7 +258,7 @@
       "expected_spine_adjustment_status": "accepted"
     },
     {
-      "id": "a7970f83-7d18-42bc-9d9b-29fd5ed4cb46",
+      "id": "e0c4853b-74bb-40fd-823c-70962b1c7e99",
       "ref": "M-6",
       "type": "factual",
       "projected": false,
@@ -259,6 +267,7 @@
       "profit_before_tax": null,
       "net_assets": null,
       "classification_only": false,
+      "escalated": false,
       "measure": null,
       "band": null,
       "spine_status": "unreachable",
@@ -266,7 +275,7 @@
       "expected_spine_adjustment_status": "proposed"
     },
     {
-      "id": "eb6a48db-268a-4adc-90ff-0f1ae20c28b0",
+      "id": "c29cbf6f-2dd6-41cd-8f05-8e7b747dc6e7",
       "ref": "M-7",
       "type": "factual",
       "projected": false,
@@ -275,6 +284,7 @@
       "profit_before_tax": null,
       "net_assets": null,
       "classification_only": false,
+      "escalated": false,
       "measure": null,
       "band": null,
       "spine_status": "unreachable",

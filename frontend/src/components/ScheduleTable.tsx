@@ -1,14 +1,16 @@
 // The Summary of Audit Differences (spec section 6.1): every misstatement with its
 // reference, type, description, Dr/Cr lines, effect on profit, effect on net assets, band,
 // state, working paper reference and who raised it. Display only: the lines are the
-// Financial Spine's, the effects and the band are computed by the backend.
+// Financial Spine's, the effects and the band are computed by the backend. A misstatement
+// with a qualitative factor recorded is marked Escalated beside its band, whatever its
+// amount (spec section 5; acceptance 8).
 //
 // On a wide screen this is a table. Below that width each misstatement becomes a block with
 // its values labelled, so the page never scrolls sideways.
 import type { ReactNode } from 'react'
 
 import type { Misstatement } from '../api'
-import { isZero, rupees } from '../format'
+import { count, isZero, rupees } from '../format'
 import { BAND_LABEL, BAND_TONE, NOT_BANDED, STATE_LABEL, STATE_TONE, TYPE_LABEL } from '../labels'
 import { href } from '../router'
 import { Pill } from './states'
@@ -89,7 +91,7 @@ function Effect({
 }
 
 function BandCell({ misstatement }: { misstatement: Misstatement }) {
-  const { band, band_basis: basis, banding } = misstatement
+  const { band, band_basis: basis, banding, qualitative } = misstatement
   return (
     <div>
       {band === null ? (
@@ -105,6 +107,15 @@ function BandCell({ misstatement }: { misstatement: Misstatement }) {
       )}
       {banding.range_crosses_pm === true && (
         <p className="mt-1 text-xs text-amber-800">Range crosses PM</p>
+      )}
+      {qualitative.escalated && (
+        <div className="mt-1.5">
+          <Pill tone="attention">Escalated</Pill>
+          <p className="mt-1 max-w-56 text-xs text-amber-800">
+            Listed individually whatever its amount:{' '}
+            {count(qualitative.factors.length, 'qualitative factor')} recorded
+          </p>
+        </div>
       )}
     </div>
   )

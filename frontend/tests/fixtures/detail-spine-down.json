@@ -1,9 +1,9 @@
 {
-  "id": "a36ca8e1-5523-4b0f-9ea0-663d86217cc1",
-  "engagement_id": "3c1d670d-6538-4b04-834a-aa4194cf1417",
+  "id": "988962dd-f155-4502-bfca-f470ec7fb285",
+  "engagement_id": "f845454c-ac67-4b91-9a16-f60c1def2403",
   "ref": "M-1",
   "created_by": "senior@firm",
-  "created_at": "2026-11-05T20:58:59.708942+05:30",
+  "created_at": "2026-11-06T11:09:02",
   "current": {
     "version_no": 2,
     "type": "factual",
@@ -12,18 +12,18 @@
     "raised_from": "wp",
     "source_ref": "E-4.2",
     "state": "communicated",
-    "communicated_at": "2026-11-05T20:59:00.309160+05:30",
+    "communicated_at": "2026-11-06T11:09:02.615722",
     "decided_at": null,
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "e143b17d-3e16-4ba9-b54d-ce5f22c30c39",
+    "spine_adjustment_id": "61f08f85-c7c0-429e-8dd1-613182615d28",
     "spine_kind": "correction",
     "range_low": null,
     "range_high": null,
     "sample_ref": null,
     "projection_basis": null,
     "created_by": "manager@firm",
-    "created_at": "2026-11-05T20:58:59.708942+05:30"
+    "created_at": "2026-11-06T11:09:02"
   },
   "spine": {
     "status": "unreachable",
@@ -56,12 +56,76 @@
     "band": null,
     "bands": null,
     "amounts": null,
-    "threshold_id": "882dddd5-c0cb-4d2c-ae34-8cf93061fd70",
+    "threshold_id": "bd70c748-0e97-4bb1-97ec-68db84c50053",
     "threshold_version_no": 1,
     "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
     "projected": false,
     "range_crosses_pm": null,
     "classification_only": false
+  },
+  "qualitative": {
+    "escalated": false,
+    "factors": [],
+    "escalation_basis": "an item is escalated while at least one factor of the qualitative checklist is recorded against it, each with its reason (spec section 5); an escalated item is listed individually regardless of its size (acceptance 8) and is accumulated whatever its band, because a matter is clearly trivial only when it is clearly inconsequential 'whether judged by any criteria of size, nature or circumstances' (SA 450 paragraph A2; register F5; architecture D59); which factors apply is a person's judgement and is never detected (spec section 12)",
+    "checklist": [
+      {
+        "factor": "law_or_covenant",
+        "text": "affects compliance with a law, regulation or loan covenant",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "earnings_trend",
+        "text": "masks a change in earnings or a trend",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "ratio",
+        "text": "changes a ratio used to evaluate the entity, including the eleven Schedule III ratios",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "fraud",
+        "text": "relates to a fraud or a suspected fraud",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "related_party",
+        "text": "relates to a related party transaction",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "segment_or_remuneration",
+        "text": "affects segment information, or management remuneration",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "loss_to_profit",
+        "text": "turns a loss into a profit, or the reverse",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      }
+    ],
+    "history": []
   },
   "authorisation": {
     "enforced": false,
@@ -93,14 +157,14 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "e143b17d-3e16-4ba9-b54d-ce5f22c30c39",
+      "spine_adjustment_id": "61f08f85-c7c0-429e-8dd1-613182615d28",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-05T20:58:59.708942+05:30"
+      "created_at": "2026-11-06T11:09:02"
     },
     {
       "version_no": 2,
@@ -110,18 +174,18 @@
       "raised_from": "wp",
       "source_ref": "E-4.2",
       "state": "communicated",
-      "communicated_at": "2026-11-05T20:59:00.309160+05:30",
+      "communicated_at": "2026-11-06T11:09:02.615722",
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "e143b17d-3e16-4ba9-b54d-ce5f22c30c39",
+      "spine_adjustment_id": "61f08f85-c7c0-429e-8dd1-613182615d28",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "manager@firm",
-      "created_at": "2026-11-05T20:58:59.708942+05:30"
+      "created_at": "2026-11-06T11:09:02"
     }
   ]
 }

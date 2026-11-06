@@ -61,7 +61,7 @@ attachment · intake hooks · projected misstatements from Sampling · the gener
 | 5 | Gates: OM hard gate, PM soft gate, strategy trigger, individually-significant block; the conclusion | done on 5 Nov 2026 (D45); see "Stage 5 verification". The conclusion is a new append-only `evaluation` row carrying its figures and threshold version (migration 0009), partner-only, naming the run reviewed; a conclusion of not material is blocked by every gate in the write path and by a database trigger at overall materiality; the strategy trigger is built with no default band (B5). Readings to confirm: B14, B15 |
 | 6 | The schedule, misstatement detail and evaluation screens | built, reviewed and its gaps closed on 5 Nov 2026 (D47 to D52); see "Stage 6 closure verification". Nine screens over 24 of the 26 routes, used on live rows in an isolated preview. **Pass 1 implementation complete (`docs/CLOSURE_REVIEW.md` section 13); production acceptance pending:** the conclusion and the partner's acknowledgement have not been made by a named partner (V12), and nothing has been seen against the live Spine. In parts: Part 1 done on 5 Nov 2026 (D47); see "Stage 6 part 1 verification": routing, the typed API client, formatting, the shared loading, empty and error states, the layout, the engagement list, and the schedule address. Part 2 done on 5 Nov 2026 (D48); see "Stage 6 part 2 verification": the schedule screen with its ten columns, its filters by band, type and state, and the running totals against CTT, PM and OM; and the misstatement detail address. Part 3 done on 5 Nov 2026 (D49); see "Stage 6 part 3 verification": the misstatement detail screen with its identification, Dr/Cr lines and classification, effects, state history, and the moves of the state machine with their mandatory reasons. Part 4 done on 5 Nov 2026 (D50); see "Stage 6 part 4 verification": the evaluation screen with the aggregate against the three lines, the gates, the run history, recording a run, the strategy prompt, and the conclusion shown with what blocks it. The two partner-only writes are shown and never sent |
 | 7 | Pass 1 acceptance run: criteria 1, 2, 3, 4, 6, 7, 10, 11 | |
-| 8–14 | Pass 2 | |
+| 8–14 | Pass 2 | Started 6 Nov 2026, on instruction. Stage 8, qualitative factors and escalation (spec section 5; acceptance 8): backend and screens built and tested, on PostgreSQL and in a browser on the isolated preview (D59, D60); migration 0011 is applied to the test database only. Nothing else of Pass 2 is started |
 
 ## Setup on Windows
 
@@ -254,6 +254,33 @@ Run on 5 November 2026:
 - Frontend unchanged: `eslint`, `tsc --noEmit`, `prettier --check` clean, `vitest` 5 passed.
 - Not run: PostgreSQL (the trigger's PL/pgSQL has never executed) and the live Financial
   Spine (its decision endpoint was read from CAF's source and mirrored in the double).
+
+## Pass 2, feature 1: qualitative factors and escalation (D59)
+
+Built on 6 November 2026: backend (D59) and screens (D60).
+
+- **The checklist** of spec section 5, seven factors, recorded against a misstatement with a
+  mandatory reason. `GET /api/misstatements/{id}/qualitative` reads it;
+  `POST /api/misstatements/{id}/qualitative` records a factor or records it again with a
+  new reason; `POST /api/misstatements/{id}/qualitative/{factor}/clear` clears one. Entries
+  are appended and never changed (table `qualitative`, migration 0011).
+- **Escalation.** A misstatement with at least one factor recorded is escalated: listed
+  individually in the evaluation whatever its size (acceptance 8), flagged in the schedule,
+  and accumulated even when it is below the clearly-trivial threshold. It does not block
+  sign-off; whether it should is an open question (`docs/DECISIONS_PENDING.md`, last
+  section).
+- **Screens.** The misstatement detail shows the checklist: record a factor, give it a new
+  reason or clear it, each with a mandatory reason, and the full history. The schedule marks
+  an escalated row "Escalated" beside its band. The evaluation lists the escalated items
+  under "Individual items".
+- **Migration 0011** was applied to `oak_misstatements_test` on approval. The main database
+  is untouched.
+- **Tests, 6 November 2026 (latest):** backend `pytest` on PostgreSQL **486 passed, 0
+  skipped**; on the in-memory stand-in **454 passed, 32 skipped**; `ruff` and `mypy` strict
+  clean (96 files); frontend `vitest` **342 passed** (19 files); `tsc`, `eslint`, `prettier`
+  clean; build succeeds; 136 captured API answers. Checked in a browser on the isolated
+  preview (test database, never committed; Spine test double). These supersede the counts
+  in the sections below, which are those of their own dates.
 
 ## Clearly trivial items and the percentage display (D53, D54)
 

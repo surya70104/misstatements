@@ -69,6 +69,9 @@ export const REASON_REQUIRED: readonly TransitionTarget[] = ['refused', 'withdra
 /** The backend's limit on a reason, mirrored so a person sees it before sending. */
 export const REASON_MAX_LENGTH = 1500
 
+/** The backend's limit on a qualitative factor's reason, mirrored the same way. */
+export const NOTE_MAX_LENGTH = 2000
+
 // ---- the evaluation ----
 // The backend's status codes in words. A code with no word here is shown as it was sent.
 

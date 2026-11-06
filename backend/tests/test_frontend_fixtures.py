@@ -1143,3 +1143,66 @@ def test_the_partner_form_fixtures_are_the_apis_real_answers(api: TestClient) ->
         ),
     )
     check("partner-concluded-material", snapshot(proxy, engagement))
+
+
+# The qualitative checklist (Pass 2, feature 1; architecture D59). One engagement with an
+# ordinary item and a clearly trivial one; the small one is escalated, its reason changed,
+# and the factor cleared again, with each refusal a person can meet on the way.
+QUALITATIVE = "Test engagement Q: qualitative factors"
+RELATED_PARTY = "Sale to a firm owned by a director; see E-12"
+
+
+def test_the_qualitative_fixtures_are_the_apis_real_answers(api: TestClient) -> None:
+    use_spine(api)
+    act_as(api, SENIOR)
+    engagement = with_thresholds(api, QUALITATIVE)  # CTT 12,500
+    item(api, engagement, "60000.00", "Rent for March not accrued")
+    small = item(api, engagement, "3000.00", "Sale to a related party not invoiced")
+    path = f"/api/misstatements/{small}/qualitative"
+
+    # Before anything is recorded: clearly trivial, not escalated, left out of the totals.
+    check("qualitative-detail-clear", detail(api, small))
+    check("qualitative-blank-note", post(api, path, 422, {"factor": "fraud", "note": "   "}))
+
+    # A factor is recorded: the item is escalated, whatever its amount.
+    act_as(api, MANAGER)
+    recorded = post(api, path, 201, {"factor": "related_party", "note": RELATED_PARTY})
+    check("qualitative-recorded", recorded)
+    check("qualitative-detail-escalated", detail(api, small))
+    check("qualitative-engagement", api.get(f"/api/engagements/{engagement}").json())
+    check("qualitative-misstatements", schedule_of(api, engagement, "misstatements"))
+    check("qualitative-evaluation", schedule_of(api, engagement, "evaluation"))
+    check("qualitative-evaluation-screen", snapshot(api, engagement))
+    check(
+        "qualitative-already-recorded",
+        post(api, path, 409, {"factor": "related_party", "note": RELATED_PARTY}),
+    )
+
+    # The reason is changed: a new entry, the first one kept.
+    check(
+        "qualitative-reason-changed",
+        post(
+            api,
+            path,
+            201,
+            {"factor": "related_party", "note": "Director's firm; pricing not at arm's length"},
+        ),
+    )
+    check("qualitative-detail-reason-changed", detail(api, small))
+
+    # The factor is cleared, with the reason: the item is no longer escalated.
+    check(
+        "qualitative-cleared",
+        post(
+            api,
+            f"{path}/related_party/clear",
+            201,
+            {"note": "The buyer is not a related party: E-12 revised"},
+        ),
+    )
+    check("qualitative-detail-cleared", detail(api, small))
+    # Clearing it a second time, as from a page that still shows it recorded, is refused.
+    check(
+        "qualitative-not-recorded",
+        post(api, f"{path}/related_party/clear", 409, {"note": "Cleared twice"}),
+    )

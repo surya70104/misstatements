@@ -118,6 +118,7 @@ def run_detail(
         "classification_only": list(total.classification_only),
         "not_accumulated": list(total.not_accumulated),
         "not_accumulated_total": not_accumulated_total(total, threshold),
+        "escalated": list(total.escalated),
         "excluded": [{"ref": ref, "state": state} for ref, state in total.excluded],
         "tests": tests_json(evaluation),
         "gates": {

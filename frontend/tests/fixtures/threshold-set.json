@@ -1,6 +1,6 @@
 {
-  "id": "bc6a3123-f1c3-48a6-8e91-d6dc8b5a6215",
-  "engagement_id": "0e50efe3-b4a1-422b-aa60-0655fe2bc4cc",
+  "id": "2ff5edf6-f43a-41fe-8bfb-1c09440a5fd4",
+  "engagement_id": "234ed0ff-b457-4f7f-a8ea-9d5a9fb858f4",
   "version_no": 1,
   "om": "400000.00",
   "pm": "250000.00",
@@ -8,7 +8,7 @@
   "ctt_fraction": "0.05",
   "basis": "C-1",
   "set_by": "senior@firm",
-  "set_at": "2026-11-05T20:59:05.197469+05:30",
+  "set_at": "2026-11-06T11:09:06",
   "superseded_by": null,
   "is_current": true,
   "spine": {

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import datetime as dt
 import uuid
+from collections.abc import Sequence
 from typing import Any
 
 from fastapi import APIRouter
@@ -24,7 +25,12 @@ from oak_misstatements.core.banding import (
 )
 from oak_misstatements.core.effects import Effects, Line
 from oak_misstatements.core.states import expected_spine_status
-from oak_misstatements.models import Misstatement, MisstatementVersion, Threshold
+from oak_misstatements.models import (
+    Misstatement,
+    MisstatementVersion,
+    QualitativeFactor,
+    Threshold,
+)
 from oak_misstatements.schemas import amount
 from oak_misstatements.schemas.misstatements import MisstatementIn
 from oak_misstatements.schemas.transitions import TransitionIn
@@ -38,6 +44,11 @@ from oak_misstatements.services.misstatements import (
     measure,
     raise_misstatement,
     spine_views,
+)
+from oak_misstatements.services.qualitative import (
+    detail_json,
+    entries_by_misstatement,
+    summary_json,
 )
 from oak_misstatements.services.thresholds import current_threshold, lines_of
 from oak_misstatements.services.transitions import SpineOutcome, transition
@@ -250,6 +261,7 @@ def misstatement_json(
     settings: Settings,
     *,
     versions: list[MisstatementVersion] | None = None,
+    entries: Sequence[QualitativeFactor] = (),
 ) -> dict[str, Any]:
     banding = band_json(view, current, threshold)
     body: dict[str, Any] = {
@@ -269,6 +281,10 @@ def misstatement_json(
         "band": banding["band"],
         "band_basis": banding["basis"],
         "banding": banding,
+        # Spec section 5: escalated while a qualitative factor is recorded (D59). One
+        # misstatement read on its own carries the whole checklist and its history as well
+        # (spec section 10.2); a row of the schedule carries the summary.
+        "qualitative": summary_json(entries) if versions is None else detail_json(entries),
         "authorisation": authorisation_json(settings),
     }
     if versions is not None:
@@ -301,8 +317,16 @@ def index(
     pairs = current_versions(session, engagement)
     views = spine_views(session, spine, engagement, [version for _misstatement, version in pairs])
     threshold = current_threshold(session, engagement)
+    entries = entries_by_misstatement(session, [misstatement.id for misstatement, _v in pairs])
     return [
-        misstatement_json(misstatement, version, views[version.id], threshold, settings)
+        misstatement_json(
+            misstatement,
+            version,
+            views[version.id],
+            threshold,
+            settings,
+            entries=entries[misstatement.id],
+        )
         for misstatement, version in pairs
     ]
 
@@ -316,8 +340,15 @@ def read(
     current = versions[-1]
     views = spine_views(session, spine, engagement, [current])
     threshold = current_threshold(session, engagement)
+    entries = entries_by_misstatement(session, [misstatement.id])[misstatement.id]
     return misstatement_json(
-        misstatement, current, views[current.id], threshold, settings, versions=versions
+        misstatement,
+        current,
+        views[current.id],
+        threshold,
+        settings,
+        versions=versions,
+        entries=entries,
     )
 
 
@@ -347,8 +378,15 @@ def move(
     current = versions[-1]
     views = spine_views(session, spine, engagement, [current])
     threshold = current_threshold(session, engagement)
+    entries = entries_by_misstatement(session, [misstatement.id])[misstatement.id]
     answer = misstatement_json(
-        misstatement, current, views[current.id], threshold, settings, versions=versions
+        misstatement,
+        current,
+        views[current.id],
+        threshold,
+        settings,
+        versions=versions,
+        entries=entries,
     )
     answer["transition"] = outcome_json(outcome)
     return answer

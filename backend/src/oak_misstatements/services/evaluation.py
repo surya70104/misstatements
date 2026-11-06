@@ -17,7 +17,7 @@ acknowledgement" (spec line 142), recorded as an assumption in D39.
 from __future__ import annotations
 
 import uuid
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
 from decimal import Decimal
 from typing import Any
 
@@ -27,6 +27,7 @@ from sqlalchemy.orm import Session
 from oak_misstatements.config import Settings
 from oak_misstatements.core import gates
 from oak_misstatements.core.banding import band_item
+from oak_misstatements.core.qualitative import ESCALATION_BASIS
 from oak_misstatements.core.states import expected_spine_status
 from oak_misstatements.errors import Conflict
 from oak_misstatements.models import Engagement, Event, Misstatement, MisstatementVersion, Threshold
@@ -38,6 +39,7 @@ from oak_misstatements.services.misstatements import (
     measure,
     spine_views,
 )
+from oak_misstatements.services.qualitative import factors_by_misstatement
 from oak_misstatements.services.spine_client import SpineClient
 from oak_misstatements.services.thresholds import current_threshold, lines_of
 
@@ -80,6 +82,8 @@ class Evaluation:
     latest_conclusion: RunStatus | None = None
     strategy: gates.StrategyTrigger | None = None
     strategy_response: Acknowledgement | None = None
+    # The qualitative factors that apply to each misstatement now (D59).
+    factors: dict[uuid.UUID, tuple[str, ...]] = field(default_factory=dict)
 
 
 def _item(
@@ -87,6 +91,8 @@ def _item(
     version: MisstatementVersion,
     view: SpineView,
     threshold: Threshold | None,
+    *,
+    escalated: bool = False,
 ) -> gates.Item:
     effects = view.effects
     band = None
@@ -111,6 +117,7 @@ def _item(
         band=band,
         refusal_reason=version.refusal_reason,
         spine_adjustment_status=None if view.adjustment is None else view.adjustment.status,
+        escalated=escalated,
     )
 
 
@@ -205,7 +212,8 @@ def evaluate(
     pairs = current_versions(session, engagement)
     views = spine_views(session, client, engagement, [version for _m, version in pairs])
     threshold = current_threshold(session, engagement)
-    items = [_item(m, v, views[v.id], threshold) for m, v in pairs]
+    factors = factors_by_misstatement(session, [m.id for m, _v in pairs])
+    items = [_item(m, v, views[v.id], threshold, escalated=bool(factors[m.id])) for m, v in pairs]
     total = gates.aggregate(items, None if threshold is None else threshold.ctt)
     om, pm = gates.lines_or_none(None if threshold is None else lines_of(threshold))
     hard = gates.gate("hard", total, om)
@@ -237,6 +245,7 @@ def evaluate(
         unbanded,
         decision,
         inconsistent=inconsistent,
+        factors=factors,
     )
     strategy = gates.strategy_trigger(total, om, settings.strategy_trigger_fraction)
     return replace(
@@ -288,6 +297,7 @@ def item_labels(evaluation: Evaluation) -> list[dict[str, Any]]:
             "band": None if item.band is None else item.band.value,
             "classification_only": item.classification_only,
             "uncorrected": item.uncorrected,
+            "escalated": item.escalated,
         }
         for item, (_m, version) in zip(evaluation.items, evaluation.pairs, strict=True)
     ]
@@ -303,6 +313,17 @@ def tests_json(evaluation: Evaluation) -> dict[str, Any]:
             ],
             "at_or_above_om": [item.ref for item in gates.items_at_or_above(evaluation.items, om)],
             "basis": gates.INDIVIDUAL_BASIS,
+            # Spec section 5, acceptance 8: listed individually regardless of size.
+            "escalated": [
+                {
+                    "ref": item.ref,
+                    "factors": list(evaluation.factors.get(item.misstatement_id, ())),
+                    "band": None if item.band is None else item.band.value,
+                }
+                for item in evaluation.items
+                if item.uncorrected and item.escalated
+            ],
+            "escalation_basis": ESCALATION_BASIS,
         },
         "aggregate": {
             "status": evaluation.hard.status,
@@ -562,6 +583,7 @@ def item_json(item: gates.Item, view: SpineView) -> dict[str, Any]:
         "profit_before_tax": _optional_amount(item.profit),
         "net_assets": _optional_amount(item.net_assets),
         "classification_only": item.classification_only,
+        "escalated": item.escalated,
         "measure": _optional_amount(measure(view)),
         "band": None if item.band is None else item.band.value,
         "spine_status": view.state,

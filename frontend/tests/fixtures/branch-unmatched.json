@@ -1,9 +1,9 @@
 {
-  "id": "182c1913-4b7c-4ba1-a789-b7da1b3f23c4",
-  "engagement_id": "193873b9-e9e5-49aa-ae41-75ec67e3b9fb",
+  "id": "b71eb6ea-bc0f-481d-8f0e-513d513cfd76",
+  "engagement_id": "e5e35e04-afce-41d9-99c3-c91097f68b64",
   "ref": "M-3",
   "created_by": "senior@firm",
-  "created_at": "2026-11-05T20:59:06.569854+05:30",
+  "created_at": "2026-11-06T11:09:07",
   "current": {
     "version_no": 1,
     "type": "factual",
@@ -16,19 +16,19 @@
     "decided_at": null,
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "d569a032-9fb8-457a-b2c7-b6abee2204da",
+    "spine_adjustment_id": "a9f9e0ad-e11e-4af5-8d88-2e401f13dfe2",
     "spine_kind": "correction",
     "range_low": null,
     "range_high": null,
     "sample_ref": null,
     "projection_basis": null,
     "created_by": "senior@firm",
-    "created_at": "2026-11-05T20:59:06.569854+05:30"
+    "created_at": "2026-11-06T11:09:07"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "d569a032-9fb8-457a-b2c7-b6abee2204da",
+    "adjustment_id": "a9f9e0ad-e11e-4af5-8d88-2e401f13dfe2",
     "adjustment_status": "proposed",
     "kind": "correction",
     "finding_ref": "M-3",
@@ -149,12 +149,76 @@
     "band": null,
     "bands": null,
     "amounts": null,
-    "threshold_id": "1a014843-1477-4f6e-9cdd-cf4d3d6e64ea",
+    "threshold_id": "f1e50565-e4e2-4158-85be-30492a690410",
     "threshold_version_no": 1,
     "basis": "no band: the effects are unresolved (Salaries, Salaries), and nothing is banded on a guess (architecture D31, D32, D33)",
     "projected": false,
     "range_crosses_pm": null,
     "classification_only": false
+  },
+  "qualitative": {
+    "escalated": false,
+    "factors": [],
+    "escalation_basis": "an item is escalated while at least one factor of the qualitative checklist is recorded against it, each with its reason (spec section 5); an escalated item is listed individually regardless of its size (acceptance 8) and is accumulated whatever its band, because a matter is clearly trivial only when it is clearly inconsequential 'whether judged by any criteria of size, nature or circumstances' (SA 450 paragraph A2; register F5; architecture D59); which factors apply is a person's judgement and is never detected (spec section 12)",
+    "checklist": [
+      {
+        "factor": "law_or_covenant",
+        "text": "affects compliance with a law, regulation or loan covenant",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "earnings_trend",
+        "text": "masks a change in earnings or a trend",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "ratio",
+        "text": "changes a ratio used to evaluate the entity, including the eleven Schedule III ratios",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "fraud",
+        "text": "relates to a fraud or a suspected fraud",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "related_party",
+        "text": "relates to a related party transaction",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "segment_or_remuneration",
+        "text": "affects segment information, or management remuneration",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      },
+      {
+        "factor": "loss_to_profit",
+        "text": "turns a loss into a profit, or the reverse",
+        "applies": false,
+        "note": null,
+        "escalated_by": null,
+        "at": null
+      }
+    ],
+    "history": []
   },
   "authorisation": {
     "enforced": false,
@@ -186,14 +250,14 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "d569a032-9fb8-457a-b2c7-b6abee2204da",
+      "spine_adjustment_id": "a9f9e0ad-e11e-4af5-8d88-2e401f13dfe2",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-05T20:59:06.569854+05:30"
+      "created_at": "2026-11-06T11:09:07"
     }
   ]
 }

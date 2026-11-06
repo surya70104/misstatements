@@ -1,6 +1,6 @@
 {
-  "id": "2aea759f-573d-4cfa-8388-09fa548e4790",
-  "engagement_id": "0e50efe3-b4a1-422b-aa60-0655fe2bc4cc",
+  "id": "705fd678-325e-49bc-a948-e08fde90fff8",
+  "engagement_id": "234ed0ff-b457-4f7f-a8ea-9d5a9fb858f4",
   "version_no": 2,
   "om": "500000.00",
   "pm": "300000.00",
@@ -8,7 +8,7 @@
   "ctt_fraction": "0.04",
   "basis": "C-1 revised: benchmark updated to final profit before tax",
   "set_by": "manager@firm",
-  "set_at": "2026-11-05T20:59:05.197469+05:30",
+  "set_at": "2026-11-06T11:09:06",
   "superseded_by": null,
   "is_current": true,
   "spine": {
@@ -46,14 +46,14 @@
     "detail": "this module holds PM 300000.00; the Spine holds 250000.00 on version aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1. Which is right is not decided here (pending B4)"
   },
   "recompute_event": {
-    "seq": 2208,
-    "id": "33e6e739-3c32-4b9a-8aff-b316153aeb06",
-    "engagement_id": "0e50efe3-b4a1-422b-aa60-0655fe2bc4cc",
+    "seq": 1,
+    "id": "2d70a52b-cd0a-4859-a6f0-b00ef629321c",
+    "engagement_id": "234ed0ff-b457-4f7f-a8ea-9d5a9fb858f4",
     "kind": "threshold_recompute",
     "payload": {
-      "previous_threshold_id": "bc6a3123-f1c3-48a6-8e91-d6dc8b5a6215",
+      "previous_threshold_id": "2ff5edf6-f43a-41fe-8bfb-1c09440a5fd4",
       "previous_version_no": 1,
-      "current_threshold_id": "2aea759f-573d-4cfa-8388-09fa548e4790",
+      "current_threshold_id": "705fd678-325e-49bc-a948-e08fde90fff8",
       "current_version_no": 2,
       "changes": {
         "om": {
@@ -80,6 +80,6 @@
       "bands": "every band recomputes on read against the current version: nothing is stored, so the next read of any misstatement bands it against this version (D33)"
     },
     "actor": "manager@firm",
-    "at": "2026-11-05T20:59:05.197469+05:30"
+    "at": "2026-11-06T11:09:06"
   }
 }
