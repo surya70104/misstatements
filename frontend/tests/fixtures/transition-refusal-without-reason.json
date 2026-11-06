@@ -1,0 +1,17 @@
+{
+  "detail": [
+    {
+      "type": "value_error",
+      "loc": [
+        "body"
+      ],
+      "msg": "Value error, a refusal needs a reason: SA 450 paragraph 9, no blank refusals (spec section 2; acceptance 3)",
+      "input": {
+        "to": "refused"
+      },
+      "ctx": {
+        "error": {}
+      }
+    }
+  ]
+}

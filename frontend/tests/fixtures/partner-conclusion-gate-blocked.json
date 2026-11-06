@@ -1,0 +1,6 @@
+{
+  "status": 409,
+  "body": {
+    "detail": "sign-off is blocked: soft gate: aggregate at or above performance materiality on profit.gross, profit.net, net_assets.gross, net_assets.net and the partner has not acknowledged these figures (architecture D38)"
+  }
+}

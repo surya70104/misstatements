@@ -1,0 +1,6 @@
+{
+  "status": 409,
+  "body": {
+    "detail": "no Financial Spine version is pinned to this engagement; set the Spine link first"
+  }
+}

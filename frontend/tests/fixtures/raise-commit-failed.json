@@ -1,0 +1,6 @@
+{
+  "status": 503,
+  "body": {
+    "detail": "the database refused the commit (Exception: connection lost at commit); nothing was recorded here. If this request asked the Financial Spine to propose or decide an adjustment, the Spine may already hold it: read the misstatement, check state_consistency, and repeat the same request to complete it (architecture D42)"
+  }
+}

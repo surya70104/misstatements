@@ -1,0 +1,33 @@
+{
+  "status": 422,
+  "body": {
+    "detail": [
+      {
+        "type": "value_error",
+        "loc": [
+          "body"
+        ],
+        "msg": "Value error, the Dr/Cr lines must balance: debits 60000.00 differ from credits 50000.00 (spec section 3.1; acceptance 1)",
+        "input": {
+          "type": "factual",
+          "description": "Rent for March not accrued",
+          "raised_from": "wp",
+          "source_ref": "E-4.2",
+          "lines": [
+            {
+              "line_no": 5,
+              "dr": "60000.00"
+            },
+            {
+              "line_no": 3,
+              "cr": "50000.00"
+            }
+          ]
+        },
+        "ctx": {
+          "error": {}
+        }
+      }
+    ]
+  }
+}

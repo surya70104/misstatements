@@ -1,0 +1,6 @@
+{
+  "status": 409,
+  "body": {
+    "detail": "no evaluation run was recorded: M-2 disagree with the Financial Spine about their state, so the aggregate would count an item the Spine has posted or leave one out (architecture D43)"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "status": 422,
+  "body": {
+    "detail": [
+      {
+        "type": "too_short",
+        "loc": [
+          "body",
+          "lines"
+        ],
+        "msg": "List should have at least 2 items after validation, not 1",
+        "input": [
+          {
+            "line_no": 5,
+            "dr": "60000.00"
+          }
+        ],
+        "ctx": {
+          "field_type": "List",
+          "min_length": 2,
+          "actual_length": 1
+        }
+      }
+    ]
+  }
+}

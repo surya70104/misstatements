@@ -1,0 +1,31 @@
+{
+  "status": 422,
+  "body": {
+    "detail": [
+      {
+        "type": "missing",
+        "loc": [
+          "body",
+          "ctt_fraction"
+        ],
+        "msg": "Field required",
+        "input": {
+          "om": "400000.00",
+          "pm": "250000.00"
+        }
+      },
+      {
+        "type": "missing",
+        "loc": [
+          "body",
+          "basis"
+        ],
+        "msg": "Field required",
+        "input": {
+          "om": "400000.00",
+          "pm": "250000.00"
+        }
+      }
+    ]
+  }
+}

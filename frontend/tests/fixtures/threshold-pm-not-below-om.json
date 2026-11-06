@@ -1,0 +1,23 @@
+{
+  "status": 422,
+  "body": {
+    "detail": [
+      {
+        "type": "value_error",
+        "loc": [
+          "body"
+        ],
+        "msg": "Value error, performance materiality (400000.00) must be below overall materiality (400000.00): SA 320 paragraph 9 defines it as an amount set at less than materiality for the financial statements as a whole (architecture D34)",
+        "input": {
+          "om": "400000.00",
+          "pm": "400000.00",
+          "ctt_fraction": "0.05",
+          "basis": "C-1"
+        },
+        "ctx": {
+          "error": {}
+        }
+      }
+    ]
+  }
+}

@@ -2,3 +2,5 @@ node_modules
 dist
 .vite
 package-lock.json
+# Generated from the real API by backend/tests/test_frontend_fixtures.py; never hand-edited.
+tests/fixtures

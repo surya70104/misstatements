@@ -1,0 +1,7 @@
+{
+  "status": 409,
+  "body": {
+    "detail": "this engagement already has misstatements proposed on its pinned Spine version; whether it may be re-pointed to another version, and how the records follow, is not decided (pending decision B10; docs/DECISIONS_PENDING.md)",
+    "pending_decision": "B10"
+  }
+}

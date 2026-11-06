@@ -1,0 +1,583 @@
+[
+  {
+    "id": "cb913e78-a4a6-4471-bd08-58231f127f78",
+    "engagement_id": "edef94ed-913e-43f1-bfb0-6467204eae60",
+    "ref": "M-1",
+    "created_by": "senior@firm",
+    "created_at": "2026-11-05T20:58:58.470710+05:30",
+    "current": {
+      "version_no": 2,
+      "type": "factual",
+      "description": "Rent for March not accrued",
+      "raised_by": "senior@firm",
+      "raised_from": "wp",
+      "source_ref": "E-4.2",
+      "state": "communicated",
+      "communicated_at": "2026-11-05T20:58:58.619301+05:30",
+      "decided_at": null,
+      "refusal_reason": null,
+      "withdrawal_reason": null,
+      "spine_adjustment_id": "12adc907-1ff3-4195-b3d9-a18e6f7e3bfa",
+      "spine_kind": "correction",
+      "range_low": null,
+      "range_high": null,
+      "sample_ref": null,
+      "projection_basis": null,
+      "created_by": "senior@firm",
+      "created_at": "2026-11-05T20:58:58.470710+05:30"
+    },
+    "spine": {
+      "status": "unreachable",
+      "detail": "the Financial Spine cannot be reached for the balances",
+      "adjustment_id": null,
+      "adjustment_status": null,
+      "kind": null,
+      "finding_ref": null,
+      "proposed_by": null,
+      "proposed_at": null,
+      "decided_by": null,
+      "decided_at": null,
+      "decision_note": null,
+      "measure": null,
+      "tree_version_now": null,
+      "lines": []
+    },
+    "state_consistency": {
+      "consistent": null,
+      "state": "communicated",
+      "expected_adjustment_status": "proposed",
+      "adjustment_status": null,
+      "detail": null
+    },
+    "effects": null,
+    "classification": null,
+    "band": null,
+    "band_basis": "no band: the Financial Spine could not be read, so there are no effects to band",
+    "banding": {
+      "band": null,
+      "bands": null,
+      "amounts": null,
+      "threshold_id": "b75d968b-2675-45b4-b51d-9266617702a3",
+      "threshold_version_no": 1,
+      "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
+      "projected": false,
+      "range_crosses_pm": null,
+      "classification_only": false
+    },
+    "authorisation": {
+      "enforced": false,
+      "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+      "identity_mode": "dev",
+      "production_grade": false,
+      "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+      "partner_actions": {
+        "enforced": true,
+        "available": false,
+        "actions": [
+          "soft_gate_acknowledgement",
+          "conclusion"
+        ],
+        "source": null,
+        "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
+      }
+    }
+  },
+  {
+    "id": "27112e4a-8e5e-4aa9-9bfe-ae23dd143b53",
+    "engagement_id": "edef94ed-913e-43f1-bfb0-6467204eae60",
+    "ref": "M-2",
+    "created_by": "senior@firm",
+    "created_at": "2026-11-05T20:58:58.470710+05:30",
+    "current": {
+      "version_no": 1,
+      "type": "factual",
+      "description": "Sales invoice of 31 March not recorded",
+      "raised_by": "senior@firm",
+      "raised_from": "wp",
+      "source_ref": "R-2.1",
+      "state": "raised",
+      "communicated_at": null,
+      "decided_at": null,
+      "refusal_reason": null,
+      "withdrawal_reason": null,
+      "spine_adjustment_id": "00ffd36e-1a76-4248-96e4-2f4b6e2ee781",
+      "spine_kind": "correction",
+      "range_low": null,
+      "range_high": null,
+      "sample_ref": null,
+      "projection_basis": null,
+      "created_by": "senior@firm",
+      "created_at": "2026-11-05T20:58:58.470710+05:30"
+    },
+    "spine": {
+      "status": "unreachable",
+      "detail": "the Financial Spine cannot be reached for the balances",
+      "adjustment_id": null,
+      "adjustment_status": null,
+      "kind": null,
+      "finding_ref": null,
+      "proposed_by": null,
+      "proposed_at": null,
+      "decided_by": null,
+      "decided_at": null,
+      "decision_note": null,
+      "measure": null,
+      "tree_version_now": null,
+      "lines": []
+    },
+    "state_consistency": {
+      "consistent": null,
+      "state": "raised",
+      "expected_adjustment_status": "proposed",
+      "adjustment_status": null,
+      "detail": null
+    },
+    "effects": null,
+    "classification": null,
+    "band": null,
+    "band_basis": "no band: the Financial Spine could not be read, so there are no effects to band",
+    "banding": {
+      "band": null,
+      "bands": null,
+      "amounts": null,
+      "threshold_id": "b75d968b-2675-45b4-b51d-9266617702a3",
+      "threshold_version_no": 1,
+      "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
+      "projected": false,
+      "range_crosses_pm": null,
+      "classification_only": false
+    },
+    "authorisation": {
+      "enforced": false,
+      "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+      "identity_mode": "dev",
+      "production_grade": false,
+      "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+      "partner_actions": {
+        "enforced": true,
+        "available": false,
+        "actions": [
+          "soft_gate_acknowledgement",
+          "conclusion"
+        ],
+        "source": null,
+        "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
+      }
+    }
+  },
+  {
+    "id": "d3baf2ee-8577-4a1a-a41b-1cedb1eaf9ff",
+    "engagement_id": "edef94ed-913e-43f1-bfb0-6467204eae60",
+    "ref": "M-3",
+    "created_by": "senior@firm",
+    "created_at": "2026-11-05T20:58:58.470710+05:30",
+    "current": {
+      "version_no": 3,
+      "type": "judgemental",
+      "description": "Depreciation on plant understated: useful life taken as 15 years",
+      "raised_by": "senior@firm",
+      "raised_from": "wp",
+      "source_ref": "F-3.4",
+      "state": "refused",
+      "communicated_at": "2026-11-05T20:58:58.717117+05:30",
+      "decided_at": "2026-11-05T20:58:58.748707+05:30",
+      "refusal_reason": "Management considers the useful life appropriate",
+      "withdrawal_reason": null,
+      "spine_adjustment_id": "3f90e4f6-fbe0-4ab2-8b02-9ac050941499",
+      "spine_kind": "correction",
+      "range_low": "70000.00",
+      "range_high": "110000.00",
+      "sample_ref": null,
+      "projection_basis": null,
+      "created_by": "senior@firm",
+      "created_at": "2026-11-05T20:58:58.470710+05:30"
+    },
+    "spine": {
+      "status": "unreachable",
+      "detail": "the Financial Spine cannot be reached for the balances",
+      "adjustment_id": null,
+      "adjustment_status": null,
+      "kind": null,
+      "finding_ref": null,
+      "proposed_by": null,
+      "proposed_at": null,
+      "decided_by": null,
+      "decided_at": null,
+      "decision_note": null,
+      "measure": null,
+      "tree_version_now": null,
+      "lines": []
+    },
+    "state_consistency": {
+      "consistent": null,
+      "state": "refused",
+      "expected_adjustment_status": "refused",
+      "adjustment_status": null,
+      "detail": null
+    },
+    "effects": null,
+    "classification": null,
+    "band": null,
+    "band_basis": "no band: the Financial Spine could not be read, so there are no effects to band",
+    "banding": {
+      "band": null,
+      "bands": null,
+      "amounts": null,
+      "threshold_id": "b75d968b-2675-45b4-b51d-9266617702a3",
+      "threshold_version_no": 1,
+      "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
+      "projected": false,
+      "range_crosses_pm": false,
+      "classification_only": false
+    },
+    "authorisation": {
+      "enforced": false,
+      "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+      "identity_mode": "dev",
+      "production_grade": false,
+      "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+      "partner_actions": {
+        "enforced": true,
+        "available": false,
+        "actions": [
+          "soft_gate_acknowledgement",
+          "conclusion"
+        ],
+        "source": null,
+        "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
+      }
+    }
+  },
+  {
+    "id": "a76711c6-4b7d-4eb0-9f0b-ec1a4cd78d91",
+    "engagement_id": "edef94ed-913e-43f1-bfb0-6467204eae60",
+    "ref": "M-4",
+    "created_by": "senior@firm",
+    "created_at": "2026-11-05T20:58:58.470710+05:30",
+    "current": {
+      "version_no": 1,
+      "type": "projected",
+      "description": "Sales cut-off errors projected over the March population",
+      "raised_by": "senior@firm",
+      "raised_from": "wp",
+      "source_ref": "R-5.3",
+      "state": "raised",
+      "communicated_at": null,
+      "decided_at": null,
+      "refusal_reason": null,
+      "withdrawal_reason": null,
+      "spine_adjustment_id": "3f6b41b4-775f-4f69-8038-9e6a2a1046ff",
+      "spine_kind": "correction",
+      "range_low": null,
+      "range_high": null,
+      "sample_ref": "S-12",
+      "projection_basis": "Ratio of error to sample value, applied to the population",
+      "created_by": "senior@firm",
+      "created_at": "2026-11-05T20:58:58.470710+05:30"
+    },
+    "spine": {
+      "status": "unreachable",
+      "detail": "the Financial Spine cannot be reached for the balances",
+      "adjustment_id": null,
+      "adjustment_status": null,
+      "kind": null,
+      "finding_ref": null,
+      "proposed_by": null,
+      "proposed_at": null,
+      "decided_by": null,
+      "decided_at": null,
+      "decision_note": null,
+      "measure": null,
+      "tree_version_now": null,
+      "lines": []
+    },
+    "state_consistency": {
+      "consistent": null,
+      "state": "raised",
+      "expected_adjustment_status": "proposed",
+      "adjustment_status": null,
+      "detail": null
+    },
+    "effects": null,
+    "classification": null,
+    "band": null,
+    "band_basis": "no band: the Financial Spine could not be read, so there are no effects to band",
+    "banding": {
+      "band": null,
+      "bands": null,
+      "amounts": null,
+      "threshold_id": "b75d968b-2675-45b4-b51d-9266617702a3",
+      "threshold_version_no": 1,
+      "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
+      "projected": true,
+      "range_crosses_pm": null,
+      "classification_only": false
+    },
+    "authorisation": {
+      "enforced": false,
+      "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+      "identity_mode": "dev",
+      "production_grade": false,
+      "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+      "partner_actions": {
+        "enforced": true,
+        "available": false,
+        "actions": [
+          "soft_gate_acknowledgement",
+          "conclusion"
+        ],
+        "source": null,
+        "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
+      }
+    }
+  },
+  {
+    "id": "a39768fe-f932-499b-8a6e-2239c406d0c4",
+    "engagement_id": "edef94ed-913e-43f1-bfb0-6467204eae60",
+    "ref": "M-5",
+    "created_by": "senior@firm",
+    "created_at": "2026-11-05T20:58:58.470710+05:30",
+    "current": {
+      "version_no": 3,
+      "type": "factual",
+      "description": "Salaries for March not provided",
+      "raised_by": "senior@firm",
+      "raised_from": "wp",
+      "source_ref": "E-2.6",
+      "state": "corrected",
+      "communicated_at": "2026-11-05T20:58:58.843561+05:30",
+      "decided_at": "2026-11-05T20:58:58.878261+05:30",
+      "refusal_reason": null,
+      "withdrawal_reason": null,
+      "spine_adjustment_id": "d891351e-923a-430a-918a-4a3992036c79",
+      "spine_kind": "correction",
+      "range_low": null,
+      "range_high": null,
+      "sample_ref": null,
+      "projection_basis": null,
+      "created_by": "senior@firm",
+      "created_at": "2026-11-05T20:58:58.470710+05:30"
+    },
+    "spine": {
+      "status": "unreachable",
+      "detail": "the Financial Spine cannot be reached for the balances",
+      "adjustment_id": null,
+      "adjustment_status": null,
+      "kind": null,
+      "finding_ref": null,
+      "proposed_by": null,
+      "proposed_at": null,
+      "decided_by": null,
+      "decided_at": null,
+      "decision_note": null,
+      "measure": null,
+      "tree_version_now": null,
+      "lines": []
+    },
+    "state_consistency": {
+      "consistent": null,
+      "state": "corrected",
+      "expected_adjustment_status": "accepted",
+      "adjustment_status": null,
+      "detail": null
+    },
+    "effects": null,
+    "classification": null,
+    "band": null,
+    "band_basis": "no band: the Financial Spine could not be read, so there are no effects to band",
+    "banding": {
+      "band": null,
+      "bands": null,
+      "amounts": null,
+      "threshold_id": "b75d968b-2675-45b4-b51d-9266617702a3",
+      "threshold_version_no": 1,
+      "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
+      "projected": false,
+      "range_crosses_pm": null,
+      "classification_only": false
+    },
+    "authorisation": {
+      "enforced": false,
+      "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+      "identity_mode": "dev",
+      "production_grade": false,
+      "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+      "partner_actions": {
+        "enforced": true,
+        "available": false,
+        "actions": [
+          "soft_gate_acknowledgement",
+          "conclusion"
+        ],
+        "source": null,
+        "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
+      }
+    }
+  },
+  {
+    "id": "a7970f83-7d18-42bc-9d9b-29fd5ed4cb46",
+    "engagement_id": "edef94ed-913e-43f1-bfb0-6467204eae60",
+    "ref": "M-6",
+    "created_by": "senior@firm",
+    "created_at": "2026-11-05T20:58:58.470710+05:30",
+    "current": {
+      "version_no": 1,
+      "type": "factual",
+      "description": "Creditor balance shown under provisions",
+      "raised_by": "senior@firm",
+      "raised_from": "manual",
+      "source_ref": "L-1.3",
+      "state": "raised",
+      "communicated_at": null,
+      "decided_at": null,
+      "refusal_reason": null,
+      "withdrawal_reason": null,
+      "spine_adjustment_id": "1fd9535e-7e11-4333-b1c7-cc3dffb90693",
+      "spine_kind": "reclass",
+      "range_low": null,
+      "range_high": null,
+      "sample_ref": null,
+      "projection_basis": null,
+      "created_by": "senior@firm",
+      "created_at": "2026-11-05T20:58:58.470710+05:30"
+    },
+    "spine": {
+      "status": "unreachable",
+      "detail": "the Financial Spine cannot be reached for the balances",
+      "adjustment_id": null,
+      "adjustment_status": null,
+      "kind": null,
+      "finding_ref": null,
+      "proposed_by": null,
+      "proposed_at": null,
+      "decided_by": null,
+      "decided_at": null,
+      "decision_note": null,
+      "measure": null,
+      "tree_version_now": null,
+      "lines": []
+    },
+    "state_consistency": {
+      "consistent": null,
+      "state": "raised",
+      "expected_adjustment_status": "proposed",
+      "adjustment_status": null,
+      "detail": null
+    },
+    "effects": null,
+    "classification": null,
+    "band": null,
+    "band_basis": "no band: the Financial Spine could not be read, so there are no effects to band",
+    "banding": {
+      "band": null,
+      "bands": null,
+      "amounts": null,
+      "threshold_id": "b75d968b-2675-45b4-b51d-9266617702a3",
+      "threshold_version_no": 1,
+      "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
+      "projected": false,
+      "range_crosses_pm": null,
+      "classification_only": false
+    },
+    "authorisation": {
+      "enforced": false,
+      "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+      "identity_mode": "dev",
+      "production_grade": false,
+      "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+      "partner_actions": {
+        "enforced": true,
+        "available": false,
+        "actions": [
+          "soft_gate_acknowledgement",
+          "conclusion"
+        ],
+        "source": null,
+        "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
+      }
+    }
+  },
+  {
+    "id": "eb6a48db-268a-4adc-90ff-0f1ae20c28b0",
+    "engagement_id": "edef94ed-913e-43f1-bfb0-6467204eae60",
+    "ref": "M-7",
+    "created_by": "senior@firm",
+    "created_at": "2026-11-05T20:58:58.470710+05:30",
+    "current": {
+      "version_no": 3,
+      "type": "factual",
+      "description": "Bank charges for March not recorded",
+      "raised_by": "senior@firm",
+      "raised_from": "wp",
+      "source_ref": "B-1.2",
+      "state": "withdrawn",
+      "communicated_at": "2026-11-05T20:58:58.972342+05:30",
+      "decided_at": "2026-11-05T20:58:59.004039+05:30",
+      "refusal_reason": null,
+      "withdrawal_reason": "Recorded by the client in April; not an error of this year",
+      "spine_adjustment_id": "3c787816-616f-4c6f-b432-bcc6f778da7d",
+      "spine_kind": "correction",
+      "range_low": null,
+      "range_high": null,
+      "sample_ref": null,
+      "projection_basis": null,
+      "created_by": "senior@firm",
+      "created_at": "2026-11-05T20:58:58.470710+05:30"
+    },
+    "spine": {
+      "status": "unreachable",
+      "detail": "the Financial Spine cannot be reached for the balances",
+      "adjustment_id": null,
+      "adjustment_status": null,
+      "kind": null,
+      "finding_ref": null,
+      "proposed_by": null,
+      "proposed_at": null,
+      "decided_by": null,
+      "decided_at": null,
+      "decision_note": null,
+      "measure": null,
+      "tree_version_now": null,
+      "lines": []
+    },
+    "state_consistency": {
+      "consistent": null,
+      "state": "withdrawn",
+      "expected_adjustment_status": "refused",
+      "adjustment_status": null,
+      "detail": null
+    },
+    "effects": null,
+    "classification": null,
+    "band": null,
+    "band_basis": "no band: the Financial Spine could not be read, so there are no effects to band",
+    "banding": {
+      "band": null,
+      "bands": null,
+      "amounts": null,
+      "threshold_id": "b75d968b-2675-45b4-b51d-9266617702a3",
+      "threshold_version_no": 1,
+      "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
+      "projected": false,
+      "range_crosses_pm": null,
+      "classification_only": false
+    },
+    "authorisation": {
+      "enforced": false,
+      "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+      "identity_mode": "dev",
+      "production_grade": false,
+      "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+      "partner_actions": {
+        "enforced": true,
+        "available": false,
+        "actions": [
+          "soft_gate_acknowledgement",
+          "conclusion"
+        ],
+        "source": null,
+        "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
+      }
+    }
+  }
+]

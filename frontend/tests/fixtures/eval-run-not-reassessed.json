@@ -1,0 +1,16 @@
+{
+  "detail": [
+    {
+      "type": "literal_error",
+      "loc": [
+        "body",
+        "materiality_reassessed"
+      ],
+      "msg": "Input should be True",
+      "input": false,
+      "ctx": {
+        "expected": "True"
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "status": 422,
+  "body": {
+    "detail": [
+      {
+        "type": "less_than",
+        "loc": [
+          "body",
+          "ctt_fraction"
+        ],
+        "msg": "Input should be less than 1",
+        "input": "1.5",
+        "ctx": {
+          "lt": 1
+        }
+      }
+    ]
+  }
+}

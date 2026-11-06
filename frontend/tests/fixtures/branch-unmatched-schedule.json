@@ -1,0 +1,466 @@
+[
+  {
+    "id": "50175ad5-5562-46c6-a269-6d7fb54ed34d",
+    "engagement_id": "193873b9-e9e5-49aa-ae41-75ec67e3b9fb",
+    "ref": "M-1",
+    "created_by": "senior@firm",
+    "created_at": "2026-11-05T20:59:06.569854+05:30",
+    "current": {
+      "version_no": 3,
+      "type": "judgemental",
+      "description": "Inventory provision understated: net realisable value",
+      "raised_by": "senior@firm",
+      "raised_from": "wp",
+      "source_ref": "E-4.2",
+      "state": "refused",
+      "communicated_at": "2026-11-05T20:59:06.724734+05:30",
+      "decided_at": "2026-11-05T20:59:06.752186+05:30",
+      "refusal_reason": "Management considers the provision adequate",
+      "withdrawal_reason": null,
+      "spine_adjustment_id": "141d222b-cc59-45df-9564-af8a0691f367",
+      "spine_kind": "correction",
+      "range_low": "200000.00",
+      "range_high": "300000.00",
+      "sample_ref": null,
+      "projection_basis": null,
+      "created_by": "senior@firm",
+      "created_at": "2026-11-05T20:59:06.569854+05:30"
+    },
+    "spine": {
+      "status": "ok",
+      "detail": null,
+      "adjustment_id": "141d222b-cc59-45df-9564-af8a0691f367",
+      "adjustment_status": "refused",
+      "kind": "correction",
+      "finding_ref": "M-1",
+      "proposed_by": "spine-dev@localhost",
+      "proposed_at": "2026-11-04T10:00:00+05:30",
+      "decided_by": "spine-dev@localhost",
+      "decided_at": "2026-11-04T10:00:00+05:30",
+      "decision_note": "M-1 refused by management: Management considers the provision adequate (recorded by senior@firm)",
+      "measure": "240000.00",
+      "tree_version_now": "double-division1-2026-11-04",
+      "lines": [
+        {
+          "ledger_key": "depreciation",
+          "ledger_name": "Depreciation",
+          "parent_chain": [
+            "Indirect Expenses"
+          ],
+          "head_id": "pl.expenses.depreciation",
+          "nature": "PL",
+          "section": "pl_before_tax",
+          "dr": "240000.00",
+          "cr": "0.00"
+        },
+        {
+          "ledger_key": "accumulated depreciation",
+          "ledger_name": "Accumulated depreciation",
+          "parent_chain": [
+            "Fixed Assets"
+          ],
+          "head_id": "bs.assets.non_current.ppe.accumulated_depreciation",
+          "nature": "BS",
+          "section": "assets",
+          "dr": "0.00",
+          "cr": "240000.00"
+        }
+      ]
+    },
+    "state_consistency": {
+      "consistent": true,
+      "state": "refused",
+      "expected_adjustment_status": "refused",
+      "adjustment_status": "refused",
+      "detail": null
+    },
+    "effects": {
+      "profit_before_tax": "-240000.00",
+      "profit_basis": "credits less debits on profit-and-loss heads above the Schedule III profit-before-tax line (item IX); tax expense (items X, XIII) and discontinuing operations (XII) are excluded (architecture D31)",
+      "profit_partial": false,
+      "net_assets": "-240000.00",
+      "net_assets_basis": "assets less liabilities: the signed movement, debit positive, of every line on an asset head (item II) or a liability head (items I(3), I(4)); equity heads (I(1)) are outside the sum, so a direct equity entry moves net assets; tax lines count only when the entry carries them, nothing is imputed (architecture D31)",
+      "partial": false,
+      "unresolved": [],
+      "captions": [
+        {
+          "head_id": "pl.expenses.depreciation",
+          "nature": "PL",
+          "signed": "240000.00"
+        },
+        {
+          "head_id": "bs.assets.non_current.ppe.accumulated_depreciation",
+          "nature": "BS",
+          "signed": "-240000.00"
+        }
+      ],
+      "classification_only": false,
+      "spine_version_at_raise": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "tree_version_at_raise": "double-division1-2026-11-04"
+    },
+    "classification": {
+      "spine_version_at_raise": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "tree_version_at_raise": "double-division1-2026-11-04",
+      "tree_version_now": "double-division1-2026-11-04",
+      "drift": [],
+      "unmatched": [],
+      "effects_on_current_classification": null
+    },
+    "band": "accumulated",
+    "band_basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
+    "banding": {
+      "band": "accumulated",
+      "bands": {
+        "profit": "accumulated",
+        "net_assets": "accumulated"
+      },
+      "amounts": {
+        "profit": "240000.00",
+        "net_assets": "240000.00"
+      },
+      "threshold_id": "1a014843-1477-4f6e-9cdd-cf4d3d6e64ea",
+      "threshold_version_no": 1,
+      "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
+      "projected": false,
+      "range_crosses_pm": true,
+      "classification_only": false
+    },
+    "authorisation": {
+      "enforced": false,
+      "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+      "identity_mode": "dev",
+      "production_grade": false,
+      "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+      "partner_actions": {
+        "enforced": true,
+        "available": false,
+        "actions": [
+          "soft_gate_acknowledgement",
+          "conclusion"
+        ],
+        "source": null,
+        "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
+      }
+    }
+  },
+  {
+    "id": "434f0d4f-f915-4561-98ec-6207b29a0108",
+    "engagement_id": "193873b9-e9e5-49aa-ae41-75ec67e3b9fb",
+    "ref": "M-2",
+    "created_by": "senior@firm",
+    "created_at": "2026-11-05T20:59:06.569854+05:30",
+    "current": {
+      "version_no": 3,
+      "type": "factual",
+      "description": "Rent for March not accrued",
+      "raised_by": "senior@firm",
+      "raised_from": "wp",
+      "source_ref": "E-4.2",
+      "state": "corrected",
+      "communicated_at": "2026-11-05T20:59:06.803172+05:30",
+      "decided_at": "2026-11-05T20:59:07.119133+05:30",
+      "refusal_reason": null,
+      "withdrawal_reason": null,
+      "spine_adjustment_id": "58dc495f-7eff-43cf-b972-5940a68f49fe",
+      "spine_kind": "correction",
+      "range_low": null,
+      "range_high": null,
+      "sample_ref": null,
+      "projection_basis": null,
+      "created_by": "senior@firm",
+      "created_at": "2026-11-05T20:59:06.569854+05:30"
+    },
+    "spine": {
+      "status": "ok",
+      "detail": null,
+      "adjustment_id": "58dc495f-7eff-43cf-b972-5940a68f49fe",
+      "adjustment_status": "accepted",
+      "kind": "correction",
+      "finding_ref": "M-2",
+      "proposed_by": "spine-dev@localhost",
+      "proposed_at": "2026-11-04T10:00:00+05:30",
+      "decided_by": "spine-dev@localhost",
+      "decided_at": "2026-11-04T10:00:00+05:30",
+      "decision_note": null,
+      "measure": "30000.00",
+      "tree_version_now": "double-division1-2026-11-04",
+      "lines": [
+        {
+          "ledger_key": "rent",
+          "ledger_name": "Rent",
+          "parent_chain": [
+            "Indirect Expenses"
+          ],
+          "head_id": "pl.expenses.other",
+          "nature": "PL",
+          "section": "pl_before_tax",
+          "dr": "30000.00",
+          "cr": "0.00"
+        },
+        {
+          "ledger_key": "provision for expenses",
+          "ledger_name": "Provision for expenses",
+          "parent_chain": [
+            "Provisions"
+          ],
+          "head_id": "bs.liabilities.current.provisions",
+          "nature": "BS",
+          "section": "liabilities",
+          "dr": "0.00",
+          "cr": "30000.00"
+        }
+      ]
+    },
+    "state_consistency": {
+      "consistent": true,
+      "state": "corrected",
+      "expected_adjustment_status": "accepted",
+      "adjustment_status": "accepted",
+      "detail": null
+    },
+    "effects": {
+      "profit_before_tax": "-30000.00",
+      "profit_basis": "credits less debits on profit-and-loss heads above the Schedule III profit-before-tax line (item IX); tax expense (items X, XIII) and discontinuing operations (XII) are excluded (architecture D31)",
+      "profit_partial": false,
+      "net_assets": "-30000.00",
+      "net_assets_basis": "assets less liabilities: the signed movement, debit positive, of every line on an asset head (item II) or a liability head (items I(3), I(4)); equity heads (I(1)) are outside the sum, so a direct equity entry moves net assets; tax lines count only when the entry carries them, nothing is imputed (architecture D31)",
+      "partial": false,
+      "unresolved": [],
+      "captions": [
+        {
+          "head_id": "pl.expenses.other",
+          "nature": "PL",
+          "signed": "30000.00"
+        },
+        {
+          "head_id": "bs.liabilities.current.provisions",
+          "nature": "BS",
+          "signed": "-30000.00"
+        }
+      ],
+      "classification_only": false,
+      "spine_version_at_raise": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "tree_version_at_raise": "double-division1-2026-11-04"
+    },
+    "classification": {
+      "spine_version_at_raise": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "tree_version_at_raise": "double-division1-2026-11-04",
+      "tree_version_now": "double-division1-2026-11-04",
+      "drift": [],
+      "unmatched": [],
+      "effects_on_current_classification": null
+    },
+    "band": "accumulated",
+    "band_basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
+    "banding": {
+      "band": "accumulated",
+      "bands": {
+        "profit": "accumulated",
+        "net_assets": "accumulated"
+      },
+      "amounts": {
+        "profit": "30000.00",
+        "net_assets": "30000.00"
+      },
+      "threshold_id": "1a014843-1477-4f6e-9cdd-cf4d3d6e64ea",
+      "threshold_version_no": 1,
+      "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
+      "projected": false,
+      "range_crosses_pm": null,
+      "classification_only": false
+    },
+    "authorisation": {
+      "enforced": false,
+      "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+      "identity_mode": "dev",
+      "production_grade": false,
+      "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+      "partner_actions": {
+        "enforced": true,
+        "available": false,
+        "actions": [
+          "soft_gate_acknowledgement",
+          "conclusion"
+        ],
+        "source": null,
+        "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
+      }
+    }
+  },
+  {
+    "id": "182c1913-4b7c-4ba1-a789-b7da1b3f23c4",
+    "engagement_id": "193873b9-e9e5-49aa-ae41-75ec67e3b9fb",
+    "ref": "M-3",
+    "created_by": "senior@firm",
+    "created_at": "2026-11-05T20:59:06.569854+05:30",
+    "current": {
+      "version_no": 1,
+      "type": "factual",
+      "description": "Salaries for March not provided",
+      "raised_by": "senior@firm",
+      "raised_from": "wp",
+      "source_ref": "E-4.2",
+      "state": "raised",
+      "communicated_at": null,
+      "decided_at": null,
+      "refusal_reason": null,
+      "withdrawal_reason": null,
+      "spine_adjustment_id": "d569a032-9fb8-457a-b2c7-b6abee2204da",
+      "spine_kind": "correction",
+      "range_low": null,
+      "range_high": null,
+      "sample_ref": null,
+      "projection_basis": null,
+      "created_by": "senior@firm",
+      "created_at": "2026-11-05T20:59:06.569854+05:30"
+    },
+    "spine": {
+      "status": "ok",
+      "detail": null,
+      "adjustment_id": "d569a032-9fb8-457a-b2c7-b6abee2204da",
+      "adjustment_status": "proposed",
+      "kind": "correction",
+      "finding_ref": "M-3",
+      "proposed_by": "spine-dev@localhost",
+      "proposed_at": "2026-11-04T10:00:00+05:30",
+      "decided_by": null,
+      "decided_at": null,
+      "decision_note": null,
+      "measure": "20000.00",
+      "tree_version_now": "double-division1-2026-11-04",
+      "lines": [
+        {
+          "ledger_key": "salaries (old)",
+          "ledger_name": "Salaries",
+          "parent_chain": [
+            "Indirect Expenses"
+          ],
+          "head_id": null,
+          "nature": null,
+          "section": "unresolved",
+          "dr": "20000.00",
+          "cr": "0.00"
+        },
+        {
+          "ledger_key": "provision for expenses",
+          "ledger_name": "Provision for expenses",
+          "parent_chain": [
+            "Provisions"
+          ],
+          "head_id": "bs.liabilities.current.provisions",
+          "nature": "BS",
+          "section": "liabilities",
+          "dr": "0.00",
+          "cr": "20000.00"
+        },
+        {
+          "ledger_key": "salaries",
+          "ledger_name": "Salaries",
+          "parent_chain": [
+            "Indirect Expenses"
+          ],
+          "head_id": "pl.expenses.employee",
+          "nature": "PL",
+          "section": "unresolved",
+          "dr": "0.00",
+          "cr": "0.00"
+        }
+      ]
+    },
+    "state_consistency": {
+      "consistent": true,
+      "state": "raised",
+      "expected_adjustment_status": "proposed",
+      "adjustment_status": "proposed",
+      "detail": null
+    },
+    "effects": {
+      "profit_before_tax": null,
+      "profit_basis": "not computed: Salaries, Salaries cannot be classified, so neither effect is reliable and no partial total is offered (architecture D31)",
+      "profit_partial": true,
+      "net_assets": null,
+      "net_assets_basis": "not computed: Salaries, Salaries cannot be classified, so neither effect is reliable and no partial total is offered (architecture D31)",
+      "partial": true,
+      "unresolved": [
+        "Salaries",
+        "Salaries"
+      ],
+      "captions": [
+        {
+          "head_id": "bs.liabilities.current.provisions",
+          "nature": "BS",
+          "signed": "-20000.00"
+        },
+        {
+          "head_id": "pl.expenses.employee",
+          "nature": "PL",
+          "signed": "0.00"
+        }
+      ],
+      "classification_only": false,
+      "spine_version_at_raise": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "tree_version_at_raise": "double-division1-2026-11-04"
+    },
+    "classification": {
+      "spine_version_at_raise": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "tree_version_at_raise": "double-division1-2026-11-04",
+      "tree_version_now": "double-division1-2026-11-04",
+      "drift": [],
+      "unmatched": [
+        "Salaries",
+        "Salaries"
+      ],
+      "effects_on_current_classification": {
+        "profit_before_tax": null,
+        "profit_basis": "not computed: Salaries cannot be classified, so neither effect is reliable and no partial total is offered (architecture D31)",
+        "profit_partial": true,
+        "net_assets": null,
+        "net_assets_basis": "not computed: Salaries cannot be classified, so neither effect is reliable and no partial total is offered (architecture D31)",
+        "partial": true,
+        "unresolved": [
+          "Salaries"
+        ],
+        "captions": [
+          {
+            "head_id": "bs.liabilities.current.provisions",
+            "nature": "BS",
+            "signed": "-20000.00"
+          }
+        ],
+        "classification_only": false,
+        "spine_version_at_raise": null,
+        "tree_version_at_raise": null
+      }
+    },
+    "band": null,
+    "band_basis": "no band: the effects are unresolved (Salaries, Salaries), and nothing is banded on a guess (architecture D31, D32, D33)",
+    "banding": {
+      "band": null,
+      "bands": null,
+      "amounts": null,
+      "threshold_id": "1a014843-1477-4f6e-9cdd-cf4d3d6e64ea",
+      "threshold_version_no": 1,
+      "basis": "no band: the effects are unresolved (Salaries, Salaries), and nothing is banded on a guess (architecture D31, D32, D33)",
+      "projected": false,
+      "range_crosses_pm": null,
+      "classification_only": false
+    },
+    "authorisation": {
+      "enforced": false,
+      "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+      "identity_mode": "dev",
+      "production_grade": false,
+      "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+      "partner_actions": {
+        "enforced": true,
+        "available": false,
+        "actions": [
+          "soft_gate_acknowledgement",
+          "conclusion"
+        ],
+        "source": null,
+        "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
+      }
+    }
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "status": 422,
+  "body": {
+    "detail": [
+      {
+        "type": "value_error",
+        "loc": [
+          "body"
+        ],
+        "msg": "Value error, a judgemental misstatement carries range_low and range_high",
+        "input": {
+          "type": "judgemental",
+          "description": "Rent for March not accrued",
+          "raised_from": "wp",
+          "source_ref": "E-4.2",
+          "lines": [
+            {
+              "line_no": 5,
+              "dr": "60000.00"
+            },
+            {
+              "line_no": 3,
+              "cr": "60000.00"
+            }
+          ]
+        },
+        "ctx": {
+          "error": {}
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "status": 422,
+  "body": {
+    "detail": [
+      {
+        "type": "value_error",
+        "loc": [
+          "body"
+        ],
+        "msg": "Value error, a Spine version needs the Spine engagement it belongs to",
+        "input": {
+          "label": "Test engagement",
+          "spine_version_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"
+        },
+        "ctx": {
+          "error": {}
+        }
+      }
+    ]
+  }
+}

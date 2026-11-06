@@ -1,0 +1,138 @@
+{
+  "id": "c701e4b3-85f2-427c-8c8e-d79439d9ed67",
+  "engagement_id": "ae119dc0-f0fa-4cc6-a799-3ea7a7a6cb2a",
+  "run_no": 2,
+  "threshold_id": "6b2e6e2b-f06e-4395-90fd-dfded719d7d4",
+  "threshold_version_no": 1,
+  "agg_gross_pbt": "60000.00",
+  "agg_net_pbt": "-60000.00",
+  "agg_gross_na": "60000.00",
+  "agg_net_na": "-60000.00",
+  "materiality_reassessed": true,
+  "evaluated_by": "partner@firm",
+  "at": "2026-11-05T20:59:03.975556+05:30",
+  "concluded": true,
+  "determination": "not_material",
+  "conclusion": "Uncorrected misstatements are not material, individually or in aggregate.",
+  "basis": "The aggregate is below performance materiality on every measure; see C-4.",
+  "concluded_by": "partner@firm",
+  "detail": {
+    "threshold": {
+      "id": "6b2e6e2b-f06e-4395-90fd-dfded719d7d4",
+      "version_no": 1,
+      "om": "400000.00",
+      "pm": "250000.00",
+      "ctt": "12500.00"
+    },
+    "figures": {
+      "profit_before_tax": {
+        "gross": "60000.00",
+        "net": "-60000.00",
+        "gross_without_projected": "60000.00",
+        "net_without_projected": "-60000.00",
+        "projected_gross": "0.00",
+        "factual_gross": "60000.00",
+        "judgemental_gross": "0.00"
+      },
+      "net_assets": {
+        "gross": "60000.00",
+        "net": "-60000.00",
+        "gross_without_projected": "60000.00",
+        "net_without_projected": "-60000.00",
+        "projected_gross": "0.00",
+        "factual_gross": "60000.00",
+        "judgemental_gross": "0.00"
+      }
+    },
+    "basis": "every misstatement not corrected and not withdrawn (raised, communicated, refused; the F3 reading) that is not clearly trivial contributes its effect on profit before tax and, separately, on net assets; an item whose band is clearly trivial is not accumulated and is named (spec section 4: 'below it, not accumulated'; the band is the item's, the higher of its two effects' bands; architecture D33, D53), unless the clearly trivial items together reach the clearly-trivial threshold, gross, on either measure, when all of them are accumulated (SA 450 paragraph A2: clearly trivial matters are clearly inconsequential 'whether taken individually or in aggregate'; architecture D57); gross sums absolute effects with no netting between misstatements, net sums them signed (spec section 4.1); each is given with and without the projected items (spec section 3.2; pending decision B8); a classification-only item contributes nil and is listed; an item whose effects are unresolved is named and the aggregate marked incomplete (architecture D38)",
+    "items": [
+      {
+        "ref": "M-1",
+        "version_no": 1,
+        "state": "raised",
+        "type": "factual",
+        "band": "accumulated",
+        "classification_only": false,
+        "uncorrected": true
+      }
+    ],
+    "counted": [
+      "M-1"
+    ],
+    "projected": [],
+    "classification_only": [],
+    "not_accumulated": [],
+    "not_accumulated_total": {
+      "profit_before_tax_gross": "0.00",
+      "net_assets_gross": "0.00",
+      "ctt": "12500.00",
+      "at_or_above_ctt": false,
+      "accumulated_together": [],
+      "basis": "the gross size, on each measure, of the items that band clearly trivial one by one; while it is below the clearly-trivial threshold on both measures those items are left out of the aggregate; once it reaches the threshold on either, all of them are accumulated, because SA 450 paragraph A2 describes clearly trivial matters as clearly inconsequential 'whether taken individually or in aggregate' and treats any uncertainty as not clearly trivial (architecture D57); measuring 'in aggregate' gross against the threshold itself is the conservative reading, for the CA to confirm (register S14, question 2)"
+    },
+    "excluded": [],
+    "tests": {
+      "individual": {
+        "individually_significant": [],
+        "at_or_above_om": [],
+        "basis": "every uncorrected item whose band is individually significant (above PM; spec section 4), whatever its state, a refused one included; and, among all uncorrected items, those whose own effect on profit before tax or on net assets is at or above overall materiality (SA 450 paragraph 11: material individually or in aggregate, both tests shown; architecture D43)"
+      },
+      "aggregate": {
+        "status": "clear",
+        "om": "400000.00",
+        "fires_on": [],
+        "highest_measure": "60000.00",
+        "depends_on_projected": false,
+        "basis": "fires when any measure (profit or net assets, gross or the absolute net) is at or above the line (spec section 7, 'at or above'); tested with and without the projected items, and says whether it depends on them (pending decision B8); indeterminate when the known items do not reach the line but an uncorrected item could not be aggregated (architecture D38)"
+      }
+    },
+    "gates": {
+      "hard": {
+        "status": "clear",
+        "fires_on": [],
+        "depends_on_projected": false
+      },
+      "soft": {
+        "status": "clear",
+        "fires_on": [],
+        "depends_on_projected": false,
+        "pm_gate": "soft",
+        "acknowledgement": "not_required"
+      }
+    },
+    "sign_off": {
+      "blocked": false,
+      "reasons": []
+    },
+    "spine": {
+      "version_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "locked": false
+    },
+    "identity_mode": "header",
+    "strategy_trigger": {
+      "status": "not_configured",
+      "response": "not_required"
+    },
+    "reviewed_run": {
+      "id": "9931ca17-6099-4757-b868-3f9bbb81a360",
+      "run_no": 1
+    }
+  },
+  "authorisation": {
+    "enforced": false,
+    "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+    "identity_mode": "header",
+    "production_grade": false,
+    "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+    "partner_actions": {
+      "enforced": true,
+      "available": true,
+      "actions": [
+        "soft_gate_acknowledgement",
+        "conclusion"
+      ],
+      "source": "the proxy's role claim in X-Authenticated-Roles, value 'engagement-partner'",
+      "detail": "a partner-only action succeeds only when the trusted proxy's role claim names the acting identity a partner"
+    }
+  }
+}

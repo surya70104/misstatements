@@ -1,0 +1,6 @@
+{
+  "status": 422,
+  "body": {
+    "detail": "line_no 999 is not a ledger of the pinned Spine version"
+  }
+}

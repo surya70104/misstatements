@@ -1,0 +1,188 @@
+{
+  "id": "eacba6e8-2480-474a-a581-d3f89dc064e2",
+  "engagement_id": "3c1d670d-6538-4b04-834a-aa4194cf1417",
+  "ref": "M-2",
+  "created_by": "senior@firm",
+  "created_at": "2026-11-05T20:58:59.708942+05:30",
+  "current": {
+    "version_no": 2,
+    "type": "judgemental",
+    "description": "Depreciation on plant understated: useful life taken as 15 years",
+    "raised_by": "senior@firm",
+    "raised_from": "wp",
+    "source_ref": "F-3.4",
+    "state": "communicated",
+    "communicated_at": "2026-11-05T20:59:00.671048+05:30",
+    "decided_at": null,
+    "refusal_reason": null,
+    "withdrawal_reason": null,
+    "spine_adjustment_id": "b7220f2a-b063-49f1-85a5-896c372c68d0",
+    "spine_kind": "correction",
+    "range_low": "70000.00",
+    "range_high": "110000.00",
+    "sample_ref": null,
+    "projection_basis": null,
+    "created_by": "manager@firm",
+    "created_at": "2026-11-05T20:58:59.708942+05:30"
+  },
+  "spine": {
+    "status": "ok",
+    "detail": null,
+    "adjustment_id": "b7220f2a-b063-49f1-85a5-896c372c68d0",
+    "adjustment_status": "proposed",
+    "kind": "correction",
+    "finding_ref": "M-2",
+    "proposed_by": "spine-dev@localhost",
+    "proposed_at": "2026-11-04T10:00:00+05:30",
+    "decided_by": null,
+    "decided_at": null,
+    "decision_note": null,
+    "measure": "90000.00",
+    "tree_version_now": "double-division1-2026-11-04",
+    "lines": [
+      {
+        "ledger_key": "depreciation",
+        "ledger_name": "Depreciation",
+        "parent_chain": [
+          "Indirect Expenses"
+        ],
+        "head_id": "pl.expenses.depreciation",
+        "nature": "PL",
+        "section": "pl_before_tax",
+        "dr": "90000.00",
+        "cr": "0.00"
+      },
+      {
+        "ledger_key": "accumulated depreciation",
+        "ledger_name": "Accumulated depreciation",
+        "parent_chain": [
+          "Fixed Assets"
+        ],
+        "head_id": "bs.assets.non_current.ppe.accumulated_depreciation",
+        "nature": "BS",
+        "section": "assets",
+        "dr": "0.00",
+        "cr": "90000.00"
+      }
+    ]
+  },
+  "state_consistency": {
+    "consistent": true,
+    "state": "communicated",
+    "expected_adjustment_status": "proposed",
+    "adjustment_status": "proposed",
+    "detail": null
+  },
+  "effects": {
+    "profit_before_tax": "-90000.00",
+    "profit_basis": "credits less debits on profit-and-loss heads above the Schedule III profit-before-tax line (item IX); tax expense (items X, XIII) and discontinuing operations (XII) are excluded (architecture D31)",
+    "profit_partial": false,
+    "net_assets": "-90000.00",
+    "net_assets_basis": "assets less liabilities: the signed movement, debit positive, of every line on an asset head (item II) or a liability head (items I(3), I(4)); equity heads (I(1)) are outside the sum, so a direct equity entry moves net assets; tax lines count only when the entry carries them, nothing is imputed (architecture D31)",
+    "partial": false,
+    "unresolved": [],
+    "captions": [
+      {
+        "head_id": "pl.expenses.depreciation",
+        "nature": "PL",
+        "signed": "90000.00"
+      },
+      {
+        "head_id": "bs.assets.non_current.ppe.accumulated_depreciation",
+        "nature": "BS",
+        "signed": "-90000.00"
+      }
+    ],
+    "classification_only": false,
+    "spine_version_at_raise": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+    "tree_version_at_raise": "double-division1-2026-11-04"
+  },
+  "classification": {
+    "spine_version_at_raise": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+    "tree_version_at_raise": "double-division1-2026-11-04",
+    "tree_version_now": "double-division1-2026-11-04",
+    "drift": [],
+    "unmatched": [],
+    "effects_on_current_classification": null
+  },
+  "band": "accumulated",
+  "band_basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
+  "banding": {
+    "band": "accumulated",
+    "bands": {
+      "profit": "accumulated",
+      "net_assets": "accumulated"
+    },
+    "amounts": {
+      "profit": "90000.00",
+      "net_assets": "90000.00"
+    },
+    "threshold_id": "882dddd5-c0cb-4d2c-ae34-8cf93061fd70",
+    "threshold_version_no": 1,
+    "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
+    "projected": false,
+    "range_crosses_pm": false,
+    "classification_only": false
+  },
+  "authorisation": {
+    "enforced": false,
+    "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+    "identity_mode": "dev",
+    "production_grade": false,
+    "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+    "partner_actions": {
+      "enforced": true,
+      "available": false,
+      "actions": [
+        "soft_gate_acknowledgement",
+        "conclusion"
+      ],
+      "source": null,
+      "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
+    }
+  },
+  "versions": [
+    {
+      "version_no": 1,
+      "type": "judgemental",
+      "description": "Depreciation on plant understated: useful life taken as 15 years",
+      "raised_by": "senior@firm",
+      "raised_from": "wp",
+      "source_ref": "F-3.4",
+      "state": "raised",
+      "communicated_at": null,
+      "decided_at": null,
+      "refusal_reason": null,
+      "withdrawal_reason": null,
+      "spine_adjustment_id": "b7220f2a-b063-49f1-85a5-896c372c68d0",
+      "spine_kind": "correction",
+      "range_low": "70000.00",
+      "range_high": "110000.00",
+      "sample_ref": null,
+      "projection_basis": null,
+      "created_by": "senior@firm",
+      "created_at": "2026-11-05T20:58:59.708942+05:30"
+    },
+    {
+      "version_no": 2,
+      "type": "judgemental",
+      "description": "Depreciation on plant understated: useful life taken as 15 years",
+      "raised_by": "senior@firm",
+      "raised_from": "wp",
+      "source_ref": "F-3.4",
+      "state": "communicated",
+      "communicated_at": "2026-11-05T20:59:00.671048+05:30",
+      "decided_at": null,
+      "refusal_reason": null,
+      "withdrawal_reason": null,
+      "spine_adjustment_id": "b7220f2a-b063-49f1-85a5-896c372c68d0",
+      "spine_kind": "correction",
+      "range_low": "70000.00",
+      "range_high": "110000.00",
+      "sample_ref": null,
+      "projection_basis": null,
+      "created_by": "manager@firm",
+      "created_at": "2026-11-05T20:58:59.708942+05:30"
+    }
+  ]
+}
