@@ -1,8 +1,8 @@
 {
-  "id": "929954b7-80fd-4a1f-b26f-4e86e32cfbd6",
-  "engagement_id": "03f430c4-499d-46dd-b4cc-1916c19e2c32",
+  "id": "d88e00dd-ea5b-4f4b-a539-4c88f6128055",
+  "engagement_id": "afa42972-06ef-4fa7-856f-290dc8e433c8",
   "run_no": 1,
-  "threshold_id": "b9334706-fab5-4e63-b4b9-a4fff864d19d",
+  "threshold_id": "1d184288-343c-4b76-8e9f-bcc7702c6390",
   "threshold_version_no": 1,
   "agg_gross_pbt": "195000.00",
   "agg_net_pbt": "-195000.00",
@@ -10,15 +10,84 @@
   "agg_net_na": "-195000.00",
   "materiality_reassessed": true,
   "evaluated_by": "manager@firm",
-  "at": "2026-11-06T11:09:03",
+  "at": "2026-11-06T11:46:24",
   "concluded": false,
   "determination": null,
   "conclusion": null,
   "basis": null,
   "concluded_by": null,
+  "py_carried": {
+    "items": [],
+    "totals": {
+      "current_period": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      },
+      "cumulative": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      }
+    },
+    "current_year": {
+      "profit_before_tax": {
+        "gross": "195000.00",
+        "net": "-195000.00"
+      },
+      "net_assets": {
+        "gross": "195000.00",
+        "net": "-195000.00"
+      }
+    },
+    "with_prior_period": {
+      "current_period": {
+        "profit_before_tax": {
+          "gross": "195000.00",
+          "net": "-195000.00"
+        },
+        "net_assets": {
+          "gross": "195000.00",
+          "net": "-195000.00"
+        }
+      },
+      "cumulative": {
+        "profit_before_tax": {
+          "gross": "195000.00",
+          "net": "-195000.00"
+        },
+        "net_assets": {
+          "gross": "195000.00",
+          "net": "-195000.00"
+        }
+      }
+    },
+    "complete": true,
+    "reaches": {
+      "current_period": {
+        "pm": [],
+        "om": []
+      },
+      "cumulative": {
+        "pm": [],
+        "om": []
+      }
+    },
+    "read_by_gates": false
+  },
   "detail": {
     "threshold": {
-      "id": "b9334706-fab5-4e63-b4b9-a4fff864d19d",
+      "id": "1d184288-343c-4b76-8e9f-bcc7702c6390",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00",

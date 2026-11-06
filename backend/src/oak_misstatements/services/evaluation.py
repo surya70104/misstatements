@@ -32,6 +32,7 @@ from oak_misstatements.core.states import expected_spine_status
 from oak_misstatements.errors import Conflict
 from oak_misstatements.models import Engagement, Event, Misstatement, MisstatementVersion, Threshold
 from oak_misstatements.models.evaluation import EvaluationRun
+from oak_misstatements.models.prior_period import PriorPeriodItem
 from oak_misstatements.schemas import amount
 from oak_misstatements.services.misstatements import (
     SpineView,
@@ -39,6 +40,8 @@ from oak_misstatements.services.misstatements import (
     measure,
     spine_views,
 )
+from oak_misstatements.services.prior_period import carried_now
+from oak_misstatements.services.prior_period import labels as prior_period_labels
 from oak_misstatements.services.qualitative import factors_by_misstatement
 from oak_misstatements.services.spine_client import SpineClient
 from oak_misstatements.services.thresholds import current_threshold, lines_of
@@ -84,6 +87,9 @@ class Evaluation:
     strategy_response: Acknowledgement | None = None
     # The qualitative factors that apply to each misstatement now (D59).
     factors: dict[uuid.UUID, tuple[str, ...]] = field(default_factory=dict)
+    # The prior-period items carried forward now (SA 450 paragraph 11(b); D61). Shown
+    # beside the aggregate; no gate reads them.
+    prior_period: tuple[PriorPeriodItem, ...] = ()
 
 
 def _item(
@@ -246,6 +252,7 @@ def evaluate(
         decision,
         inconsistent=inconsistent,
         factors=factors,
+        prior_period=tuple(carried_now(session, engagement)),
     )
     strategy = gates.strategy_trigger(total, om, settings.strategy_trigger_fraction)
     return replace(
@@ -347,6 +354,11 @@ def latest_run(session: Session, engagement: Engagement) -> EvaluationRun | None
     )
 
 
+PRIOR_PERIOD_CHANGED = (
+    "a prior-period item has been recorded, revised or removed since it was recorded"
+)
+
+
 def run_difference(run: EvaluationRun, evaluation: Evaluation) -> str | None:
     """Why ``run`` no longer describes the evaluation, or None when it still does. A run is
     a record of one moment; it is never updated, so anything that has changed since makes
@@ -358,6 +370,10 @@ def run_difference(run: EvaluationRun, evaluation: Evaluation) -> str | None:
         return "a misstatement has been raised, moved or re-banded since it was recorded"
     if run.detail.get("figures") != figures(evaluation.aggregate):
         return "the aggregate has changed since it was recorded"
+    # A run written before the carry-forward existed saw no prior-period item (D61).
+    seen = (run.py_carried or {}).get("items", [])
+    if seen != prior_period_labels(evaluation.prior_period):
+        return PRIOR_PERIOD_CHANGED
     return None
 
 
@@ -378,6 +394,10 @@ def run_status(session: Session, evaluation: Evaluation) -> RunStatus:
         ),
         "the aggregate has changed since it was recorded": (
             "the aggregate has changed since the latest run was recorded"
+        ),
+        PRIOR_PERIOD_CHANGED: (
+            "a prior-period item has been recorded, revised or removed since the latest "
+            "run was recorded"
         ),
     }
     return RunStatus("stale", wording[difference], run)
@@ -425,6 +445,9 @@ def run_json(run: EvaluationRun) -> dict[str, Any]:
         "conclusion": run.conclusion,
         "basis": run.basis,
         "concluded_by": run.concluded_by,
+        # What the run saw of the prior-period items carried forward (spec section 9;
+        # D61); null on a run recorded before the carry-forward was built.
+        "py_carried": run.py_carried,
         "detail": run.detail,
     }
 

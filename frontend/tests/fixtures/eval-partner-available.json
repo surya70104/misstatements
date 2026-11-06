@@ -17,7 +17,7 @@
         "detail": "a partner-only action succeeds only when the trusted proxy's role claim names the acting identity a partner"
       }
     },
-    "id": "889eb4d5-c727-49dc-b275-eec959c126d9",
+    "id": "1fdb8d1f-c6db-4c49-908a-4127894dcc45",
     "label": "Test engagement C: conclusion",
     "spine": {
       "engagement_id": "11111111-1111-4111-8111-111111111111",
@@ -27,14 +27,14 @@
       "detail": null
     },
     "misstatements": 1,
-    "current_threshold_id": "128863e6-7029-476d-8353-955fee414712",
+    "current_threshold_id": "f85e9248-42d8-4b3d-8c20-a1f15c9921ec",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T11:09:05"
+    "created_at": "2026-11-06T11:46:25"
   },
   "evaluation": {
-    "engagement_id": "889eb4d5-c727-49dc-b275-eec959c126d9",
+    "engagement_id": "1fdb8d1f-c6db-4c49-908a-4127894dcc45",
     "threshold": {
-      "id": "128863e6-7029-476d-8353-955fee414712",
+      "id": "f85e9248-42d8-4b3d-8c20-a1f15c9921ec",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00",
@@ -120,6 +120,76 @@
         }
       }
     },
+    "prior_period": {
+      "items": [],
+      "totals": {
+        "current_period": {
+          "profit_before_tax": {
+            "gross": "0.00",
+            "net": "0.00"
+          },
+          "net_assets": {
+            "gross": "0.00",
+            "net": "0.00"
+          }
+        },
+        "cumulative": {
+          "profit_before_tax": {
+            "gross": "0.00",
+            "net": "0.00"
+          },
+          "net_assets": {
+            "gross": "0.00",
+            "net": "0.00"
+          }
+        }
+      },
+      "current_year": {
+        "profit_before_tax": {
+          "gross": "60000.00",
+          "net": "-60000.00"
+        },
+        "net_assets": {
+          "gross": "60000.00",
+          "net": "-60000.00"
+        }
+      },
+      "with_prior_period": {
+        "current_period": {
+          "profit_before_tax": {
+            "gross": "60000.00",
+            "net": "-60000.00"
+          },
+          "net_assets": {
+            "gross": "60000.00",
+            "net": "-60000.00"
+          }
+        },
+        "cumulative": {
+          "profit_before_tax": {
+            "gross": "60000.00",
+            "net": "-60000.00"
+          },
+          "net_assets": {
+            "gross": "60000.00",
+            "net": "-60000.00"
+          }
+        }
+      },
+      "complete": true,
+      "reaches": {
+        "current_period": {
+          "pm": [],
+          "om": []
+        },
+        "cumulative": {
+          "pm": [],
+          "om": []
+        }
+      },
+      "read_by_gates": false,
+      "basis": "uncorrected misstatements of prior periods are carried forward and shown apart from the current year's own (SA 450 paragraph 11(b); spec section 4.1; acceptance 5); each carried item states its current-period effect and its cumulative effect on profit before tax and on net assets, entered by a person with the basis: this module computes neither (register B6); the totals sum those figures gross, with no netting between items, and net, signed (spec section 4.1); 'with prior-period items' adds each total to the aggregate of the current year's uncorrected misstatements, so the evaluation is shown both ways and no one method is chosen; a carried item is not banded and none is left out as clearly trivial; the gates of spec section 7 test the current year's aggregate and do not read these figures, because which basis a gate should test is the firm's policy and is not decided (architecture D61)"
+    },
     "tests": {
       "individual": {
         "individually_significant": [],
@@ -167,7 +237,7 @@
     },
     "items": [
       {
-        "id": "9803aa61-6686-4a25-b415-f773955c7d8b",
+        "id": "7e001156-afc0-405d-84ca-c9f890489ee8",
         "ref": "M-1",
         "type": "factual",
         "projected": false,
@@ -188,10 +258,10 @@
       "status": "current",
       "detail": "the latest run describes the evaluation as it stands",
       "run": {
-        "id": "93a270af-2736-472a-98a3-996fa9626c84",
-        "engagement_id": "889eb4d5-c727-49dc-b275-eec959c126d9",
+        "id": "050635ca-906f-4461-a036-2ae8d49efade",
+        "engagement_id": "1fdb8d1f-c6db-4c49-908a-4127894dcc45",
         "run_no": 1,
-        "threshold_id": "128863e6-7029-476d-8353-955fee414712",
+        "threshold_id": "f85e9248-42d8-4b3d-8c20-a1f15c9921ec",
         "threshold_version_no": 1,
         "agg_gross_pbt": "60000.00",
         "agg_net_pbt": "-60000.00",
@@ -199,15 +269,84 @@
         "agg_net_na": "-60000.00",
         "materiality_reassessed": true,
         "evaluated_by": "senior@firm",
-        "at": "2026-11-06T11:09:05",
+        "at": "2026-11-06T11:46:25",
         "concluded": false,
         "determination": null,
         "conclusion": null,
         "basis": null,
         "concluded_by": null,
+        "py_carried": {
+          "items": [],
+          "totals": {
+            "current_period": {
+              "profit_before_tax": {
+                "gross": "0.00",
+                "net": "0.00"
+              },
+              "net_assets": {
+                "gross": "0.00",
+                "net": "0.00"
+              }
+            },
+            "cumulative": {
+              "profit_before_tax": {
+                "gross": "0.00",
+                "net": "0.00"
+              },
+              "net_assets": {
+                "gross": "0.00",
+                "net": "0.00"
+              }
+            }
+          },
+          "current_year": {
+            "profit_before_tax": {
+              "gross": "60000.00",
+              "net": "-60000.00"
+            },
+            "net_assets": {
+              "gross": "60000.00",
+              "net": "-60000.00"
+            }
+          },
+          "with_prior_period": {
+            "current_period": {
+              "profit_before_tax": {
+                "gross": "60000.00",
+                "net": "-60000.00"
+              },
+              "net_assets": {
+                "gross": "60000.00",
+                "net": "-60000.00"
+              }
+            },
+            "cumulative": {
+              "profit_before_tax": {
+                "gross": "60000.00",
+                "net": "-60000.00"
+              },
+              "net_assets": {
+                "gross": "60000.00",
+                "net": "-60000.00"
+              }
+            }
+          },
+          "complete": true,
+          "reaches": {
+            "current_period": {
+              "pm": [],
+              "om": []
+            },
+            "cumulative": {
+              "pm": [],
+              "om": []
+            }
+          },
+          "read_by_gates": false
+        },
         "detail": {
           "threshold": {
-            "id": "128863e6-7029-476d-8353-955fee414712",
+            "id": "f85e9248-42d8-4b3d-8c20-a1f15c9921ec",
             "version_no": 1,
             "om": "400000.00",
             "pm": "250000.00",
@@ -329,10 +468,10 @@
   },
   "runs": [
     {
-      "id": "93a270af-2736-472a-98a3-996fa9626c84",
-      "engagement_id": "889eb4d5-c727-49dc-b275-eec959c126d9",
+      "id": "050635ca-906f-4461-a036-2ae8d49efade",
+      "engagement_id": "1fdb8d1f-c6db-4c49-908a-4127894dcc45",
       "run_no": 1,
-      "threshold_id": "128863e6-7029-476d-8353-955fee414712",
+      "threshold_id": "f85e9248-42d8-4b3d-8c20-a1f15c9921ec",
       "threshold_version_no": 1,
       "agg_gross_pbt": "60000.00",
       "agg_net_pbt": "-60000.00",
@@ -340,15 +479,84 @@
       "agg_net_na": "-60000.00",
       "materiality_reassessed": true,
       "evaluated_by": "senior@firm",
-      "at": "2026-11-06T11:09:05",
+      "at": "2026-11-06T11:46:25",
       "concluded": false,
       "determination": null,
       "conclusion": null,
       "basis": null,
       "concluded_by": null,
+      "py_carried": {
+        "items": [],
+        "totals": {
+          "current_period": {
+            "profit_before_tax": {
+              "gross": "0.00",
+              "net": "0.00"
+            },
+            "net_assets": {
+              "gross": "0.00",
+              "net": "0.00"
+            }
+          },
+          "cumulative": {
+            "profit_before_tax": {
+              "gross": "0.00",
+              "net": "0.00"
+            },
+            "net_assets": {
+              "gross": "0.00",
+              "net": "0.00"
+            }
+          }
+        },
+        "current_year": {
+          "profit_before_tax": {
+            "gross": "60000.00",
+            "net": "-60000.00"
+          },
+          "net_assets": {
+            "gross": "60000.00",
+            "net": "-60000.00"
+          }
+        },
+        "with_prior_period": {
+          "current_period": {
+            "profit_before_tax": {
+              "gross": "60000.00",
+              "net": "-60000.00"
+            },
+            "net_assets": {
+              "gross": "60000.00",
+              "net": "-60000.00"
+            }
+          },
+          "cumulative": {
+            "profit_before_tax": {
+              "gross": "60000.00",
+              "net": "-60000.00"
+            },
+            "net_assets": {
+              "gross": "60000.00",
+              "net": "-60000.00"
+            }
+          }
+        },
+        "complete": true,
+        "reaches": {
+          "current_period": {
+            "pm": [],
+            "om": []
+          },
+          "cumulative": {
+            "pm": [],
+            "om": []
+          }
+        },
+        "read_by_gates": false
+      },
       "detail": {
         "threshold": {
-          "id": "128863e6-7029-476d-8353-955fee414712",
+          "id": "f85e9248-42d8-4b3d-8c20-a1f15c9921ec",
           "version_no": 1,
           "om": "400000.00",
           "pm": "250000.00",
@@ -474,9 +682,9 @@
     "blocked_by": [],
     "undetermined_because": [],
     "scope": "whether an unmodified opinion is blocked by the size of the uncorrected misstatements: the hard gate at overall materiality (spec section 7), and the gate at performance materiality when the firm has set it to hard. It says nothing about items above PM not yet dealt with or about the partner's acknowledgement: the sign-off gate does",
-    "engagement_id": "889eb4d5-c727-49dc-b275-eec959c126d9",
+    "engagement_id": "1fdb8d1f-c6db-4c49-908a-4127894dcc45",
     "threshold": {
-      "id": "128863e6-7029-476d-8353-955fee414712",
+      "id": "f85e9248-42d8-4b3d-8c20-a1f15c9921ec",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"
@@ -503,6 +711,75 @@
     },
     "complete": true,
     "not_accumulated": [],
+    "prior_period": {
+      "items": [],
+      "totals": {
+        "current_period": {
+          "profit_before_tax": {
+            "gross": "0.00",
+            "net": "0.00"
+          },
+          "net_assets": {
+            "gross": "0.00",
+            "net": "0.00"
+          }
+        },
+        "cumulative": {
+          "profit_before_tax": {
+            "gross": "0.00",
+            "net": "0.00"
+          },
+          "net_assets": {
+            "gross": "0.00",
+            "net": "0.00"
+          }
+        }
+      },
+      "current_year": {
+        "profit_before_tax": {
+          "gross": "60000.00",
+          "net": "-60000.00"
+        },
+        "net_assets": {
+          "gross": "60000.00",
+          "net": "-60000.00"
+        }
+      },
+      "with_prior_period": {
+        "current_period": {
+          "profit_before_tax": {
+            "gross": "60000.00",
+            "net": "-60000.00"
+          },
+          "net_assets": {
+            "gross": "60000.00",
+            "net": "-60000.00"
+          }
+        },
+        "cumulative": {
+          "profit_before_tax": {
+            "gross": "60000.00",
+            "net": "-60000.00"
+          },
+          "net_assets": {
+            "gross": "60000.00",
+            "net": "-60000.00"
+          }
+        }
+      },
+      "complete": true,
+      "reaches": {
+        "current_period": {
+          "pm": [],
+          "om": []
+        },
+        "cumulative": {
+          "pm": [],
+          "om": []
+        }
+      },
+      "read_by_gates": false
+    },
     "hard_gate": {
       "line": "400000.00",
       "status": "clear",
@@ -555,9 +832,9 @@
     "blocked_by": [],
     "undetermined_because": [],
     "scope": "whether sign-off is blocked for any reason this module knows: the hard gate, the soft gate without a current partner acknowledgement, an item above PM still raised or communicated (spec section 7; acceptance 6 and 7)",
-    "engagement_id": "889eb4d5-c727-49dc-b275-eec959c126d9",
+    "engagement_id": "1fdb8d1f-c6db-4c49-908a-4127894dcc45",
     "threshold": {
-      "id": "128863e6-7029-476d-8353-955fee414712",
+      "id": "f85e9248-42d8-4b3d-8c20-a1f15c9921ec",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"
@@ -584,6 +861,75 @@
     },
     "complete": true,
     "not_accumulated": [],
+    "prior_period": {
+      "items": [],
+      "totals": {
+        "current_period": {
+          "profit_before_tax": {
+            "gross": "0.00",
+            "net": "0.00"
+          },
+          "net_assets": {
+            "gross": "0.00",
+            "net": "0.00"
+          }
+        },
+        "cumulative": {
+          "profit_before_tax": {
+            "gross": "0.00",
+            "net": "0.00"
+          },
+          "net_assets": {
+            "gross": "0.00",
+            "net": "0.00"
+          }
+        }
+      },
+      "current_year": {
+        "profit_before_tax": {
+          "gross": "60000.00",
+          "net": "-60000.00"
+        },
+        "net_assets": {
+          "gross": "60000.00",
+          "net": "-60000.00"
+        }
+      },
+      "with_prior_period": {
+        "current_period": {
+          "profit_before_tax": {
+            "gross": "60000.00",
+            "net": "-60000.00"
+          },
+          "net_assets": {
+            "gross": "60000.00",
+            "net": "-60000.00"
+          }
+        },
+        "cumulative": {
+          "profit_before_tax": {
+            "gross": "60000.00",
+            "net": "-60000.00"
+          },
+          "net_assets": {
+            "gross": "60000.00",
+            "net": "-60000.00"
+          }
+        }
+      },
+      "complete": true,
+      "reaches": {
+        "current_period": {
+          "pm": [],
+          "om": []
+        },
+        "cumulative": {
+          "pm": [],
+          "om": []
+        }
+      },
+      "read_by_gates": false
+    },
     "hard_gate": {
       "line": "400000.00",
       "status": "clear",

@@ -255,6 +255,85 @@ export type Measure = {
 
 export type Figures = { profit_before_tax: Measure; net_assets: Measure }
 
+// ---- prior-period items carried forward (SA 450 paragraph 11(b); backend D61) ----
+
+// One measure summed both ways: gross with no netting between items, net signed.
+export type GrossNet = { gross: string; net: string }
+
+// Profit before tax and net assets, each gross and net.
+export type BothWays = { profit_before_tax: GrossNet; net_assets: GrossNet }
+
+// The two ways a prior-period item is read: its effect on this period, and its cumulative
+// effect. Both are shown; neither is chosen.
+export type PriorPeriodBasis = 'current_period' | 'cumulative'
+
+// One item's effect on profit before tax and on net assets.
+export type ItemEffect = { profit_before_tax: string; net_assets: string }
+
+// One version of a prior-period item. Its four effects are what a person recorded, with
+// the basis; the backend computes none of them.
+export type PriorPeriodItem = {
+  id: string
+  ref: string
+  version_no: number
+  carried: boolean
+  description: string
+  prior_period: string
+  source_ref: string
+  rolled_forward: boolean
+  source_misstatement_id: string | null
+  // Its effects as they stood, uncorrected, where it was rolled forward from.
+  prior: ItemEffect | null
+  current_period: ItemEffect
+  cumulative: ItemEffect
+  // On a removing version this is the reason it is no longer carried.
+  basis: string
+  recorded_by: string
+  at: string | null
+}
+
+// The carry-forward beside the current year's aggregate: the prior-period totals on each
+// basis, the current year's own aggregate, the two together on each basis, and which
+// measures of the two together are at or above a line. No gate reads it.
+export type PriorPeriodPicture = {
+  totals: Record<PriorPeriodBasis, BothWays>
+  current_year: BothWays
+  with_prior_period: Record<PriorPeriodBasis, BothWays>
+  // False when the current year's aggregate is short: so is every figure that includes it.
+  complete: boolean
+  // Named as the gates name a measure ("profit.gross"); null when no thresholds are set.
+  reaches: Record<PriorPeriodBasis, { pm: string[]; om: string[] }> | null
+  read_by_gates: boolean
+}
+
+// What a run recorded of the carry-forward: which version of which item, and the aggregates.
+export type PyCarried = PriorPeriodPicture & { items: { ref: string; version_no: number }[] }
+
+// The schedule of prior-period items, and the answer to every write on it.
+export type PriorPeriodListing = {
+  engagement_id: string
+  items: PriorPeriodItem[]
+  removed: PriorPeriodItem[]
+  history: PriorPeriodItem[]
+  totals: Record<PriorPeriodBasis, BothWays>
+  basis: string
+  // Only in the answer to a write: the version it added.
+  recorded?: PriorPeriodItem
+  authorisation: Authorisation
+}
+
+// What a person declares for an item entered by hand. Amounts are exact decimal strings.
+export type PriorPeriodInput = {
+  description: string
+  prior_period: string
+  source_ref: string
+  current_profit_before_tax: string
+  current_net_assets: string
+  cumulative_profit_before_tax: string
+  cumulative_net_assets: string
+  basis: string
+}
+
 export type ThresholdLines = { id: string; version_no: number; om: string; pm: string; ctt: string }
 
 // A gate's reading of the aggregate against one line. `status` is clear, fires,
@@ -294,6 +373,9 @@ export type EvaluationRun = {
   conclusion: string | null
   basis: string | null
   concluded_by: string | null
+  // What the run saw of the prior-period items carried forward; null or absent on a run
+  // recorded before the carry-forward was built (backend D61).
+  py_carried?: PyCarried | null
   // What the evaluation looked like when the row was written: labels and aggregates only.
   detail: {
     threshold?: { version_no: number; om: string; pm: string; ctt: string }
@@ -392,6 +474,9 @@ export type Evaluation = {
     }
     aggregate: { status: string; depends_on_projected: boolean; basis: string }
   }
+  // The prior-period items carried forward, with their current-period and cumulative
+  // effects apart, beside the current year's aggregate above (spec section 10.3).
+  prior_period: PriorPeriodPicture & { items: PriorPeriodItem[]; basis: string }
   individually_significant: { blocking: string[]; unbanded: string[] }
   state_consistency: { inconsistent: string[] }
   sign_off: { blocked: boolean; reasons: string[] }
@@ -619,6 +704,32 @@ export function clearQualitativeFactor(
   return post<QualitativeChecklist>(
     qualitativePath(id, `/${encodeURIComponent(factor)}/clear`),
     body,
+  )
+}
+
+/**
+ * Record a prior-period uncorrected misstatement with its current-period and cumulative
+ * effects. The figures are the person's; the backend records them and never computes them.
+ */
+export function recordPriorPeriodItem(
+  engagementId: string,
+  body: PriorPeriodInput,
+): Promise<PriorPeriodListing> {
+  return post<PriorPeriodListing>(
+    `/api/engagements/${encodeURIComponent(engagementId)}/prior-period`,
+    body,
+  )
+}
+
+/** Stop carrying a prior-period item forward, with the reason. Its history stays. */
+export function removePriorPeriodItem(
+  engagementId: string,
+  ref: string,
+  reason: string,
+): Promise<PriorPeriodListing> {
+  return post<PriorPeriodListing>(
+    `/api/engagements/${encodeURIComponent(engagementId)}/prior-period/${encodeURIComponent(ref)}/removal`,
+    { reason },
   )
 }
 

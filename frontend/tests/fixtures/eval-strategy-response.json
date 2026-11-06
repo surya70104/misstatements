@@ -1,7 +1,7 @@
 {
-  "engagement_id": "03f430c4-499d-46dd-b4cc-1916c19e2c32",
+  "engagement_id": "afa42972-06ef-4fa7-856f-290dc8e433c8",
   "threshold": {
-    "id": "b9334706-fab5-4e63-b4b9-a4fff864d19d",
+    "id": "1d184288-343c-4b76-8e9f-bcc7702c6390",
     "version_no": 1,
     "om": "400000.00",
     "pm": "250000.00",
@@ -107,6 +107,76 @@
       }
     }
   },
+  "prior_period": {
+    "items": [],
+    "totals": {
+      "current_period": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      },
+      "cumulative": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      }
+    },
+    "current_year": {
+      "profit_before_tax": {
+        "gross": "210000.00",
+        "net": "-210000.00"
+      },
+      "net_assets": {
+        "gross": "210000.00",
+        "net": "-210000.00"
+      }
+    },
+    "with_prior_period": {
+      "current_period": {
+        "profit_before_tax": {
+          "gross": "210000.00",
+          "net": "-210000.00"
+        },
+        "net_assets": {
+          "gross": "210000.00",
+          "net": "-210000.00"
+        }
+      },
+      "cumulative": {
+        "profit_before_tax": {
+          "gross": "210000.00",
+          "net": "-210000.00"
+        },
+        "net_assets": {
+          "gross": "210000.00",
+          "net": "-210000.00"
+        }
+      }
+    },
+    "complete": true,
+    "reaches": {
+      "current_period": {
+        "pm": [],
+        "om": []
+      },
+      "cumulative": {
+        "pm": [],
+        "om": []
+      }
+    },
+    "read_by_gates": false,
+    "basis": "uncorrected misstatements of prior periods are carried forward and shown apart from the current year's own (SA 450 paragraph 11(b); spec section 4.1; acceptance 5); each carried item states its current-period effect and its cumulative effect on profit before tax and on net assets, entered by a person with the basis: this module computes neither (register B6); the totals sum those figures gross, with no netting between items, and net, signed (spec section 4.1); 'with prior-period items' adds each total to the aggregate of the current year's uncorrected misstatements, so the evaluation is shown both ways and no one method is chosen; a carried item is not banded and none is left out as clearly trivial; the gates of spec section 7 test the current year's aggregate and do not read these figures, because which basis a gate should test is the firm's policy and is not decided (architecture D61)"
+  },
   "tests": {
     "individual": {
       "individually_significant": [],
@@ -154,7 +224,7 @@
   },
   "items": [
     {
-      "id": "03ca095b-93de-43f2-87f4-192ac69056df",
+      "id": "fecc2875-5cbc-4348-8d3e-9a913df9532f",
       "ref": "M-1",
       "type": "factual",
       "projected": false,
@@ -171,7 +241,7 @@
       "expected_spine_adjustment_status": "proposed"
     },
     {
-      "id": "eedb111c-cfcb-4e07-a987-cd83da0dcbc4",
+      "id": "357122f7-22b2-4066-aa5a-3554dca7ea40",
       "ref": "M-2",
       "type": "factual",
       "projected": false,
@@ -188,7 +258,7 @@
       "expected_spine_adjustment_status": "proposed"
     },
     {
-      "id": "4d7d3b80-e78c-4cad-b2bc-8f0f7db5b7bf",
+      "id": "23260572-8193-4757-bf58-0c975f89dbd1",
       "ref": "M-3",
       "type": "judgemental",
       "projected": false,
@@ -205,7 +275,7 @@
       "expected_spine_adjustment_status": "refused"
     },
     {
-      "id": "a2486d0e-3759-4e2b-9d40-a8ef6eab1579",
+      "id": "e94a281e-6111-405d-ac10-5d04525cc492",
       "ref": "M-4",
       "type": "projected",
       "projected": true,
@@ -222,7 +292,7 @@
       "expected_spine_adjustment_status": "proposed"
     },
     {
-      "id": "ce3e8f59-6766-4cf1-9ea6-764f6eb895f4",
+      "id": "f8f31461-4ee7-4557-9e21-56d6e6f5c69a",
       "ref": "M-5",
       "type": "factual",
       "projected": false,
@@ -239,7 +309,7 @@
       "expected_spine_adjustment_status": "accepted"
     },
     {
-      "id": "a9b3e343-6cb5-4293-aedb-df4267c92030",
+      "id": "b15c8392-ce13-4ab5-8b2c-ccf64deab9eb",
       "ref": "M-6",
       "type": "factual",
       "projected": false,
@@ -256,7 +326,7 @@
       "expected_spine_adjustment_status": "proposed"
     },
     {
-      "id": "905733d3-2d90-45cc-ab56-394a585f2f4c",
+      "id": "88240533-8435-4071-a8a0-1a2e7b0b9e50",
       "ref": "M-7",
       "type": "factual",
       "projected": false,
@@ -277,10 +347,10 @@
     "status": "current",
     "detail": "the latest run describes the evaluation as it stands",
     "run": {
-      "id": "3b17fd13-1e5c-4ff5-b9f6-36bd6ff3cb4d",
-      "engagement_id": "03f430c4-499d-46dd-b4cc-1916c19e2c32",
+      "id": "cee0d50a-1856-4d1d-ac35-aa3a812258bb",
+      "engagement_id": "afa42972-06ef-4fa7-856f-290dc8e433c8",
       "run_no": 2,
-      "threshold_id": "b9334706-fab5-4e63-b4b9-a4fff864d19d",
+      "threshold_id": "1d184288-343c-4b76-8e9f-bcc7702c6390",
       "threshold_version_no": 1,
       "agg_gross_pbt": "210000.00",
       "agg_net_pbt": "-210000.00",
@@ -288,15 +358,84 @@
       "agg_net_na": "-210000.00",
       "materiality_reassessed": true,
       "evaluated_by": "manager@firm",
-      "at": "2026-11-06T11:09:04",
+      "at": "2026-11-06T11:46:24",
       "concluded": false,
       "determination": null,
       "conclusion": null,
       "basis": null,
       "concluded_by": null,
+      "py_carried": {
+        "items": [],
+        "totals": {
+          "current_period": {
+            "profit_before_tax": {
+              "gross": "0.00",
+              "net": "0.00"
+            },
+            "net_assets": {
+              "gross": "0.00",
+              "net": "0.00"
+            }
+          },
+          "cumulative": {
+            "profit_before_tax": {
+              "gross": "0.00",
+              "net": "0.00"
+            },
+            "net_assets": {
+              "gross": "0.00",
+              "net": "0.00"
+            }
+          }
+        },
+        "current_year": {
+          "profit_before_tax": {
+            "gross": "210000.00",
+            "net": "-210000.00"
+          },
+          "net_assets": {
+            "gross": "210000.00",
+            "net": "-210000.00"
+          }
+        },
+        "with_prior_period": {
+          "current_period": {
+            "profit_before_tax": {
+              "gross": "210000.00",
+              "net": "-210000.00"
+            },
+            "net_assets": {
+              "gross": "210000.00",
+              "net": "-210000.00"
+            }
+          },
+          "cumulative": {
+            "profit_before_tax": {
+              "gross": "210000.00",
+              "net": "-210000.00"
+            },
+            "net_assets": {
+              "gross": "210000.00",
+              "net": "-210000.00"
+            }
+          }
+        },
+        "complete": true,
+        "reaches": {
+          "current_period": {
+            "pm": [],
+            "om": []
+          },
+          "cumulative": {
+            "pm": [],
+            "om": []
+          }
+        },
+        "read_by_gates": false
+      },
       "detail": {
         "threshold": {
-          "id": "b9334706-fab5-4e63-b4b9-a4fff864d19d",
+          "id": "1d184288-343c-4b76-8e9f-bcc7702c6390",
           "version_no": 1,
           "om": "400000.00",
           "pm": "250000.00",
@@ -492,11 +631,11 @@
   },
   "strategy_response_event": {
     "seq": 3,
-    "id": "31f759e4-37e4-4858-9aff-a851458f03d6",
-    "engagement_id": "03f430c4-499d-46dd-b4cc-1916c19e2c32",
+    "id": "a51e091d-803e-4f47-8653-fce0ca3eaa9c",
+    "engagement_id": "afa42972-06ef-4fa7-856f-290dc8e433c8",
     "kind": "strategy_trigger_response",
     "payload": {
-      "threshold_id": "b9334706-fab5-4e63-b4b9-a4fff864d19d",
+      "threshold_id": "1d184288-343c-4b76-8e9f-bcc7702c6390",
       "threshold_version_no": 1,
       "fraction": "0.5",
       "line": "200000.00",
@@ -531,6 +670,6 @@
       "identity_mode": "dev"
     },
     "actor": "manager@firm",
-    "at": "2026-11-06T11:09:04"
+    "at": "2026-11-06T11:46:25"
   }
 }

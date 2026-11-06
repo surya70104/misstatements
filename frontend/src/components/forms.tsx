@@ -58,3 +58,8 @@ export function Recorded({ children }: { children: ReactNode }) {
 export function isAmount(value: string): boolean {
   return /^\d{1,13}(\.\d{1,2})?$/.test(value.trim())
 }
+
+/** An exact amount that may be negative: an effect, signed as the schedule signs it. */
+export function isSignedAmount(value: string): boolean {
+  return /^-?\d{1,13}(\.\d{1,2})?$/.test(value.trim())
+}

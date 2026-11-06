@@ -1,13 +1,15 @@
 // One engagement's evaluation (spec sections 4.1, 6.4, 7 and 10.3): the aggregate view, the
 // gate status, the evaluation runs and the conclusion.
 //
-// Every figure, status and reason is the backend's. Four writes can be sent from here. Two
-// the backend opens to any signed-in identity: recording an evaluation run and answering the
-// strategy prompt. Two it reserves to the engagement partner: the soft-gate acknowledgement
-// and the conclusion. Their forms are offered only where the backend says a partner can be
-// named, and the backend refuses anyone the proxy's role claim does not name a partner.
+// Every figure, status and reason is the backend's. Six writes can be sent from here. Four
+// the backend opens to any signed-in identity: recording an evaluation run, answering the
+// strategy prompt, recording a prior-period item and ceasing to carry one. Two it reserves
+// to the engagement partner: the soft-gate acknowledgement and the conclusion. Their forms
+// are offered only where the backend says a partner can be named, and the backend refuses
+// anyone the proxy's role claim does not name a partner.
 //
-// The prior-period carry-forward of spec section 10.3 is Pass 2 and is not shown.
+// The prior-period carry-forward (spec section 10.3: "current and cumulative with
+// prior-period items") is shown after the aggregate, apart from it.
 import {
   getEngagement,
   getEvaluation,
@@ -24,6 +26,7 @@ import { AggregatePanel } from '../components/evaluation/AggregatePanel'
 import { ConclusionPanel } from '../components/evaluation/ConclusionPanel'
 import { EngagementNav } from '../components/EngagementNav'
 import { GatesPanel } from '../components/evaluation/GatesPanel'
+import { PriorPeriodPanel } from '../components/evaluation/PriorPeriodPanel'
 import { RunsPanel } from '../components/evaluation/RunsPanel'
 import { StrategyPanel } from '../components/evaluation/StrategyPanel'
 import { ErrorState, Loading } from '../components/states'
@@ -122,6 +125,12 @@ export function EvaluationPage({ id }: { id: string }) {
 
           <div className="mt-5 space-y-5">
             <AggregatePanel evaluation={resource.data.evaluation} />
+            <PriorPeriodPanel
+              key={`prior-period:${id}`}
+              engagementId={id}
+              evaluation={resource.data.evaluation}
+              onRecorded={refresh}
+            />
             <GatesPanel
               key={`gates:${id}`}
               engagementId={id}

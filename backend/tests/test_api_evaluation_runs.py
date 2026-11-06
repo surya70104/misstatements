@@ -160,6 +160,7 @@ def test_a_run_holds_labels_and_aggregates_and_never_a_single_items_amount(
         "agg_gross_na",
         "agg_net_na",
         "materiality_reassessed",
+        "py_carried",
         "detail",
         "evaluated_by",
         "determination",

@@ -1,5 +1,5 @@
 {
-  "engagement_id": "a427509a-b266-407b-aea5-6fc9f30a9a7d",
+  "engagement_id": "b7723a1f-181e-418a-8d13-8bf74db9fb5b",
   "threshold": null,
   "aggregate": {
     "profit_before_tax": {
@@ -78,6 +78,67 @@
         "detail": "the strategy trigger does not fire"
       }
     }
+  },
+  "prior_period": {
+    "items": [],
+    "totals": {
+      "current_period": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      },
+      "cumulative": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      }
+    },
+    "current_year": {
+      "profit_before_tax": {
+        "gross": "0.00",
+        "net": "0.00"
+      },
+      "net_assets": {
+        "gross": "0.00",
+        "net": "0.00"
+      }
+    },
+    "with_prior_period": {
+      "current_period": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      },
+      "cumulative": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      }
+    },
+    "complete": true,
+    "reaches": null,
+    "read_by_gates": false,
+    "basis": "uncorrected misstatements of prior periods are carried forward and shown apart from the current year's own (SA 450 paragraph 11(b); spec section 4.1; acceptance 5); each carried item states its current-period effect and its cumulative effect on profit before tax and on net assets, entered by a person with the basis: this module computes neither (register B6); the totals sum those figures gross, with no netting between items, and net, signed (spec section 4.1); 'with prior-period items' adds each total to the aggregate of the current year's uncorrected misstatements, so the evaluation is shown both ways and no one method is chosen; a carried item is not banded and none is left out as clearly trivial; the gates of spec section 7 test the current year's aggregate and do not read these figures, because which basis a gate should test is the firm's policy and is not decided (architecture D61)"
   },
   "tests": {
     "individual": {

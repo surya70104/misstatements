@@ -61,7 +61,7 @@ attachment · intake hooks · projected misstatements from Sampling · the gener
 | 5 | Gates: OM hard gate, PM soft gate, strategy trigger, individually-significant block; the conclusion | done on 5 Nov 2026 (D45); see "Stage 5 verification". The conclusion is a new append-only `evaluation` row carrying its figures and threshold version (migration 0009), partner-only, naming the run reviewed; a conclusion of not material is blocked by every gate in the write path and by a database trigger at overall materiality; the strategy trigger is built with no default band (B5). Readings to confirm: B14, B15 |
 | 6 | The schedule, misstatement detail and evaluation screens | built, reviewed and its gaps closed on 5 Nov 2026 (D47 to D52); see "Stage 6 closure verification". Nine screens over 24 of the 26 routes, used on live rows in an isolated preview. **Pass 1 implementation complete (`docs/CLOSURE_REVIEW.md` section 13); production acceptance pending:** the conclusion and the partner's acknowledgement have not been made by a named partner (V12), and nothing has been seen against the live Spine. In parts: Part 1 done on 5 Nov 2026 (D47); see "Stage 6 part 1 verification": routing, the typed API client, formatting, the shared loading, empty and error states, the layout, the engagement list, and the schedule address. Part 2 done on 5 Nov 2026 (D48); see "Stage 6 part 2 verification": the schedule screen with its ten columns, its filters by band, type and state, and the running totals against CTT, PM and OM; and the misstatement detail address. Part 3 done on 5 Nov 2026 (D49); see "Stage 6 part 3 verification": the misstatement detail screen with its identification, Dr/Cr lines and classification, effects, state history, and the moves of the state machine with their mandatory reasons. Part 4 done on 5 Nov 2026 (D50); see "Stage 6 part 4 verification": the evaluation screen with the aggregate against the three lines, the gates, the run history, recording a run, the strategy prompt, and the conclusion shown with what blocks it. The two partner-only writes are shown and never sent |
 | 7 | Pass 1 acceptance run: criteria 1, 2, 3, 4, 6, 7, 10, 11 | |
-| 8–14 | Pass 2 | Started 6 Nov 2026, on instruction. Stage 8, qualitative factors and escalation (spec section 5; acceptance 8): backend and screens built and tested, on PostgreSQL and in a browser on the isolated preview (D59, D60); migration 0011 is applied to the test database only. Nothing else of Pass 2 is started |
+| 8–14 | Pass 2 | Started 6 Nov 2026, on instruction. Stage 8, qualitative factors and escalation (spec section 5; acceptance 8): backend and screens built and tested, on PostgreSQL and in a browser on the isolated preview (D59, D60); migration 0011 is applied to the test database only. Stage 9, prior-period carry-forward (SA 450 paragraph 11(b); acceptance 5): backend and evaluation screen built and tested the same way, as an interim reading with B6 still open (D61); migration 0012 is applied to the test database only. Nothing else of Pass 2 is started |
 
 ## Setup on Windows
 
@@ -275,12 +275,44 @@ Built on 6 November 2026: backend (D59) and screens (D60).
   under "Individual items".
 - **Migration 0011** was applied to `oak_misstatements_test` on approval. The main database
   is untouched.
-- **Tests, 6 November 2026 (latest):** backend `pytest` on PostgreSQL **486 passed, 0
+- **Tests, 6 November 2026, after this feature:** backend `pytest` on PostgreSQL **486 passed, 0
   skipped**; on the in-memory stand-in **454 passed, 32 skipped**; `ruff` and `mypy` strict
   clean (96 files); frontend `vitest` **342 passed** (19 files); `tsc`, `eslint`, `prettier`
   clean; build succeeds; 136 captured API answers. Checked in a browser on the isolated
-  preview (test database, never committed; Spine test double). These supersede the counts
-  in the sections below, which are those of their own dates.
+  preview (test database, never committed; Spine test double). The latest counts are in
+  the next section.
+
+## Pass 2, feature 2: prior-period carry-forward (D61)
+
+Built on 6 November 2026, as an interim reading. Pending decision B6 is still open.
+
+- **The record.** A prior-period uncorrected misstatement is recorded against an engagement
+  with four figures, each entered by a person with a mandatory basis: its current-period
+  effect and its cumulative effect, on profit before tax and on net assets. The module
+  computes none of them. Table `prior_period` (migration 0012), append-only: revising and
+  removing an item are new versions.
+- **Rolling forward.** An item may cite a misstatement of another engagement, uncorrected
+  there; the backend copies its description and its effects there. Its effects here are
+  still entered.
+- **The evaluation** shows three things apart: the current year's own aggregate, the
+  prior-period totals on each basis, and the two together on each basis, gross and net.
+- **No gate reads the prior-period figures.** The gates and sign-off test the current year's
+  aggregate as before. The evaluation says which lines the two together reach, as
+  information. Whether a gate should read them, and on which basis, is an open question
+  (`docs/DECISIONS_PENDING.md`, last section, P1).
+- **Runs.** `evaluation.py_carried` records which version of which item a run saw, and the
+  aggregates. A change to a carried item makes the latest run and conclusion stale.
+- **API.** `GET` and `POST /api/engagements/{id}/prior-period`;
+  `POST .../prior-period/{ref}/revisions`; `POST .../prior-period/{ref}/removal`;
+  `GET .../prior-period/candidates?from_engagement_id=`.
+- **Screen.** The evaluation screen has a "Prior-period uncorrected misstatements" panel:
+  each item with its two effects side by side, the three sets of totals, and forms to record
+  an item and to stop carrying one. Revising and rolling forward are API only.
+- **Tests, 6 November 2026 (latest):** backend `pytest` on PostgreSQL **506 passed, 0
+  skipped**; on the in-memory stand-in **470 passed, 36 skipped**; `ruff` and `mypy` strict
+  clean (104 files); frontend `vitest` **360 passed** (20 files); `tsc`, `eslint`,
+  `prettier` clean; build succeeds; 147 captured API answers. These supersede the counts in
+  every other section, which are those of their own dates.
 
 ## Clearly trivial items and the percentage display (D53, D54)
 
@@ -774,8 +806,10 @@ Run on 4 November 2026:
 
 ## What is deliberately not built yet
 
-- No `qualitative` table; it arrives with Stage 8. The `evaluation` table has no
-  `py_carried` column yet (Pass 2, B6).
+- The `qualitative` table (Stage 8, D59) and the `prior_period` table with
+  `evaluation.py_carried` (Stage 9, D61) now exist. The rest of Pass 2 does not: the TCWG
+  extract, the representation attachment, intake from agent runs and review notes,
+  Sampling, and the generated binder paper.
 - No edit after raising (F9), no Opinion hand-off (no such module exists), no TCWG
   extract or representation attachment (Pass 2). Withdrawal is built on an interim
   treatment in the Spine (B1).

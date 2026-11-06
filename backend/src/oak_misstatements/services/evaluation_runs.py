@@ -39,6 +39,7 @@ from oak_misstatements.services.evaluation import (
     not_accumulated_total,
     tests_json,
 )
+from oak_misstatements.services.prior_period import py_carried_json
 from oak_misstatements.services.spine_client import SpineClient
 
 MATERIALITY_REASSESSED = "materiality_reassessed"
@@ -211,6 +212,7 @@ def insert_run(
         agg_gross_na=total.net_assets.gross,
         agg_net_na=total.net_assets.net,
         materiality_reassessed=True,
+        py_carried=py_carried_json(evaluation.prior_period, total, threshold),
         detail=detail,
         evaluated_by=actor,
         determination=None if conclusion is None else conclusion.determination,

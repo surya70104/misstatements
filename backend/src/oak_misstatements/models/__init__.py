@@ -3,7 +3,8 @@
 Stage 1 (spec section 9): ``engagement`` (architecture D8), ``misstatement`` and
 ``misstatement_version`` (D9, D21). Stage 2: ``threshold`` (D26) and the ``event`` trail
 (D13). Stage 4: ``evaluation``, one append-only row per evaluation run (D43). Pass 2:
-``qualitative``, the entries of the qualitative checklist (D59).
+``qualitative``, the entries of the qualitative checklist (D59), and ``prior_period``,
+the versions of the prior-period items carried forward (D61).
 """
 
 from __future__ import annotations
@@ -21,6 +22,7 @@ from oak_misstatements.models.misstatement import (
     Misstatement,
     MisstatementVersion,
 )
+from oak_misstatements.models.prior_period import PriorPeriodItem
 from oak_misstatements.models.qualitative import QualitativeFactor
 from oak_misstatements.models.threshold import Threshold
 
@@ -42,6 +44,7 @@ __all__ = [
     "Misstatement",
     "MisstatementLineClass",
     "MisstatementVersion",
+    "PriorPeriodItem",
     "QualitativeFactor",
     "Threshold",
 ]

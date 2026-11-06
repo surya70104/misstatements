@@ -88,6 +88,20 @@ function Inspection({ run }: { run: EvaluationRun }) {
             {responseStatus(soft.acknowledgement).text.toLowerCase()}
           </Fact>
         )}
+        {run.py_carried != null && run.py_carried.items.length > 0 && (
+          <Fact label="Prior-period items carried" wide>
+            {run.py_carried.items
+              .map((item) => `${item.ref} (version ${String(item.version_no)})`)
+              .join(', ')}
+            . With them, profit before tax gross:{' '}
+            {rupees(run.py_carried.with_prior_period.current_period.profit_before_tax.gross)} on the
+            current-period basis,{' '}
+            {rupees(run.py_carried.with_prior_period.cumulative.profit_before_tax.gross)} on the
+            cumulative basis; net assets gross:{' '}
+            {rupees(run.py_carried.with_prior_period.current_period.net_assets.gross)} and{' '}
+            {rupees(run.py_carried.with_prior_period.cumulative.net_assets.gross)}.
+          </Fact>
+        )}
         {detail.sign_off !== undefined && (
           <Fact label="Sign-off then" wide>
             {detail.sign_off.blocked ? 'Blocked' : 'Not blocked'}

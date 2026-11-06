@@ -1,8 +1,8 @@
 {
-  "id": "139bf817-2980-4596-a776-173c9899bdc0",
-  "engagement_id": "977c2c42-14cd-485c-9619-73ebf3a54f5b",
+  "id": "e53050ce-7bce-4ea6-802c-98df587e262d",
+  "engagement_id": "5ebd0adf-186a-4e64-ab13-824832ecafe6",
   "run_no": 4,
-  "threshold_id": "3574e021-d834-45e5-b8eb-503be66d431e",
+  "threshold_id": "504f63a9-e2a1-4f2b-8a57-ce73e16efa5d",
   "threshold_version_no": 1,
   "agg_gross_pbt": "268000.00",
   "agg_net_pbt": "-268000.00",
@@ -10,15 +10,94 @@
   "agg_net_na": "-268000.00",
   "materiality_reassessed": true,
   "evaluated_by": "partner@firm",
-  "at": "2026-11-06T11:09:08",
+  "at": "2026-11-06T11:46:29",
   "concluded": true,
   "determination": "material",
   "conclusion": "Uncorrected misstatements are material in aggregate.",
   "basis": "The aggregate exceeds performance materiality on every measure; C-4.",
   "concluded_by": "partner@firm",
+  "py_carried": {
+    "items": [],
+    "totals": {
+      "current_period": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      },
+      "cumulative": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      }
+    },
+    "current_year": {
+      "profit_before_tax": {
+        "gross": "268000.00",
+        "net": "-268000.00"
+      },
+      "net_assets": {
+        "gross": "268000.00",
+        "net": "-268000.00"
+      }
+    },
+    "with_prior_period": {
+      "current_period": {
+        "profit_before_tax": {
+          "gross": "268000.00",
+          "net": "-268000.00"
+        },
+        "net_assets": {
+          "gross": "268000.00",
+          "net": "-268000.00"
+        }
+      },
+      "cumulative": {
+        "profit_before_tax": {
+          "gross": "268000.00",
+          "net": "-268000.00"
+        },
+        "net_assets": {
+          "gross": "268000.00",
+          "net": "-268000.00"
+        }
+      }
+    },
+    "complete": true,
+    "reaches": {
+      "current_period": {
+        "pm": [
+          "profit.gross",
+          "profit.net",
+          "net_assets.gross",
+          "net_assets.net"
+        ],
+        "om": []
+      },
+      "cumulative": {
+        "pm": [
+          "profit.gross",
+          "profit.net",
+          "net_assets.gross",
+          "net_assets.net"
+        ],
+        "om": []
+      }
+    },
+    "read_by_gates": false
+  },
   "detail": {
     "threshold": {
-      "id": "3574e021-d834-45e5-b8eb-503be66d431e",
+      "id": "504f63a9-e2a1-4f2b-8a57-ce73e16efa5d",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00",
@@ -147,7 +226,7 @@
       "response": "not_required"
     },
     "reviewed_run": {
-      "id": "2f48d633-f5c6-4cc8-9fdd-3e8be56830fa",
+      "id": "b005bea8-e2b3-4942-a0c0-ab9f555350d0",
       "run_no": 3
     }
   },

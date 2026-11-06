@@ -1,0 +1,140 @@
+{
+  "engagement_id": "ccbb92dd-de7c-4550-b58a-d82e7a304cce",
+  "items": [
+    {
+      "id": "c035a29a-cd92-4411-9d11-b45dbf9ccf69",
+      "ref": "PY-1",
+      "version_no": 1,
+      "carried": true,
+      "description": "Rent for March of the prior year not accrued",
+      "prior_period": "FY 2024-25",
+      "source_ref": "PY schedule M-4",
+      "rolled_forward": false,
+      "source_misstatement_id": null,
+      "prior": null,
+      "current_period": {
+        "profit_before_tax": "50000.00",
+        "net_assets": "0.00"
+      },
+      "cumulative": {
+        "profit_before_tax": "0.00",
+        "net_assets": "0.00"
+      },
+      "basis": "Accrual of the prior year reversed in April; see PY E-4.2",
+      "recorded_by": "manager@firm",
+      "at": "2026-11-06T11:46:30"
+    },
+    {
+      "id": "70fae765-443c-4164-ba2b-933416428721",
+      "ref": "PY-2",
+      "version_no": 1,
+      "carried": true,
+      "description": "Depreciation on plant understated in the prior year",
+      "prior_period": "FY 2024-25",
+      "source_ref": "PY schedule M-7",
+      "rolled_forward": false,
+      "source_misstatement_id": null,
+      "prior": null,
+      "current_period": {
+        "profit_before_tax": "0.00",
+        "net_assets": "-30000.00"
+      },
+      "cumulative": {
+        "profit_before_tax": "-30000.00",
+        "net_assets": "-30000.00"
+      },
+      "basis": "Carrying amount still overstated at the year end; see PY F-3.4",
+      "recorded_by": "manager@firm",
+      "at": "2026-11-06T11:46:30"
+    }
+  ],
+  "removed": [],
+  "history": [
+    {
+      "id": "c035a29a-cd92-4411-9d11-b45dbf9ccf69",
+      "ref": "PY-1",
+      "version_no": 1,
+      "carried": true,
+      "description": "Rent for March of the prior year not accrued",
+      "prior_period": "FY 2024-25",
+      "source_ref": "PY schedule M-4",
+      "rolled_forward": false,
+      "source_misstatement_id": null,
+      "prior": null,
+      "current_period": {
+        "profit_before_tax": "50000.00",
+        "net_assets": "0.00"
+      },
+      "cumulative": {
+        "profit_before_tax": "0.00",
+        "net_assets": "0.00"
+      },
+      "basis": "Accrual of the prior year reversed in April; see PY E-4.2",
+      "recorded_by": "manager@firm",
+      "at": "2026-11-06T11:46:30"
+    },
+    {
+      "id": "70fae765-443c-4164-ba2b-933416428721",
+      "ref": "PY-2",
+      "version_no": 1,
+      "carried": true,
+      "description": "Depreciation on plant understated in the prior year",
+      "prior_period": "FY 2024-25",
+      "source_ref": "PY schedule M-7",
+      "rolled_forward": false,
+      "source_misstatement_id": null,
+      "prior": null,
+      "current_period": {
+        "profit_before_tax": "0.00",
+        "net_assets": "-30000.00"
+      },
+      "cumulative": {
+        "profit_before_tax": "-30000.00",
+        "net_assets": "-30000.00"
+      },
+      "basis": "Carrying amount still overstated at the year end; see PY F-3.4",
+      "recorded_by": "manager@firm",
+      "at": "2026-11-06T11:46:30"
+    }
+  ],
+  "totals": {
+    "current_period": {
+      "profit_before_tax": {
+        "gross": "50000.00",
+        "net": "50000.00"
+      },
+      "net_assets": {
+        "gross": "30000.00",
+        "net": "-30000.00"
+      }
+    },
+    "cumulative": {
+      "profit_before_tax": {
+        "gross": "30000.00",
+        "net": "-30000.00"
+      },
+      "net_assets": {
+        "gross": "30000.00",
+        "net": "-30000.00"
+      }
+    }
+  },
+  "basis": "uncorrected misstatements of prior periods are carried forward and shown apart from the current year's own (SA 450 paragraph 11(b); spec section 4.1; acceptance 5); each carried item states its current-period effect and its cumulative effect on profit before tax and on net assets, entered by a person with the basis: this module computes neither (register B6); the totals sum those figures gross, with no netting between items, and net, signed (spec section 4.1); 'with prior-period items' adds each total to the aggregate of the current year's uncorrected misstatements, so the evaluation is shown both ways and no one method is chosen; a carried item is not banded and none is left out as clearly trivial; the gates of spec section 7 test the current year's aggregate and do not read these figures, because which basis a gate should test is the firm's policy and is not decided (architecture D61)",
+  "authorisation": {
+    "enforced": false,
+    "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+    "identity_mode": "dev",
+    "production_grade": false,
+    "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+    "partner_actions": {
+      "enforced": true,
+      "available": false,
+      "actions": [
+        "soft_gate_acknowledgement",
+        "conclusion"
+      ],
+      "source": null,
+      "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
+    }
+  }
+}

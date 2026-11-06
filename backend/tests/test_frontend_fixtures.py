@@ -1206,3 +1206,80 @@ def test_the_qualitative_fixtures_are_the_apis_real_answers(api: TestClient) -> 
         "qualitative-not-recorded",
         post(api, f"{path}/related_party/clear", 409, {"note": "Cleared twice"}),
     )
+
+
+# The prior-period carry-forward (Pass 2, feature 2; architecture D61). One engagement with
+# two misstatements of its own and two items carried from the prior period: one that reversed
+# in this period and one that still stands. A run is recorded, an item is revised and one is
+# removed, with each refusal a person can meet on the way.
+PRIOR_PERIOD = "Test engagement P: prior-period items"
+PY_REVERSED = {
+    "description": "Rent for March of the prior year not accrued",
+    "prior_period": "FY 2024-25",
+    "source_ref": "PY schedule M-4",
+    "current_profit_before_tax": "50000.00",
+    "current_net_assets": "0.00",
+    "cumulative_profit_before_tax": "0.00",
+    "cumulative_net_assets": "0.00",
+    "basis": "Accrual of the prior year reversed in April; see PY E-4.2",
+}
+PY_STANDING = {
+    "description": "Depreciation on plant understated in the prior year",
+    "prior_period": "FY 2024-25",
+    "source_ref": "PY schedule M-7",
+    "current_profit_before_tax": "0.00",
+    "current_net_assets": "-30000.00",
+    "cumulative_profit_before_tax": "-30000.00",
+    "cumulative_net_assets": "-30000.00",
+    "basis": "Carrying amount still overstated at the year end; see PY F-3.4",
+}
+
+
+def test_the_prior_period_fixtures_are_the_apis_real_answers(api: TestClient) -> None:
+    use_spine(api)
+    act_as(api, SENIOR)
+    engagement = with_thresholds(api, PRIOR_PERIOD)  # OM 4,00,000; PM 2,50,000
+    item(api, engagement, "150000.00", "Rent for March not accrued")
+    item(api, engagement, "40000.00", "Repairs charged to plant")
+    path = f"/api/engagements/{engagement}/prior-period"
+
+    # Nothing carried yet: the evaluation says so.
+    check("prior-period-none-screen", snapshot(api, engagement))
+    check("prior-period-blank-basis", post(api, path, 422, {**PY_REVERSED, "basis": "   "}))
+
+    act_as(api, MANAGER)
+    check("prior-period-recorded", post(api, path, 201, PY_REVERSED))
+    post(api, path, 201, PY_STANDING)
+    check("prior-period-listing", got(api, path))
+    # Two items carried, their current-period and cumulative effects apart, and no gate
+    # reading them: the current year's aggregate is below PM and the gates are clear.
+    check("prior-period-screen", snapshot(api, engagement))
+
+    # A run records what it saw of them.
+    post(api, f"/api/engagements/{engagement}/evaluation/runs", 201, REASSESSED)
+    check("prior-period-run-screen", snapshot(api, engagement))
+
+    # The standing item is revised upward: with it the cumulative view now reaches PM, which
+    # is said as information, and the run no longer describes the evaluation.
+    check(
+        "prior-period-revised",
+        post(
+            api,
+            f"{path}/PY-2/revisions",
+            201,
+            {
+                "current_profit_before_tax": "0.00",
+                "current_net_assets": "-70000.00",
+                "cumulative_profit_before_tax": "-70000.00",
+                "cumulative_net_assets": "-70000.00",
+                "basis": "Useful life re-read: the understatement was 70,000; see PY F-3.4 revised",
+            },
+        ),
+    )
+    check("prior-period-reaches-pm-screen", snapshot(api, engagement))
+
+    # The reversed item is removed, with the reason; removing it twice is refused.
+    removal = {"reason": "Corrected by management in this year's books; see E-9"}
+    check("prior-period-removed", post(api, f"{path}/PY-1/removal", 201, removal))
+    check("prior-period-not-carried", post(api, f"{path}/PY-1/removal", 409, removal))
+    check("prior-period-removed-screen", snapshot(api, engagement))

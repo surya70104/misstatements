@@ -1,7 +1,7 @@
 {
-  "engagement_id": "ab580e20-b228-4c44-8d5e-89066b44047b",
+  "engagement_id": "49e9d863-6979-4534-9dfe-8b8ba02c7a35",
   "threshold": {
-    "id": "a8b9787f-f471-4676-9252-273a22739445",
+    "id": "da8efc6b-ea7a-4b1d-93d4-18a21e39190a",
     "version_no": 1,
     "om": "400000.00",
     "pm": "250000.00",
@@ -90,6 +90,76 @@
       }
     }
   },
+  "prior_period": {
+    "items": [],
+    "totals": {
+      "current_period": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      },
+      "cumulative": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      }
+    },
+    "current_year": {
+      "profit_before_tax": {
+        "gross": "63000.00",
+        "net": "-63000.00"
+      },
+      "net_assets": {
+        "gross": "63000.00",
+        "net": "-63000.00"
+      }
+    },
+    "with_prior_period": {
+      "current_period": {
+        "profit_before_tax": {
+          "gross": "63000.00",
+          "net": "-63000.00"
+        },
+        "net_assets": {
+          "gross": "63000.00",
+          "net": "-63000.00"
+        }
+      },
+      "cumulative": {
+        "profit_before_tax": {
+          "gross": "63000.00",
+          "net": "-63000.00"
+        },
+        "net_assets": {
+          "gross": "63000.00",
+          "net": "-63000.00"
+        }
+      }
+    },
+    "complete": true,
+    "reaches": {
+      "current_period": {
+        "pm": [],
+        "om": []
+      },
+      "cumulative": {
+        "pm": [],
+        "om": []
+      }
+    },
+    "read_by_gates": false,
+    "basis": "uncorrected misstatements of prior periods are carried forward and shown apart from the current year's own (SA 450 paragraph 11(b); spec section 4.1; acceptance 5); each carried item states its current-period effect and its cumulative effect on profit before tax and on net assets, entered by a person with the basis: this module computes neither (register B6); the totals sum those figures gross, with no netting between items, and net, signed (spec section 4.1); 'with prior-period items' adds each total to the aggregate of the current year's uncorrected misstatements, so the evaluation is shown both ways and no one method is chosen; a carried item is not banded and none is left out as clearly trivial; the gates of spec section 7 test the current year's aggregate and do not read these figures, because which basis a gate should test is the firm's policy and is not decided (architecture D61)"
+  },
   "tests": {
     "individual": {
       "individually_significant": [],
@@ -145,7 +215,7 @@
   },
   "items": [
     {
-      "id": "18cca7a5-e421-419a-969e-85892ec4fdd5",
+      "id": "4a9cb0f5-d985-4ab9-a655-35a47d80fe56",
       "ref": "M-1",
       "type": "factual",
       "projected": false,
@@ -162,7 +232,7 @@
       "expected_spine_adjustment_status": "proposed"
     },
     {
-      "id": "085dd299-5f11-4a36-9226-5b249d3c4670",
+      "id": "91c31551-251d-4bce-97d2-0471dd8f7e83",
       "ref": "M-2",
       "type": "factual",
       "projected": false,

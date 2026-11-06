@@ -66,6 +66,7 @@ def test_upgrade_creates_exactly_the_stage_1_and_2_tables() -> None:
         "misstatement_line_class",
         "evaluation",
         "qualitative",
+        "prior_period",
     ]
 
 
@@ -438,7 +439,8 @@ def test_nothing_on_the_evaluation_table_would_refuse_a_later_added_column() -> 
     block = table_block(sql, "evaluation")
     for column in ("determination", "conclusion", "basis", "concluded_by", "py_carried"):
         assert column not in block, column
-    assert "py_carried" not in sql
+    # ``py_carried`` has since arrived that way (migration 0012): added, never in 0008.
+    assert "ALTER TABLE evaluation ADD COLUMN py_carried JSONB" in sql
 
 
 def test_the_conclusion_columns_and_the_hard_gate_are_added_by_0009() -> None:
@@ -539,3 +541,66 @@ def test_the_qualitative_table_is_append_only_and_held_to_the_seven_factors_by_0
     down = rendered("downgrade")
     assert "DROP TABLE qualitative;" in down
     assert down.index("DROP TABLE qualitative;") < down.index("DROP TABLE misstatement;")
+
+
+# ---- 0012: the prior-period carry-forward (architecture D61) --------------------------------
+
+
+def test_the_prior_period_table_is_append_only_and_its_effects_are_money_by_0012() -> None:
+    sql = rendered("upgrade")
+    block = table_block(sql, "prior_period")
+    for column in (
+        "engagement_id",
+        "ref",
+        "version_no",
+        "carried",
+        "description",
+        "prior_period",
+        "source_ref",
+        "source_misstatement_id",
+        "basis",
+        "recorded_by",
+        "at",
+    ):
+        assert f"{column} " in block, column
+    for column in (
+        "prior_profit",
+        "prior_net_assets",
+        "current_profit",
+        "current_net_assets",
+        "cumulative_profit",
+        "cumulative_net_assets",
+    ):
+        assert f"ALTER TABLE prior_period ALTER COLUMN {column} TYPE money_amount" in sql, column
+    assert "CONSTRAINT fk_prior_period_engagement FOREIGN KEY(engagement_id)" in block
+    assert "CONSTRAINT fk_prior_period_source_misstatement FOREIGN KEY" in block
+    assert "ON DELETE RESTRICT" in block
+    assert "CONSTRAINT uq_prior_period_version UNIQUE (engagement_id, ref, version_no)" in block
+    assert "CONSTRAINT ck_prior_period_basis_not_blank CHECK (length(trim(basis)) > 0)" in block
+    assert "CONSTRAINT ck_prior_period_source_complete CHECK" in block
+    assert (
+        "CREATE TRIGGER trg_prior_period_append_only BEFORE UPDATE OR DELETE ON prior_period "
+        "FOR EACH ROW EXECUTE FUNCTION oak_misstatements_append_only()"
+    ) in sql
+    assert "CREATE TRIGGER trg_prior_period_no_truncate BEFORE TRUNCATE ON prior_period" in sql
+    assert "GRANT SELECT, INSERT ON prior_period TO oak_misstatements_app" in sql
+    for line in sql.splitlines():
+        if "GRANT" in line and "prior_period" in line:
+            assert "UPDATE" not in line and "DELETE" not in line, line
+
+
+def test_py_carried_is_added_to_the_evaluation_row_by_0012_and_changes_no_row() -> None:
+    sql = rendered("upgrade")
+    added = "ALTER TABLE evaluation ADD COLUMN py_carried JSONB"
+    assert added in sql
+    # Nullable: a row written before the migration has none, and none is rewritten.
+    line = next(entry for entry in sql.splitlines() if added in entry)
+    assert "NOT NULL" not in line
+    assert "UPDATE evaluation" not in sql
+    # It comes after the table and its protection exist; the triggers are untouched.
+    assert sql.index(added) > sql.index("CREATE TRIGGER trg_evaluation_append_only")
+    assert "DROP TRIGGER" not in sql
+    down = rendered("downgrade")
+    assert "ALTER TABLE evaluation DROP COLUMN py_carried" in down
+    assert "DROP TABLE prior_period;" in down
+    assert down.index("DROP TABLE prior_period;") < down.index("DROP TABLE misstatement;")

@@ -1593,3 +1593,91 @@ a clearly trivial item, the schedule's mark and the totals moving from one item 
 evaluation's list, and the factor cleared through the form. Two misstatements were seeded
 through the preview's API first. Not done: a named partner, the live Financial Spine, a
 screen-reader session.
+
+## D61 · Pass 2: prior-period uncorrected misstatements carried forward — 6 Nov 2026 (SA 450 para 11(b); spec 4.1, 9, 10.3; acceptance 5; B6)
+
+Built on instruction, as an interim reading. B6 is not decided, and nothing here decides it.
+
+**What the specification says, and what it leaves out.** Section 4.1: prior-period
+uncorrected misstatements are "carried forward, with the current-period effect and the
+cumulative effect shown separately, so the partner can see it both ways rather than being
+handed one method". Section 9 gives the evaluation row a `py_carried` column and nothing
+else. It does not say where a carried item comes from, whether it has Dr/Cr lines, or how
+its effect on the current period is arrived at. Those are B6.
+
+**The record.** Table `prior_period` (migration 0012, model `PriorPeriodItem`): one row per
+version of one item of one engagement, append-only by trigger and by the application guard.
+`ref` is `PY-1`, `PY-2`...; recording is version 1; revising the figures and removing the
+item from the carry-forward are each a new version (`carried` false on the removing one,
+whose `basis` holds the reason and which keeps the item's figures).
+
+**The four figures are a person's.** Each version states the item's current-period effect
+and its cumulative effect, on profit before tax and on net assets, with a mandatory `basis`
+saying how they were arrived at. The module computes none of them: how a prior period's
+misstatement runs through the current period (whether it reversed, whether it still stands)
+is an accounting judgement (B6). Amounts are signed as the schedule signs an effect.
+
+**Why the figures are held here.** A misstatement of the current year has an adjustment in
+the Financial Spine, and its amounts live there (spec section 9). A carried item has none,
+so its figures are on its own version. This is a consequence of B6 being open, not an
+answer to it; `tests/test_models.py` lists the six columns as the one addition to the
+module's money columns and says why.
+
+**Rolling forward.** An item may cite a misstatement of another engagement of this module
+(`source_misstatement_id`). The backend reads that misstatement itself: it must be
+uncorrected there (raised, communicated or refused) with known effects, and it can be
+carried once. Its description and its two effects there are copied onto the item
+(`prior_profit`, `prior_net_assets`), never taken from the request. Its effects *here* are
+still entered. An engagement carries no period, so the module cannot tell that the other
+engagement is the prior period's: the person names the period.
+`GET .../prior-period/candidates?from_engagement_id=` lists what could be rolled forward.
+
+**What is computed** (`core/prior_period.py`, pure): the totals of the carried items on each
+basis, gross (no netting between items) and net (signed), as spec section 4.1 sums
+everything; and each total added to the current year's aggregate, giving "with prior-period
+items" on the current-period basis and on the cumulative basis. Three things are therefore
+shown apart: the current year's own misstatements, the prior-period items, and the two
+together, both ways. A carried item is not banded and none is left out as clearly trivial.
+
+**No gate reads any of it.** The hard gate, the soft gate, the strategy trigger and the
+sign-off decision test the current year's aggregate exactly as before; with no item carried
+every answer is what it was. The specification's section 7 does not say on which basis a
+gate would test prior-period items, and choosing one would be "handing one method". So the
+evaluation reports, as information, which measures of each "with prior-period" view are at
+or above PM and OM (`prior_period.reaches`), says `read_by_gates: false`, and the two gate
+endpoints carry the same block beside their status. Whether a gate should read these
+figures, and on which basis, is recorded as an open question for the CA and the firm. Until
+it is answered, an aggregate that reaches overall materiality only with prior-period items
+does not block an unmodified opinion in this module: it is shown, not enforced.
+
+**Evaluation runs.** `evaluation.py_carried` (migration 0012; nullable JSONB) records what a
+run, and a conclusion, saw: which version of which item (labels) and the aggregates above.
+Never one item's figures: those stay in the item's own unchangeable version. A run written
+before the migration has none. Recording, revising or removing an item makes the latest run
+and the latest conclusion stale. The four `agg_` columns remain the current year's.
+
+**The API.** `GET /api/engagements/{id}/prior-period` (the schedule of carried items, the
+removed ones, every version, the totals); `POST .../prior-period` (record by hand, or roll
+forward with `source_misstatement_id`); `POST .../prior-period/{ref}/revisions`;
+`POST .../prior-period/{ref}/removal` with `{reason}`;
+`GET .../prior-period/candidates`. `GET .../evaluation` carries `prior_period`. Refused: a
+missing or blank basis, a figure with more than two decimals, an actor or timestamp in the
+body (422); revising or removing an item no longer carried, the same figures again, a
+misstatement already carried or corrected (409). Any authenticated identity may write (B9b).
+
+**The screen** (`components/evaluation/PriorPeriodPanel.tsx`, after the aggregate). Each
+carried item with its current-period effect and its cumulative effect side by side, as two
+column groups over profit before tax and net assets; then the current year, the
+prior-period totals and the two together on each basis, with the percentage of PM and OM
+and a mark where the backend says a line is reached; a statement that the gates do not read
+these figures; a form to record an item by hand and one to stop carrying an item, each with
+its mandatory words. A run's inspection names the items it saw. Revising an item and
+rolling one forward are in the API and not on the screen.
+
+**Verified, 6 November 2026.** Backend `pytest` on PostgreSQL (`oak_misstatements_test`,
+rolled back; the run applied migration 0012 to that database): 506 passed, 0 skipped. In
+memory: 470 passed, 36 skipped. `ruff`, `mypy` strict clean (104 files). Frontend `vitest`
+360 passed (20 files); `tsc`, `eslint`, `prettier --check` clean; the build succeeds; 147
+captured API answers, 11 of them new (`prior-period-*.json`). In a real browser, on the isolated preview (the real application over the test database in one transaction that was never committed; Spine test double; development identity): a prior-period item recorded through the form, its two effects and the three sets of totals shown, the mark and the note where the two together reach PM while the soft gate stayed clear and sign-off open, a run recorded and inspected with its carried items, and the item removed through the form, which made the run stale. The engagement, its thresholds and two misstatements were seeded through the preview's API first. Not done: a named
+partner (so no conclusion carrying `py_carried` was made end to end), the live Financial
+Spine, a screen-reader session, any run on the main database.

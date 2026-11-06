@@ -78,6 +78,7 @@ def test_the_guard_covers_every_append_only_table() -> None:
         "event",
         "evaluation",
         "qualitative",
+        "prior_period",
     } == APPEND_ONLY_TABLES
 
 

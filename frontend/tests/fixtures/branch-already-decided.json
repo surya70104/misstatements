@@ -1,9 +1,9 @@
 {
-  "id": "c8395709-c54d-4359-86a0-935fa9a1e214",
-  "engagement_id": "e5e35e04-afce-41d9-99c3-c91097f68b64",
+  "id": "8d61c108-1c12-4d3d-8339-4d1b89a78cce",
+  "engagement_id": "b29b9075-3a9a-4041-b7b7-a73b89af6b35",
   "ref": "M-2",
   "created_by": "senior@firm",
-  "created_at": "2026-11-06T11:09:07",
+  "created_at": "2026-11-06T11:46:27",
   "current": {
     "version_no": 3,
     "type": "factual",
@@ -12,23 +12,23 @@
     "raised_from": "wp",
     "source_ref": "E-4.2",
     "state": "corrected",
-    "communicated_at": "2026-11-06T11:09:07.054927",
-    "decided_at": "2026-11-06T11:09:07.312415+00:00",
+    "communicated_at": "2026-11-06T11:46:27.911799",
+    "decided_at": "2026-11-06T11:46:28.185651+00:00",
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "5215feb6-0822-4fb8-bf68-66ee3110dc96",
+    "spine_adjustment_id": "05f2cb41-6505-4f2b-8e33-1d5e27e7cb35",
     "spine_kind": "correction",
     "range_low": null,
     "range_high": null,
     "sample_ref": null,
     "projection_basis": null,
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T11:09:07"
+    "created_at": "2026-11-06T11:46:28"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "5215feb6-0822-4fb8-bf68-66ee3110dc96",
+    "adjustment_id": "05f2cb41-6505-4f2b-8e33-1d5e27e7cb35",
     "adjustment_status": "accepted",
     "kind": "correction",
     "finding_ref": "M-2",
@@ -117,7 +117,7 @@
       "profit": "30000.00",
       "net_assets": "30000.00"
     },
-    "threshold_id": "f1e50565-e4e2-4158-85be-30492a690410",
+    "threshold_id": "81f38296-8a73-4942-b4bd-df17d6ec095d",
     "threshold_version_no": 1,
     "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
     "projected": false,
@@ -218,14 +218,14 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "5215feb6-0822-4fb8-bf68-66ee3110dc96",
+      "spine_adjustment_id": "05f2cb41-6505-4f2b-8e33-1d5e27e7cb35",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T11:09:07"
+      "created_at": "2026-11-06T11:46:27"
     },
     {
       "version_no": 2,
@@ -235,18 +235,18 @@
       "raised_from": "wp",
       "source_ref": "E-4.2",
       "state": "communicated",
-      "communicated_at": "2026-11-06T11:09:07.054927",
+      "communicated_at": "2026-11-06T11:46:27.911799",
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "5215feb6-0822-4fb8-bf68-66ee3110dc96",
+      "spine_adjustment_id": "05f2cb41-6505-4f2b-8e33-1d5e27e7cb35",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T11:09:07"
+      "created_at": "2026-11-06T11:46:27"
     },
     {
       "version_no": 3,
@@ -256,18 +256,18 @@
       "raised_from": "wp",
       "source_ref": "E-4.2",
       "state": "corrected",
-      "communicated_at": "2026-11-06T11:09:07.054927",
-      "decided_at": "2026-11-06T11:09:07.312415+00:00",
+      "communicated_at": "2026-11-06T11:46:27.911799",
+      "decided_at": "2026-11-06T11:46:28.185651+00:00",
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "5215feb6-0822-4fb8-bf68-66ee3110dc96",
+      "spine_adjustment_id": "05f2cb41-6505-4f2b-8e33-1d5e27e7cb35",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T11:09:07"
+      "created_at": "2026-11-06T11:46:28"
     }
   ],
   "transition": {

@@ -757,3 +757,137 @@ def test_an_event_of_an_unknown_kind_is_refused_by_the_database(db: Connection) 
         "strategy_trigger_response",
     ):
         db.execute(text(insert), {"e": engagement_id, "k": kind})
+
+
+# ---- Pass 2 (migration 0012): the prior-period carry-forward (architecture D61) --------------
+
+PRIOR_PERIOD = (
+    "INSERT INTO prior_period (engagement_id, ref, version_no, carried, description, "
+    "prior_period, source_ref, source_misstatement_id, prior_profit, prior_net_assets, "
+    "current_profit, current_net_assets, cumulative_profit, cumulative_net_assets, basis, "
+    "recorded_by) "
+    "VALUES (:e, :ref, :v, :carried, :d, :p, :s, :m, :pp, :pn, :cp, :cn, :mp, :mn, :b, :by) "
+    "RETURNING id"
+)
+
+
+def prior_period_values(engagement_id: uuid.UUID, **extra: object) -> dict[str, object]:
+    values: dict[str, object] = {
+        "e": engagement_id,
+        "ref": "PY-1",
+        "v": 1,
+        "carried": True,
+        "d": "Depreciation understated in the prior year",
+        "p": "FY 2024-25",
+        "s": "PY schedule M-7",
+        "m": None,
+        "pp": None,
+        "pn": None,
+        "cp": "0.00",
+        "cn": "-30000.00",
+        "mp": "-30000.00",
+        "mn": "-30000.00",
+        "b": "Still stands at the year end",
+        "by": "test",
+    }
+    values.update(extra)
+    return values
+
+
+def test_a_prior_period_version_is_append_only_for_the_owner(db: Connection) -> None:
+    engagement_id, _misstatement, _version = seed(db)
+    row_id = db.scalar(text(PRIOR_PERIOD), prior_period_values(engagement_id))
+    for statement in (
+        "UPDATE prior_period SET cumulative_net_assets = 0 WHERE id = :r",
+        "UPDATE prior_period SET carried = false WHERE id = :r",
+        "UPDATE prior_period SET basis = 'rewritten' WHERE id = :r",
+        "DELETE FROM prior_period WHERE id = :r",
+    ):
+        with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
+            db.execute(text(statement), {"r": row_id})
+    with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
+        db.execute(text("TRUNCATE prior_period"))
+    assert db.scalar(text("SELECT count(*) FROM prior_period")) == 1
+    # A revision and a removal are further versions of the same item.
+    db.execute(text(PRIOR_PERIOD), prior_period_values(engagement_id, v=2, mn="-25000.00"))
+    db.execute(text(PRIOR_PERIOD), prior_period_values(engagement_id, v=3, carried=False))
+    assert db.scalar(text("SELECT count(*) FROM prior_period")) == 3
+
+
+def test_the_prior_period_rules_are_checked_at_the_database(db: Connection) -> None:
+    engagement_id, misstatement_id, _version = seed(db)
+    for extra, rule in (
+        ({"b": "   "}, "ck_prior_period_basis_not_blank"),
+        ({"d": ""}, "ck_prior_period_description"),
+        ({"p": " "}, "ck_prior_period_period"),
+        ({"s": ""}, "ck_prior_period_source_ref"),
+        ({"by": " "}, "ck_prior_period_recorded_by"),
+        ({"v": 0}, "ck_prior_period_version_positive"),
+        # Money, to the paisa and no further.
+        ({"cp": "100.005"}, "money_amount"),
+        ({"mn": "-0.001"}, "money_amount"),
+        # Rolled forward: the link and both effects there, or none of the three.
+        ({"m": misstatement_id}, "ck_prior_period_source_complete"),
+        ({"pp": "-60000.00", "pn": "-60000.00"}, "ck_prior_period_source_complete"),
+        ({"m": misstatement_id, "pp": "-60000.00"}, "ck_prior_period_source_complete"),
+        ({"m": uuid.uuid4(), "pp": "1.00", "pn": "1.00"}, "fk_prior_period_source_misstatement"),
+        ({"e": uuid.uuid4()}, "fk_prior_period_engagement"),
+    ):
+        with pytest.raises(DBAPIError, match=rule), db.begin_nested():
+            db.execute(text(PRIOR_PERIOD), prior_period_values(engagement_id, **extra))
+    db.execute(
+        text(PRIOR_PERIOD),
+        prior_period_values(engagement_id, m=misstatement_id, pp="-60000.00", pn="-60000.00"),
+    )
+    with pytest.raises(DBAPIError, match="uq_prior_period_version"), db.begin_nested():
+        db.execute(text(PRIOR_PERIOD), prior_period_values(engagement_id))
+    # The misstatement it was rolled forward from can never be deleted from under it.
+    with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
+        db.execute(text("DELETE FROM misstatement WHERE id = :m"), {"m": misstatement_id})
+
+
+def test_the_application_role_may_insert_a_prior_period_version_and_nothing_else(
+    app_db: Connection,
+) -> None:
+    engagement_id, _misstatement, _version = seed(app_db)
+    row_id = app_db.scalar(text(PRIOR_PERIOD), prior_period_values(engagement_id))
+    assert app_db.scalar(text("SELECT count(*) FROM prior_period")) == 1
+    for statement in (
+        "UPDATE prior_period SET carried = false WHERE id = :r",
+        "DELETE FROM prior_period WHERE id = :r",
+    ):
+        with (
+            pytest.raises(DBAPIError, match=r"permission denied|append-only"),
+            app_db.begin_nested(),
+        ):
+            app_db.execute(text(statement), {"r": row_id})
+
+
+WITH_PY_CARRIED = (
+    "INSERT INTO evaluation (engagement_id, run_no, threshold_id, agg_gross_pbt, agg_net_pbt, "
+    "agg_gross_na, agg_net_na, materiality_reassessed, detail, evaluated_by, py_carried) "
+    "VALUES (:e, :n, :t, :gp, :np, :gn, :nn, :r, '{}'::jsonb, :by, CAST(:py AS jsonb)) "
+    "RETURNING id"
+)
+
+
+def test_py_carried_is_recorded_with_a_run_and_can_never_be_changed(db: Connection) -> None:
+    engagement_id, _misstatement, _version = seed(db)
+    threshold_id = seed_threshold(db, engagement_id)
+    # A run written as before migration 0012 has none.
+    earlier = db.scalar(text(EVALUATION), evaluation_values(engagement_id, threshold_id))
+    assert (
+        db.scalar(text("SELECT py_carried FROM evaluation WHERE id = :r"), {"r": earlier}) is None
+    )
+    carried = '{"items": [{"ref": "PY-1", "version_no": 1}]}'
+    run_id = db.scalar(
+        text(WITH_PY_CARRIED), evaluation_values(engagement_id, threshold_id, n=2, py=carried)
+    )
+    assert db.scalar(text("SELECT py_carried FROM evaluation WHERE id = :r"), {"r": run_id}) == {
+        "items": [{"ref": "PY-1", "version_no": 1}]
+    }
+    for target in (earlier, run_id):
+        with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
+            db.execute(
+                text("UPDATE evaluation SET py_carried = '{}'::jsonb WHERE id = :r"), {"r": target}
+            )

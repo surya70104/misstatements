@@ -30,6 +30,16 @@ ALLOWED_MONEY = {
     ("evaluation", "agg_net_pbt"),
     ("evaluation", "agg_gross_na"),
     ("evaluation", "agg_net_na"),
+    # SA 450 paragraph 11(b); spec section 4.1: a prior-period item carried forward (D61).
+    # It has no adjustment in the Financial Spine, so the four effects a person states for
+    # it, and the two it had where it was rolled forward from, are held on its own
+    # append-only version. Where a carried item should come from is still open (B6).
+    ("prior_period", "prior_profit"),
+    ("prior_period", "prior_net_assets"),
+    ("prior_period", "current_profit"),
+    ("prior_period", "current_net_assets"),
+    ("prior_period", "cumulative_profit"),
+    ("prior_period", "cumulative_net_assets"),
 }
 AMOUNT_NAMES = re.compile(r"(^|_)(dr|cr|debit|credit|amount|measure|effect|total|balance)(_|$)")
 
@@ -91,6 +101,7 @@ def test_the_evaluation_row_holds_aggregates_and_no_line_or_item_amount() -> Non
         "agg_gross_na",
         "agg_net_na",
         "materiality_reassessed",
+        "py_carried",
         "detail",
         "evaluated_by",
         "determination",
@@ -122,5 +133,8 @@ def test_a_run_is_self_contained_and_holds_nothing_a_later_row_would_have_to_upd
     mutable = re.compile(r"(status|current|latest|stale|superseded|replaced|concluded$|is_)")
     assert not [name for name in names if mutable.search(name)]
     assert all(key.column.table.name != "evaluation" for key in table.foreign_keys)
-    # The prior-period column is Pass 2 (B6) and is not here.
-    assert "py_carried" not in names
+    # The prior-period column arrived with Pass 2 (D61; migration 0012). It is the run's
+    # own record of what it saw, nullable because earlier rows have none, and not money:
+    # labels and aggregates, as ``detail`` is.
+    assert table.columns["py_carried"].nullable is True
+    assert not isinstance(table.columns["py_carried"].type, Numeric)

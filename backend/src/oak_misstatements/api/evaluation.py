@@ -55,6 +55,8 @@ from oak_misstatements.services.evaluation_runs import (
     locked_engagement,
     record_run,
 )
+from oak_misstatements.services.prior_period import evaluation_json as prior_period_json
+from oak_misstatements.services.prior_period import py_carried_json
 from oak_misstatements.services.thresholds import event_json
 
 router = APIRouter(tags=["evaluation"])
@@ -155,6 +157,10 @@ def evaluation_json(evaluation: Evaluation, settings: Settings) -> dict[str, Any
             },
             "strategy_trigger": strategy_json(evaluation),
         },
+        # SA 450 paragraph 11(b); spec section 10.3; acceptance 5: the prior-period items
+        # carried forward, their current-period and cumulative effects apart, beside
+        # and together with the current year's aggregate above. No gate reads it (D61).
+        "prior_period": prior_period_json(evaluation.prior_period, total, threshold),
         # SA 450 paragraph 11: material individually or in aggregate, both tests shown.
         "tests": tests_json(evaluation),
         "individually_significant": {
@@ -415,6 +421,10 @@ def _exposure_json(
         # What those figures leave out as clearly trivial (spec section 4; D53), so that a
         # module reading the gate can see it and need not infer it.
         "not_accumulated": list(evaluation.aggregate.not_accumulated),
+        # The prior-period items carried forward, as labels and aggregates. The gate
+        # status above does not rest on them (D61): a module reading the gate sees
+        # them here and need not infer that.
+        "prior_period": py_carried_json(evaluation.prior_period, evaluation.aggregate, threshold),
         "hard_gate": gate_json(evaluation.hard),
         "soft_gate": {
             **gate_json(evaluation.soft),

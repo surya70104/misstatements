@@ -16,7 +16,13 @@ the columns the spec's own data model gives this table.
 with ``determination``, the "whether" of spec section 6.4. They are null on a run that
 concludes nothing. A conclusion is always a **new** row carrying its own figures and
 threshold version, so it cannot drift from what it was based on, and no row is ever updated
-to receive one. ``py_carried`` arrives with the prior-period carry-forward (Pass 2, B6).
+to receive one.
+
+``py_carried`` is the spec's own column too (Pass 2; D61; migration 0012): what the run
+saw of the prior-period items carried forward, as labels (which version of which item)
+and aggregates (their totals on each basis, alone and with the current year's). It is
+null on a row written before the column existed. The four ``agg_`` columns remain the
+current year's aggregate, the one the gates test.
 """
 
 from __future__ import annotations
@@ -99,6 +105,9 @@ class EvaluationRun(Base):
     agg_net_na: Mapped[Decimal] = mapped_column(Numeric(asdecimal=True))
     materiality_reassessed: Mapped[bool] = mapped_column(Boolean())
     detail: Mapped[dict[str, Any]] = mapped_column(JSON().with_variant(JSONB(), "postgresql"))
+    py_carried: Mapped[dict[str, Any] | None] = mapped_column(
+        JSON().with_variant(JSONB(), "postgresql")
+    )
     evaluated_by: Mapped[str] = mapped_column(Text())
     # The conclusion, on the row that carries its figures (D45). Null on a run that
     # concludes nothing; a conclusion is always a new row, never an update of one.
