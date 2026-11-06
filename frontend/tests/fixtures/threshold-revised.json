@@ -1,6 +1,6 @@
 {
-  "id": "3dfabef3-8dfb-45ad-a884-dad5201389df",
-  "engagement_id": "11d57e3a-98c2-489c-8a34-23e1550fdf23",
+  "id": "bab80930-8cdd-40f7-9492-761a468b8e9c",
+  "engagement_id": "cbed0456-78a1-4331-8beb-3e6215ce6b57",
   "version_no": 2,
   "om": "500000.00",
   "pm": "300000.00",
@@ -8,7 +8,7 @@
   "ctt_fraction": "0.04",
   "basis": "C-1 revised: benchmark updated to final profit before tax",
   "set_by": "manager@firm",
-  "set_at": "2026-11-06T11:46:27",
+  "set_at": "2026-11-06T12:33:30",
   "superseded_by": null,
   "is_current": true,
   "spine": {
@@ -47,13 +47,13 @@
   },
   "recompute_event": {
     "seq": 1,
-    "id": "9664a4ce-ecdb-42a2-9b1a-47382e4ea545",
-    "engagement_id": "11d57e3a-98c2-489c-8a34-23e1550fdf23",
+    "id": "5c286b32-58af-4438-8fc3-fc97ef653455",
+    "engagement_id": "cbed0456-78a1-4331-8beb-3e6215ce6b57",
     "kind": "threshold_recompute",
     "payload": {
-      "previous_threshold_id": "422e090b-b6de-4e32-8ce2-86d00f36b858",
+      "previous_threshold_id": "198ee95c-bd23-43df-880f-b0f36a60ace4",
       "previous_version_no": 1,
-      "current_threshold_id": "3dfabef3-8dfb-45ad-a884-dad5201389df",
+      "current_threshold_id": "bab80930-8cdd-40f7-9492-761a468b8e9c",
       "current_version_no": 2,
       "changes": {
         "om": {
@@ -80,6 +80,6 @@
       "bands": "every band recomputes on read against the current version: nothing is stored, so the next read of any misstatement bands it against this version (D33)"
     },
     "actor": "manager@firm",
-    "at": "2026-11-06T11:46:27"
+    "at": "2026-11-06T12:33:30"
   }
 }

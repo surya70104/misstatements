@@ -1,9 +1,9 @@
 {
-  "id": "b5cc45d7-245f-4753-8f3d-c5f572140d0c",
-  "engagement_id": "048f33c7-d7ea-4da3-a884-2d9c8a9fbb60",
+  "id": "7f7b3fd4-5cde-44eb-bb86-3c5f4731701d",
+  "engagement_id": "7588e69c-d5c9-4381-bdce-77cf0d6d7c96",
   "ref": "M-1",
   "created_by": "senior@firm",
-  "created_at": "2026-11-06T11:46:22",
+  "created_at": "2026-11-06T12:33:27",
   "current": {
     "version_no": 2,
     "type": "factual",
@@ -12,18 +12,18 @@
     "raised_from": "wp",
     "source_ref": "E-4.2",
     "state": "communicated",
-    "communicated_at": "2026-11-06T11:46:23.145135",
+    "communicated_at": "2026-11-06T12:33:27.614798",
     "decided_at": null,
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "723d4795-6f21-4e0e-99da-36efefe2601b",
+    "spine_adjustment_id": "e84262fc-5f77-42ad-b43d-2e69313907c6",
     "spine_kind": "correction",
     "range_low": null,
     "range_high": null,
     "sample_ref": null,
     "projection_basis": null,
     "created_by": "manager@firm",
-    "created_at": "2026-11-06T11:46:23"
+    "created_at": "2026-11-06T12:33:27"
   },
   "spine": {
     "status": "unreachable",
@@ -56,7 +56,7 @@
     "band": null,
     "bands": null,
     "amounts": null,
-    "threshold_id": "5faccb27-0d9d-4fb9-be6c-a1d1ec7c0b77",
+    "threshold_id": "2052ebdb-6417-4c2e-9dd6-8c69a4b0e9de",
     "threshold_version_no": 1,
     "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
     "projected": false,
@@ -157,14 +157,14 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "723d4795-6f21-4e0e-99da-36efefe2601b",
+      "spine_adjustment_id": "e84262fc-5f77-42ad-b43d-2e69313907c6",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T11:46:22"
+      "created_at": "2026-11-06T12:33:27"
     },
     {
       "version_no": 2,
@@ -174,18 +174,18 @@
       "raised_from": "wp",
       "source_ref": "E-4.2",
       "state": "communicated",
-      "communicated_at": "2026-11-06T11:46:23.145135",
+      "communicated_at": "2026-11-06T12:33:27.614798",
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "723d4795-6f21-4e0e-99da-36efefe2601b",
+      "spine_adjustment_id": "e84262fc-5f77-42ad-b43d-2e69313907c6",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "manager@firm",
-      "created_at": "2026-11-06T11:46:23"
+      "created_at": "2026-11-06T12:33:27"
     }
   ]
 }

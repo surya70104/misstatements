@@ -9,6 +9,7 @@ import { NewEngagementPage } from './pages/NewEngagementPage'
 import { RaiseMisstatementPage } from './pages/RaiseMisstatementPage'
 import { SchedulePage } from './pages/SchedulePage'
 import { SpinePage } from './pages/SpinePage'
+import { TcwgExtractPage } from './pages/TcwgExtractPage'
 import { ThresholdsPage } from './pages/ThresholdsPage'
 import { href, useRoute, type Route } from './router'
 
@@ -42,6 +43,8 @@ function Screen({ route }: { route: Route }) {
       return <SchedulePage id={route.id} />
     case 'evaluation':
       return <EvaluationPage id={route.id} />
+    case 'tcwg-extract':
+      return <TcwgExtractPage id={route.id} />
     case 'thresholds':
       return <ThresholdsPage id={route.id} />
     case 'spine':
@@ -82,7 +85,7 @@ export function App() {
       >
         Skip to the content
       </button>
-      <header className="border-b border-slate-200 bg-white">
+      <header className="border-b border-slate-200 bg-white print:hidden">
         <div className="mx-auto flex max-w-7xl flex-wrap items-baseline gap-x-6 gap-y-1 px-4 py-3 sm:px-6">
           <div className="flex items-baseline gap-3">
             <a
@@ -113,7 +116,7 @@ export function App() {
         <Screen route={route} />
       </main>
 
-      <footer className="border-t border-slate-200 bg-white">
+      <footer className="border-t border-slate-200 bg-white print:hidden">
         <p role="status" className="mx-auto max-w-7xl px-4 py-2 text-xs text-slate-500 sm:px-6">
           {backend.state === 'checking' && 'Checking the backend…'}
           {backend.state === 'up' &&

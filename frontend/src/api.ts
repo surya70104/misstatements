@@ -489,6 +489,88 @@ export type Evaluation = {
   authorisation: Authorisation
 }
 
+// ---- the TCWG extract (SA 450 paragraph 12; backend D62) ----
+
+// One uncorrected misstatement as the extract's schedule shows it. Its effects are null
+// when the backend could not determine them.
+export type TcwgRow = {
+  id: string
+  ref: string
+  type: MisstatementType
+  state: MisstatementState
+  description: string
+  source_ref: string
+  profit_before_tax: string | null
+  net_assets: string | null
+  band: Band | null
+  classification_only: boolean
+  refusal_reason: string | null
+}
+
+// A misstatement named individually: why it is named, the qualitative factors recorded
+// against it, what an item of its type must say, and its Dr/Cr lines.
+export type TcwgNamed = TcwgRow & {
+  reasons: { code: string; text: string }[]
+  factors: QualitativeFactor[]
+  range: { low: string; high: string } | null
+  sample_ref: string | null
+  projection_basis: string | null
+  lines: SpineLine[]
+}
+
+export type TcwgSums = BothWays & { count: number }
+
+// The extract: computed by the backend on every read, read-only, never stored.
+export type TcwgExtract = {
+  engagement: { id: string; label: string }
+  threshold: ThresholdLines | null
+  // ready, or incomplete with the reasons: something uncorrected could not be placed or summed.
+  status: string
+  incomplete_because: string[]
+  counts: {
+    communicated: number
+    named_individually: number
+    undetermined: number
+    other_uncorrected: number
+    clearly_trivial_not_accumulated: number
+  }
+  named_individually: TcwgNamed[]
+  undetermined: (TcwgRow & { reason: string })[]
+  other_uncorrected: {
+    groups: (TcwgSums & { type: MisstatementType })[]
+    items: TcwgRow[]
+  }
+  totals: {
+    named_individually: TcwgSums
+    other_uncorrected: TcwgSums
+    // The evaluation's own aggregate: what the gates test.
+    all_uncorrected: Figures & { count: number; complete: boolean }
+    basis: string
+  }
+  not_communicated: {
+    clearly_trivial: { items: TcwgRow[]; total: NotAccumulatedTotal }
+    not_uncorrected: { ref: string; state: MisstatementState }[]
+  }
+  prior_period: Evaluation['prior_period']
+  opinion_effect: {
+    // blocked, not_blocked or undetermined: the opinion gate's reading.
+    unmodified_opinion: string
+    statement: string
+    blocked_by: string[]
+    undetermined_because: string[]
+    hard_gate: Gate
+    soft_gate: Gate & { pm_gate: string }
+    conclusion: { status: string; determination: string | null; run_no: number | null }
+    scope: string
+    reads_prior_period: boolean
+  }
+  request: { applies: boolean; text: string; basis: string }
+  evaluation_run: { status: string; detail: string; run_no: number | null }
+  basis: string
+  read_only: boolean
+  authorisation: Authorisation
+}
+
 // A gate as another module reads it (architecture D18): open, blocked or undetermined.
 export type GateExposure = {
   gate: string
@@ -615,6 +697,15 @@ export function getEvaluation(engagementId: string): Promise<Evaluation> {
 
 export function getMisstatement(id: string): Promise<Misstatement> {
   return request<Misstatement>(`/api/misstatements/${encodeURIComponent(id)}`)
+}
+
+/**
+ * The TCWG extract: the uncorrected misstatements for communication to those charged with
+ * governance, the material ones named individually, with the effect on the opinion and the
+ * request to correct. Read-only.
+ */
+export function getTcwgExtract(engagementId: string): Promise<TcwgExtract> {
+  return request<TcwgExtract>(`/api/engagements/${encodeURIComponent(engagementId)}/tcwg-extract`)
 }
 
 function evaluationPath(engagementId: string, rest = ''): string {

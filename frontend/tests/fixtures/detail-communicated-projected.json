@@ -1,9 +1,9 @@
 {
-  "id": "63c304c6-0bb2-4550-bde7-929d0df142bb",
-  "engagement_id": "048f33c7-d7ea-4da3-a884-2d9c8a9fbb60",
+  "id": "6d068cf4-716a-467a-8fa2-332d0259fccb",
+  "engagement_id": "7588e69c-d5c9-4381-bdce-77cf0d6d7c96",
   "ref": "M-3",
   "created_by": "senior@firm",
-  "created_at": "2026-11-06T11:46:23",
+  "created_at": "2026-11-06T12:33:27",
   "current": {
     "version_no": 2,
     "type": "projected",
@@ -12,23 +12,23 @@
     "raised_from": "wp",
     "source_ref": "R-5.3",
     "state": "communicated",
-    "communicated_at": "2026-11-06T11:46:23.607901",
+    "communicated_at": "2026-11-06T12:33:27.893655",
     "decided_at": null,
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "be2a1fb0-944a-42da-a266-b897ddc5dff6",
+    "spine_adjustment_id": "d1ddea8d-7328-4e01-88cf-0f8e52fab4c7",
     "spine_kind": "correction",
     "range_low": null,
     "range_high": null,
     "sample_ref": "S-12",
     "projection_basis": "Ratio of error to sample value, applied to the population",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T11:46:23"
+    "created_at": "2026-11-06T12:33:27"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "be2a1fb0-944a-42da-a266-b897ddc5dff6",
+    "adjustment_id": "d1ddea8d-7328-4e01-88cf-0f8e52fab4c7",
     "adjustment_status": "proposed",
     "kind": "correction",
     "finding_ref": "M-3",
@@ -117,7 +117,7 @@
       "profit": "45000.00",
       "net_assets": "45000.00"
     },
-    "threshold_id": "5faccb27-0d9d-4fb9-be6c-a1d1ec7c0b77",
+    "threshold_id": "2052ebdb-6417-4c2e-9dd6-8c69a4b0e9de",
     "threshold_version_no": 1,
     "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
     "projected": true,
@@ -218,14 +218,14 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "be2a1fb0-944a-42da-a266-b897ddc5dff6",
+      "spine_adjustment_id": "d1ddea8d-7328-4e01-88cf-0f8e52fab4c7",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": "S-12",
       "projection_basis": "Ratio of error to sample value, applied to the population",
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T11:46:23"
+      "created_at": "2026-11-06T12:33:27"
     },
     {
       "version_no": 2,
@@ -235,18 +235,18 @@
       "raised_from": "wp",
       "source_ref": "R-5.3",
       "state": "communicated",
-      "communicated_at": "2026-11-06T11:46:23.607901",
+      "communicated_at": "2026-11-06T12:33:27.893655",
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "be2a1fb0-944a-42da-a266-b897ddc5dff6",
+      "spine_adjustment_id": "d1ddea8d-7328-4e01-88cf-0f8e52fab4c7",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": "S-12",
       "projection_basis": "Ratio of error to sample value, applied to the population",
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T11:46:23"
+      "created_at": "2026-11-06T12:33:27"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "misstatement_id": "91c31551-251d-4bce-97d2-0471dd8f7e83",
+  "misstatement_id": "186d3681-8041-45ee-9610-7840ae3c8471",
   "ref": "M-2",
   "escalated": true,
   "factors": [
@@ -8,7 +8,7 @@
       "text": "relates to a related party transaction",
       "note": "Director's firm; pricing not at arm's length",
       "escalated_by": "manager@firm",
-      "at": "2026-11-06T11:46:30"
+      "at": "2026-11-06T12:33:32"
     }
   ],
   "escalation_basis": "an item is escalated while at least one factor of the qualitative checklist is recorded against it, each with its reason (spec section 5); an escalated item is listed individually regardless of its size (acceptance 8) and is accumulated whatever its band, because a matter is clearly trivial only when it is clearly inconsequential 'whether judged by any criteria of size, nature or circumstances' (SA 450 paragraph A2; register F5; architecture D59); which factors apply is a person's judgement and is never detected (spec section 12)",
@@ -51,7 +51,7 @@
       "applies": true,
       "note": "Director's firm; pricing not at arm's length",
       "escalated_by": "manager@firm",
-      "at": "2026-11-06T11:46:30"
+      "at": "2026-11-06T12:33:32"
     },
     {
       "factor": "segment_or_remuneration",
@@ -77,7 +77,7 @@
       "applies": true,
       "note": "Sale to a firm owned by a director; see E-12",
       "escalated_by": "manager@firm",
-      "at": "2026-11-06T11:46:30"
+      "at": "2026-11-06T12:33:31"
     },
     {
       "entry_no": 2,
@@ -85,7 +85,7 @@
       "applies": true,
       "note": "Director's firm; pricing not at arm's length",
       "escalated_by": "manager@firm",
-      "at": "2026-11-06T11:46:30"
+      "at": "2026-11-06T12:33:32"
     }
   ],
   "authorisation": {

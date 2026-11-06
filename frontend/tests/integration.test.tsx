@@ -36,6 +36,7 @@ import {
 } from './closureFixtures'
 import listJson from './fixtures/workflow-engagements.json'
 import screenJson from './fixtures/workflow-evaluation-screen.json'
+import tcwgJson from './fixtures/workflow-tcwg-extract.json'
 import { mockApi, requested } from './mockApi'
 import {
   SCHEDULE,
@@ -57,6 +58,7 @@ const EVERYTHING = {
   ...evaluationAnswers(evaluationScreen),
   ...thresholdsAnswers(workflowThresholds),
   ...spineAnswers(workflowSpine),
+  [`GET /api/engagements/${workflowEngagement.id}/tcwg-extract`]: tcwgJson,
   [detailPath(raised)]: raised,
 }
 
@@ -197,6 +199,7 @@ test(
         '#/engagements/new',
         `#/engagements/${id}`,
         `#/engagements/${id}/evaluation`,
+        `#/engagements/${id}/tcwg-extract`,
         `#/engagements/${id}/thresholds`,
         `#/engagements/${id}/spine`,
         `#/engagements/${id}/events`,

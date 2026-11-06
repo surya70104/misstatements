@@ -1,7 +1,7 @@
 {
-  "engagement_id": "afa42972-06ef-4fa7-856f-290dc8e433c8",
+  "engagement_id": "dd704699-8493-4f57-b732-a9c6157ff10d",
   "threshold": {
-    "id": "1d184288-343c-4b76-8e9f-bcc7702c6390",
+    "id": "71894e2c-bc4f-43fd-bf7b-e008dfd435cd",
     "version_no": 1,
     "om": "400000.00",
     "pm": "250000.00",
@@ -224,7 +224,7 @@
   },
   "items": [
     {
-      "id": "fecc2875-5cbc-4348-8d3e-9a913df9532f",
+      "id": "6bb40d49-cb47-4b04-a75d-77536e892758",
       "ref": "M-1",
       "type": "factual",
       "projected": false,
@@ -241,7 +241,7 @@
       "expected_spine_adjustment_status": "proposed"
     },
     {
-      "id": "357122f7-22b2-4066-aa5a-3554dca7ea40",
+      "id": "b4087144-6351-46f5-8796-1ced49964ef4",
       "ref": "M-2",
       "type": "factual",
       "projected": false,
@@ -258,7 +258,7 @@
       "expected_spine_adjustment_status": "proposed"
     },
     {
-      "id": "23260572-8193-4757-bf58-0c975f89dbd1",
+      "id": "4ece2b45-e463-46e6-9334-4f08437f36b2",
       "ref": "M-3",
       "type": "judgemental",
       "projected": false,
@@ -275,7 +275,7 @@
       "expected_spine_adjustment_status": "refused"
     },
     {
-      "id": "e94a281e-6111-405d-ac10-5d04525cc492",
+      "id": "8348fb8d-7479-47c5-b1e4-6afc829f01c6",
       "ref": "M-4",
       "type": "projected",
       "projected": true,
@@ -292,7 +292,7 @@
       "expected_spine_adjustment_status": "proposed"
     },
     {
-      "id": "f8f31461-4ee7-4557-9e21-56d6e6f5c69a",
+      "id": "8496975f-8734-4e6a-9f1d-b08977565d64",
       "ref": "M-5",
       "type": "factual",
       "projected": false,
@@ -309,7 +309,7 @@
       "expected_spine_adjustment_status": "accepted"
     },
     {
-      "id": "b15c8392-ce13-4ab5-8b2c-ccf64deab9eb",
+      "id": "c4e94abd-62cb-48cb-a2a5-b39392635aa6",
       "ref": "M-6",
       "type": "factual",
       "projected": false,
@@ -326,7 +326,7 @@
       "expected_spine_adjustment_status": "proposed"
     },
     {
-      "id": "88240533-8435-4071-a8a0-1a2e7b0b9e50",
+      "id": "161bb6a9-fbc3-40f4-b47d-042dd0b15389",
       "ref": "M-7",
       "type": "factual",
       "projected": false,
@@ -347,10 +347,10 @@
     "status": "current",
     "detail": "the latest run describes the evaluation as it stands",
     "run": {
-      "id": "cee0d50a-1856-4d1d-ac35-aa3a812258bb",
-      "engagement_id": "afa42972-06ef-4fa7-856f-290dc8e433c8",
+      "id": "06fedf23-a287-468e-99ec-d49648c99c45",
+      "engagement_id": "dd704699-8493-4f57-b732-a9c6157ff10d",
       "run_no": 2,
-      "threshold_id": "1d184288-343c-4b76-8e9f-bcc7702c6390",
+      "threshold_id": "71894e2c-bc4f-43fd-bf7b-e008dfd435cd",
       "threshold_version_no": 1,
       "agg_gross_pbt": "210000.00",
       "agg_net_pbt": "-210000.00",
@@ -358,7 +358,7 @@
       "agg_net_na": "-210000.00",
       "materiality_reassessed": true,
       "evaluated_by": "manager@firm",
-      "at": "2026-11-06T11:46:24",
+      "at": "2026-11-06T12:33:28",
       "concluded": false,
       "determination": null,
       "conclusion": null,
@@ -435,7 +435,7 @@
       },
       "detail": {
         "threshold": {
-          "id": "1d184288-343c-4b76-8e9f-bcc7702c6390",
+          "id": "71894e2c-bc4f-43fd-bf7b-e008dfd435cd",
           "version_no": 1,
           "om": "400000.00",
           "pm": "250000.00",
@@ -631,11 +631,11 @@
   },
   "strategy_response_event": {
     "seq": 3,
-    "id": "a51e091d-803e-4f47-8653-fce0ca3eaa9c",
-    "engagement_id": "afa42972-06ef-4fa7-856f-290dc8e433c8",
+    "id": "762d681f-f4ba-40b9-8fc3-c964872c9320",
+    "engagement_id": "dd704699-8493-4f57-b732-a9c6157ff10d",
     "kind": "strategy_trigger_response",
     "payload": {
-      "threshold_id": "1d184288-343c-4b76-8e9f-bcc7702c6390",
+      "threshold_id": "71894e2c-bc4f-43fd-bf7b-e008dfd435cd",
       "threshold_version_no": 1,
       "fraction": "0.5",
       "line": "200000.00",
@@ -670,6 +670,6 @@
       "identity_mode": "dev"
     },
     "actor": "manager@firm",
-    "at": "2026-11-06T11:46:25"
+    "at": "2026-11-06T12:33:28"
   }
 }

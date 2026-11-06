@@ -1,9 +1,9 @@
 {
-  "id": "5ebcba8a-ddf1-45a0-a434-199afc0d112b",
-  "engagement_id": "b29b9075-3a9a-4041-b7b7-a73b89af6b35",
+  "id": "9da5a1d1-a010-4ed7-8341-2c89aaf71760",
+  "engagement_id": "59682c16-8e57-405e-a5f0-a72f52fe6c00",
   "ref": "M-3",
   "created_by": "senior@firm",
-  "created_at": "2026-11-06T11:46:28",
+  "created_at": "2026-11-06T12:33:30",
   "current": {
     "version_no": 1,
     "type": "factual",
@@ -16,19 +16,19 @@
     "decided_at": null,
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "9cc5e25b-01c0-48f5-91ad-24ba3b9637a9",
+    "spine_adjustment_id": "47fa8f0f-8f3d-44d2-b811-47ceaf84f901",
     "spine_kind": "correction",
     "range_low": null,
     "range_high": null,
     "sample_ref": null,
     "projection_basis": null,
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T11:46:28"
+    "created_at": "2026-11-06T12:33:30"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "9cc5e25b-01c0-48f5-91ad-24ba3b9637a9",
+    "adjustment_id": "47fa8f0f-8f3d-44d2-b811-47ceaf84f901",
     "adjustment_status": "proposed",
     "kind": "correction",
     "finding_ref": "M-3",
@@ -149,7 +149,7 @@
     "band": null,
     "bands": null,
     "amounts": null,
-    "threshold_id": "81f38296-8a73-4942-b4bd-df17d6ec095d",
+    "threshold_id": "7d61021f-3f9e-404e-a8fe-47d423e0aabf",
     "threshold_version_no": 1,
     "basis": "no band: the effects are unresolved (Salaries, Salaries), and nothing is banded on a guess (architecture D31, D32, D33)",
     "projected": false,
@@ -250,14 +250,14 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "9cc5e25b-01c0-48f5-91ad-24ba3b9637a9",
+      "spine_adjustment_id": "47fa8f0f-8f3d-44d2-b811-47ceaf84f901",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T11:46:28"
+      "created_at": "2026-11-06T12:33:30"
     }
   ]
 }

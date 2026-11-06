@@ -17,7 +17,7 @@
         "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
       }
     },
-    "id": "ccbb92dd-de7c-4550-b58a-d82e7a304cce",
+    "id": "3d468426-15ee-4ea9-8aa0-32ff6621b167",
     "label": "Test engagement P: prior-period items",
     "spine": {
       "engagement_id": "11111111-1111-4111-8111-111111111111",
@@ -27,14 +27,14 @@
       "detail": null
     },
     "misstatements": 2,
-    "current_threshold_id": "6e390faa-5838-4188-8442-c5632994ae1e",
+    "current_threshold_id": "ea46127e-6e3a-42d7-b938-1f0c45966b7e",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T11:46:30"
+    "created_at": "2026-11-06T12:33:32"
   },
   "evaluation": {
-    "engagement_id": "ccbb92dd-de7c-4550-b58a-d82e7a304cce",
+    "engagement_id": "3d468426-15ee-4ea9-8aa0-32ff6621b167",
     "threshold": {
-      "id": "6e390faa-5838-4188-8442-c5632994ae1e",
+      "id": "ea46127e-6e3a-42d7-b938-1f0c45966b7e",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00",
@@ -124,7 +124,7 @@
     "prior_period": {
       "items": [
         {
-          "id": "1dcefe83-2b72-422e-87a2-fa5ba2f8a8c5",
+          "id": "e2132e93-cd6c-490d-a026-3ca3e7119a28",
           "ref": "PY-2",
           "version_no": 2,
           "carried": true,
@@ -144,7 +144,7 @@
           },
           "basis": "Useful life re-read: the understatement was 70,000; see PY F-3.4 revised",
           "recorded_by": "manager@firm",
-          "at": "2026-11-06T11:46:30"
+          "at": "2026-11-06T12:33:32"
         }
       ],
       "totals": {
@@ -270,7 +270,7 @@
     },
     "items": [
       {
-        "id": "3bfa13ab-c3e7-4b8e-ba53-c15a78428b1a",
+        "id": "740d95d1-9068-4116-999c-95a297fa3fda",
         "ref": "M-1",
         "type": "factual",
         "projected": false,
@@ -287,7 +287,7 @@
         "expected_spine_adjustment_status": "proposed"
       },
       {
-        "id": "5f79220a-77ad-4d0b-b57a-bd639392f41a",
+        "id": "ac4e492d-1779-4720-affa-c907bb4582da",
         "ref": "M-2",
         "type": "factual",
         "projected": false,
@@ -308,10 +308,10 @@
       "status": "stale",
       "detail": "a prior-period item has been recorded, revised or removed since the latest run was recorded",
       "run": {
-        "id": "2fdda1a6-6e58-4f06-af7a-dfe7c8e81d44",
-        "engagement_id": "ccbb92dd-de7c-4550-b58a-d82e7a304cce",
+        "id": "20e0e2e1-a391-4385-a3f9-1c321f9b2584",
+        "engagement_id": "3d468426-15ee-4ea9-8aa0-32ff6621b167",
         "run_no": 1,
-        "threshold_id": "6e390faa-5838-4188-8442-c5632994ae1e",
+        "threshold_id": "ea46127e-6e3a-42d7-b938-1f0c45966b7e",
         "threshold_version_no": 1,
         "agg_gross_pbt": "190000.00",
         "agg_net_pbt": "-190000.00",
@@ -319,7 +319,7 @@
         "agg_net_na": "-190000.00",
         "materiality_reassessed": true,
         "evaluated_by": "manager@firm",
-        "at": "2026-11-06T11:46:30",
+        "at": "2026-11-06T12:33:32",
         "concluded": false,
         "determination": null,
         "conclusion": null,
@@ -405,7 +405,7 @@
         },
         "detail": {
           "threshold": {
-            "id": "6e390faa-5838-4188-8442-c5632994ae1e",
+            "id": "ea46127e-6e3a-42d7-b938-1f0c45966b7e",
             "version_no": 1,
             "om": "400000.00",
             "pm": "250000.00",
@@ -538,10 +538,10 @@
   },
   "runs": [
     {
-      "id": "2fdda1a6-6e58-4f06-af7a-dfe7c8e81d44",
-      "engagement_id": "ccbb92dd-de7c-4550-b58a-d82e7a304cce",
+      "id": "20e0e2e1-a391-4385-a3f9-1c321f9b2584",
+      "engagement_id": "3d468426-15ee-4ea9-8aa0-32ff6621b167",
       "run_no": 1,
-      "threshold_id": "6e390faa-5838-4188-8442-c5632994ae1e",
+      "threshold_id": "ea46127e-6e3a-42d7-b938-1f0c45966b7e",
       "threshold_version_no": 1,
       "agg_gross_pbt": "190000.00",
       "agg_net_pbt": "-190000.00",
@@ -549,7 +549,7 @@
       "agg_net_na": "-190000.00",
       "materiality_reassessed": true,
       "evaluated_by": "manager@firm",
-      "at": "2026-11-06T11:46:30",
+      "at": "2026-11-06T12:33:32",
       "concluded": false,
       "determination": null,
       "conclusion": null,
@@ -635,7 +635,7 @@
       },
       "detail": {
         "threshold": {
-          "id": "6e390faa-5838-4188-8442-c5632994ae1e",
+          "id": "ea46127e-6e3a-42d7-b938-1f0c45966b7e",
           "version_no": 1,
           "om": "400000.00",
           "pm": "250000.00",
@@ -772,9 +772,9 @@
     "blocked_by": [],
     "undetermined_because": [],
     "scope": "whether an unmodified opinion is blocked by the size of the uncorrected misstatements: the hard gate at overall materiality (spec section 7), and the gate at performance materiality when the firm has set it to hard. It says nothing about items above PM not yet dealt with or about the partner's acknowledgement: the sign-off gate does",
-    "engagement_id": "ccbb92dd-de7c-4550-b58a-d82e7a304cce",
+    "engagement_id": "3d468426-15ee-4ea9-8aa0-32ff6621b167",
     "threshold": {
-      "id": "6e390faa-5838-4188-8442-c5632994ae1e",
+      "id": "ea46127e-6e3a-42d7-b938-1f0c45966b7e",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"
@@ -935,9 +935,9 @@
     "blocked_by": [],
     "undetermined_because": [],
     "scope": "whether sign-off is blocked for any reason this module knows: the hard gate, the soft gate without a current partner acknowledgement, an item above PM still raised or communicated (spec section 7; acceptance 6 and 7)",
-    "engagement_id": "ccbb92dd-de7c-4550-b58a-d82e7a304cce",
+    "engagement_id": "3d468426-15ee-4ea9-8aa0-32ff6621b167",
     "threshold": {
-      "id": "6e390faa-5838-4188-8442-c5632994ae1e",
+      "id": "ea46127e-6e3a-42d7-b938-1f0c45966b7e",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"

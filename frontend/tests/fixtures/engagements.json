@@ -17,7 +17,7 @@
         "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
       }
     },
-    "id": "f94d5d8a-b4cd-4831-aafb-a4ac410354af",
+    "id": "b42799bd-78af-4915-9fa5-eca46bd06368",
     "label": "Test engagement A: linked, version pinned",
     "spine": {
       "engagement_id": "11111111-1111-4111-8111-111111111111",
@@ -27,9 +27,9 @@
       "detail": "a Spine link is recorded; open the engagement to verify it"
     },
     "misstatements": 2,
-    "current_threshold_id": "65461c6d-9dfb-4302-958e-3b0367ec7d76",
+    "current_threshold_id": "e19099a7-6c80-4ce2-a376-9829198f76dc",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T11:46:21"
+    "created_at": "2026-11-06T12:33:26"
   },
   {
     "authorisation": {
@@ -49,7 +49,7 @@
         "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
       }
     },
-    "id": "477a0902-59dc-4b4e-b353-d9fceebf71d0",
+    "id": "6a9cfa84-0395-435b-9c93-219190afcdec",
     "label": "Test engagement B: linked, no version",
     "spine": {
       "engagement_id": "11111111-1111-4111-8111-111111111111",
@@ -61,7 +61,7 @@
     "misstatements": 0,
     "current_threshold_id": null,
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T11:46:21"
+    "created_at": "2026-11-06T12:33:26"
   },
   {
     "authorisation": {
@@ -81,7 +81,7 @@
         "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
       }
     },
-    "id": "fce30f22-1d68-4054-91bc-48daf9aa6ff7",
+    "id": "268bcebc-3ceb-4b04-b29f-10c07ce283bc",
     "label": "Test engagement C: not linked",
     "spine": {
       "engagement_id": null,
@@ -93,6 +93,6 @@
     "misstatements": 0,
     "current_threshold_id": null,
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T11:46:21"
+    "created_at": "2026-11-06T12:33:26"
   }
 ]

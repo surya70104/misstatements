@@ -1,0 +1,402 @@
+{
+  "engagement": {
+    "id": "b1153d81-aa51-4307-a51c-0d2eb375d873",
+    "label": "Test engagement T: TCWG extract"
+  },
+  "threshold": {
+    "id": "c5c17a6f-68b0-4960-a8e1-d63db8e2f7d0",
+    "version_no": 1,
+    "om": "400000.00",
+    "pm": "250000.00",
+    "ctt": "12500.00"
+  },
+  "status": "incomplete",
+  "incomplete_because": [
+    "the effects of M-1, M-2, M-3, M-4, M-6, M-7 cannot be determined, so the totals are short",
+    "M-1, M-2, M-3, M-4, M-6 could not be banded, so whether each is above performance materiality is not known"
+  ],
+  "counts": {
+    "communicated": 6,
+    "named_individually": 1,
+    "undetermined": 5,
+    "other_uncorrected": 0,
+    "clearly_trivial_not_accumulated": 0
+  },
+  "named_individually": [
+    {
+      "id": "4c4ccc7e-c66e-4702-9d87-84bca3f2e553",
+      "ref": "M-7",
+      "type": "factual",
+      "state": "raised",
+      "description": "Sale to a related party not invoiced",
+      "source_ref": "E-4.2",
+      "profit_before_tax": null,
+      "net_assets": null,
+      "band": null,
+      "classification_only": false,
+      "refusal_reason": null,
+      "reasons": [
+        {
+          "code": "escalated",
+          "text": "escalated on a qualitative factor, whatever its amount"
+        }
+      ],
+      "factors": [
+        {
+          "factor": "related_party",
+          "text": "relates to a related party transaction",
+          "note": "Sale to a firm owned by a director; see E-12",
+          "escalated_by": "manager@firm",
+          "at": "2026-11-06T12:33:32"
+        }
+      ],
+      "range": null,
+      "sample_ref": null,
+      "projection_basis": null,
+      "lines": []
+    }
+  ],
+  "undetermined": [
+    {
+      "id": "f7f0c002-d571-4651-92d4-74ff8544bb77",
+      "ref": "M-1",
+      "type": "factual",
+      "state": "raised",
+      "description": "Rent for March not accrued",
+      "source_ref": "E-4.2",
+      "profit_before_tax": null,
+      "net_assets": null,
+      "band": null,
+      "classification_only": false,
+      "refusal_reason": null,
+      "reason": "its effects cannot be determined, so it cannot be banded"
+    },
+    {
+      "id": "95b0d848-2021-4139-a58c-7d6e07eda11c",
+      "ref": "M-2",
+      "type": "projected",
+      "state": "raised",
+      "description": "Sales cut-off errors projected over the March population",
+      "source_ref": "E-4.2",
+      "profit_before_tax": null,
+      "net_assets": null,
+      "band": null,
+      "classification_only": false,
+      "refusal_reason": null,
+      "reason": "its effects cannot be determined, so it cannot be banded"
+    },
+    {
+      "id": "5062957d-a906-4b20-a5c5-c5b1c35fae81",
+      "ref": "M-3",
+      "type": "factual",
+      "state": "refused",
+      "description": "Repairs charged to plant",
+      "source_ref": "E-4.2",
+      "profit_before_tax": null,
+      "net_assets": null,
+      "band": null,
+      "classification_only": false,
+      "refusal_reason": "Management considers the amount immaterial",
+      "reason": "its effects cannot be determined, so it cannot be banded"
+    },
+    {
+      "id": "7b3eac64-db6e-4ca7-895c-407888245c5d",
+      "ref": "M-4",
+      "type": "factual",
+      "state": "raised",
+      "description": "Petty cash shortage",
+      "source_ref": "E-4.2",
+      "profit_before_tax": null,
+      "net_assets": null,
+      "band": null,
+      "classification_only": false,
+      "refusal_reason": null,
+      "reason": "its effects cannot be determined, so it cannot be banded"
+    },
+    {
+      "id": "244ae723-9be0-460b-8d35-3f6c8c5a4a6e",
+      "ref": "M-6",
+      "type": "judgemental",
+      "state": "raised",
+      "description": "Depreciation on plant understated: useful life taken as 15 years",
+      "source_ref": "E-4.2",
+      "profit_before_tax": null,
+      "net_assets": null,
+      "band": null,
+      "classification_only": false,
+      "refusal_reason": null,
+      "reason": "its effects cannot be determined, so it cannot be banded"
+    }
+  ],
+  "other_uncorrected": {
+    "groups": [
+      {
+        "type": "factual",
+        "count": 0,
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      },
+      {
+        "type": "judgemental",
+        "count": 0,
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      },
+      {
+        "type": "projected",
+        "count": 0,
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      }
+    ],
+    "items": []
+  },
+  "totals": {
+    "named_individually": {
+      "count": 1,
+      "profit_before_tax": {
+        "gross": "0.00",
+        "net": "0.00"
+      },
+      "net_assets": {
+        "gross": "0.00",
+        "net": "0.00"
+      }
+    },
+    "other_uncorrected": {
+      "count": 0,
+      "profit_before_tax": {
+        "gross": "0.00",
+        "net": "0.00"
+      },
+      "net_assets": {
+        "gross": "0.00",
+        "net": "0.00"
+      }
+    },
+    "all_uncorrected": {
+      "profit_before_tax": {
+        "gross": "0.00",
+        "net": "0.00",
+        "gross_without_projected": "0.00",
+        "net_without_projected": "0.00",
+        "projected_gross": "0.00",
+        "factual_gross": "0.00",
+        "judgemental_gross": "0.00"
+      },
+      "net_assets": {
+        "gross": "0.00",
+        "net": "0.00",
+        "gross_without_projected": "0.00",
+        "net_without_projected": "0.00",
+        "projected_gross": "0.00",
+        "factual_gross": "0.00",
+        "judgemental_gross": "0.00"
+      },
+      "count": 0,
+      "complete": false
+    },
+    "basis": "every misstatement not corrected and not withdrawn (raised, communicated, refused; the F3 reading) that is not clearly trivial contributes its effect on profit before tax and, separately, on net assets; an item whose band is clearly trivial is not accumulated and is named (spec section 4: 'below it, not accumulated'; the band is the item's, the higher of its two effects' bands; architecture D33, D53), unless the clearly trivial items together reach the clearly-trivial threshold, gross, on either measure, when all of them are accumulated (SA 450 paragraph A2: clearly trivial matters are clearly inconsequential 'whether taken individually or in aggregate'; architecture D57); an escalated item, one with a qualitative factor recorded, is accumulated whatever its band and listed individually (spec section 5; acceptance 8; architecture D59); gross sums absolute effects with no netting between misstatements, net sums them signed (spec section 4.1); each is given with and without the projected items (spec section 3.2; pending decision B8); a classification-only item contributes nil and is listed; an item whose effects are unresolved is named and the aggregate marked incomplete (architecture D38)"
+  },
+  "not_communicated": {
+    "clearly_trivial": {
+      "items": [],
+      "total": {
+        "profit_before_tax_gross": "0.00",
+        "net_assets_gross": "0.00",
+        "ctt": "12500.00",
+        "at_or_above_ctt": false,
+        "accumulated_together": [],
+        "basis": "the gross size, on each measure, of the items that band clearly trivial one by one; while it is below the clearly-trivial threshold on both measures those items are left out of the aggregate; once it reaches the threshold on either, all of them are accumulated, because SA 450 paragraph A2 describes clearly trivial matters as clearly inconsequential 'whether taken individually or in aggregate' and treats any uncertainty as not clearly trivial (architecture D57); measuring 'in aggregate' gross against the threshold itself is the conservative reading, for the CA to confirm (register S14, question 2)"
+      }
+    },
+    "not_uncorrected": [
+      {
+        "ref": "M-5",
+        "state": "corrected"
+      }
+    ]
+  },
+  "prior_period": {
+    "items": [
+      {
+        "id": "00e01d0b-1e04-4a8f-9774-cf84a9fcc829",
+        "ref": "PY-1",
+        "version_no": 1,
+        "carried": true,
+        "description": "Depreciation on plant understated in the prior year",
+        "prior_period": "FY 2024-25",
+        "source_ref": "PY schedule M-7",
+        "rolled_forward": false,
+        "source_misstatement_id": null,
+        "prior": null,
+        "current_period": {
+          "profit_before_tax": "0.00",
+          "net_assets": "-30000.00"
+        },
+        "cumulative": {
+          "profit_before_tax": "-30000.00",
+          "net_assets": "-30000.00"
+        },
+        "basis": "Carrying amount still overstated at the year end; see PY F-3.4",
+        "recorded_by": "manager@firm",
+        "at": "2026-11-06T12:33:32"
+      }
+    ],
+    "totals": {
+      "current_period": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "30000.00",
+          "net": "-30000.00"
+        }
+      },
+      "cumulative": {
+        "profit_before_tax": {
+          "gross": "30000.00",
+          "net": "-30000.00"
+        },
+        "net_assets": {
+          "gross": "30000.00",
+          "net": "-30000.00"
+        }
+      }
+    },
+    "current_year": {
+      "profit_before_tax": {
+        "gross": "0.00",
+        "net": "0.00"
+      },
+      "net_assets": {
+        "gross": "0.00",
+        "net": "0.00"
+      }
+    },
+    "with_prior_period": {
+      "current_period": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "30000.00",
+          "net": "-30000.00"
+        }
+      },
+      "cumulative": {
+        "profit_before_tax": {
+          "gross": "30000.00",
+          "net": "-30000.00"
+        },
+        "net_assets": {
+          "gross": "30000.00",
+          "net": "-30000.00"
+        }
+      }
+    },
+    "complete": false,
+    "reaches": {
+      "current_period": {
+        "pm": [],
+        "om": []
+      },
+      "cumulative": {
+        "pm": [],
+        "om": []
+      }
+    },
+    "read_by_gates": false,
+    "basis": "uncorrected misstatements of prior periods are carried forward and shown apart from the current year's own (SA 450 paragraph 11(b); spec section 4.1; acceptance 5); each carried item states its current-period effect and its cumulative effect on profit before tax and on net assets, entered by a person with the basis: this module computes neither (register B6); the totals sum those figures gross, with no netting between items, and net, signed (spec section 4.1); 'with prior-period items' adds each total to the aggregate of the current year's uncorrected misstatements, so the evaluation is shown both ways and no one method is chosen; a carried item is not banded and none is left out as clearly trivial; the gates of spec section 7 test the current year's aggregate and do not read these figures, because which basis a gate should test is the firm's policy and is not decided (architecture D61)"
+  },
+  "opinion_effect": {
+    "unmodified_opinion": "undetermined",
+    "statement": "Whether an unmodified opinion is blocked cannot be determined yet.",
+    "blocked_by": [],
+    "undetermined_because": [
+      "an uncorrected item could not be aggregated against overall materiality",
+      "M-1 is raised and cannot be banded",
+      "M-2 is raised and cannot be banded",
+      "M-4 is raised and cannot be banded",
+      "M-6 is raised and cannot be banded",
+      "M-7 is raised and cannot be banded"
+    ],
+    "hard_gate": {
+      "line": "400000.00",
+      "status": "indeterminate",
+      "fires_on": [],
+      "fires_without_projected": false,
+      "depends_on_projected": false,
+      "highest_measure": "0.00",
+      "blocks": true,
+      "basis": "fires when any measure (profit or net assets, gross or the absolute net) is at or above the line (spec section 7, 'at or above'); tested with and without the projected items, and says whether it depends on them (pending decision B8); indeterminate when the known items do not reach the line but an uncorrected item could not be aggregated (architecture D38)"
+    },
+    "soft_gate": {
+      "line": "250000.00",
+      "status": "indeterminate",
+      "fires_on": [],
+      "fires_without_projected": false,
+      "depends_on_projected": false,
+      "highest_measure": "0.00",
+      "blocks": true,
+      "basis": "fires when any measure (profit or net assets, gross or the absolute net) is at or above the line (spec section 7, 'at or above'); tested with and without the projected items, and says whether it depends on them (pending decision B8); indeterminate when the known items do not reach the line but an uncorrected item could not be aggregated (architecture D38)",
+      "pm_gate": "soft"
+    },
+    "conclusion": {
+      "status": "none",
+      "determination": null,
+      "run_no": null
+    },
+    "scope": "whether an unmodified opinion is blocked by the size of the uncorrected misstatements: the hard gate at overall materiality (spec section 7), and the gate at performance materiality when the firm has set it to hard. It says nothing about items above PM not yet dealt with or about the partner's acknowledgement: the sign-off gate does",
+    "reads_prior_period": false
+  },
+  "request": {
+    "applies": true,
+    "text": "We request that the uncorrected misstatements set out in this schedule be corrected.",
+    "basis": "SA 450 paragraph 12: the auditor communicates uncorrected misstatements to those charged with governance and requests that they be corrected (spec section 2, row 12; section 6, item 2). The sentence is the standard's requirement put plainly; the firm's own wording, and whom the communication is addressed to, are the firm's"
+  },
+  "evaluation_run": {
+    "status": "stale",
+    "detail": "a misstatement has been raised, moved or re-banded since the latest run was recorded",
+    "run_no": 1
+  },
+  "basis": "the uncorrected misstatements of the engagement (raised, communicated or refused; the F3 reading), for communication to those charged with governance (SA 450 paragraph 12; spec section 6); named individually: every one banded individually significant, above PM, which spec section 4 lists by name in the TCWG communication, and every one escalated on a qualitative factor, which spec section 5 lists individually regardless of size (acceptance 9); each says why it is named and whether its own effect is at or above overall materiality, so every individually material item is named whichever of the two lines 'material individually' means (register B14); an item that could not be banded is named as undetermined and the extract marked incomplete; the other accumulated items are summarised by type and listed; an item below the clearly-trivial threshold and not accumulated is outside the communication and named apart (spec section 4); corrected and withdrawn items are not uncorrected and are not included; gross sums sizes with no netting between misstatements, net sums them signed (spec section 4.1); the effect on the opinion is the opinion gate's reading and is not decided here (spec section 7; architecture D18, D62)",
+  "read_only": true,
+  "authorisation": {
+    "enforced": false,
+    "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+    "identity_mode": "dev",
+    "production_grade": false,
+    "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+    "partner_actions": {
+      "enforced": true,
+      "available": false,
+      "actions": [
+        "soft_gate_acknowledgement",
+        "conclusion"
+      ],
+      "source": null,
+      "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
+    }
+  }
+}

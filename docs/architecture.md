@@ -1681,3 +1681,72 @@ memory: 470 passed, 36 skipped. `ruff`, `mypy` strict clean (104 files). Fronten
 captured API answers, 11 of them new (`prior-period-*.json`). In a real browser, on the isolated preview (the real application over the test database in one transaction that was never committed; Spine test double; development identity): a prior-period item recorded through the form, its two effects and the three sets of totals shown, the mark and the note where the two together reach PM while the soft gate stayed clear and sign-off open, a run recorded and inspected with its carried items, and the item removed through the form, which made the run stale. The engagement, its thresholds and two misstatements were seeded through the preview's API first. Not done: a named
 partner (so no conclusion carrying `py_carried` was made end to end), the live Financial
 Spine, a screen-reader session, any run on the main database.
+
+## D62 · Pass 2: the TCWG extract — 6 Nov 2026 (SA 450 para 12; spec 2 row 12, 6 item 2; acceptance 9)
+
+Built on instruction. Read-only: `GET /api/engagements/{id}/tcwg-extract`. No table and no
+migration: the extract is computed on every read from the evaluation as it stands, exactly
+as the schedule and the gates compute it, so the three cannot disagree. It is a view of what
+would be communicated, not a record that a communication was made.
+
+**What the specification says.** Section 6 item 2: "uncorrected misstatements, material ones
+individually named, with the effect on the opinion, and the request to correct". Section 4:
+an item above PM is "flagged individually, listed by name in the TCWG communication".
+Section 5: an escalated item "is listed individually regardless of size". Acceptance 9: "The
+TCWG extract names every individually material item".
+
+**Where each uncorrected misstatement falls** (`core/tcwg.py`, pure). Uncorrected is raised,
+communicated or refused, the aggregate's own reading (F3). Each falls in exactly one place:
+
+- *named individually*: banded individually significant (above PM), or escalated on a
+  qualitative factor. Each says why, in words, and whether its own effect is at or above
+  overall materiality. It carries what an item of its type must say (the range of a
+  judgemental item, the sample and basis of a projected one), management's reason when
+  refused, the qualitative factors with their reasons, and its Dr/Cr lines from the Spine;
+- *could not be assessed*: it could not be banded (no thresholds, or its effects cannot be
+  determined). It is named too, and the extract is marked `incomplete` with the reasons. An
+  item is never left off the individual list on a guess;
+- *other uncorrected*: accumulated and not named. Summarised by type, the three kept apart
+  as spec section 3.2 keeps them, and listed;
+- *clearly trivial, not accumulated*: outside the communication (spec section 4: "below it,
+  not accumulated"), named apart with what they come to, so the extract reconciles to the
+  schedule. Items clearly trivial one by one that are accumulated together (D57) are in
+  "other", not here.
+
+Corrected and withdrawn items are not uncorrected and are listed only as such.
+
+**"Individually material" (B14).** The module shows both individual tests and chooses
+neither. Every item at or above overall materiality is above PM, so naming everything above
+PM names every individually material item on either reading. The extract says "named
+individually" and gives the reason; it does not itself declare an item material.
+
+**Totals.** The named items and the others are each summed gross (no netting) and net; the
+two together are the evaluation's own aggregate, which the extract carries as it is, with
+its count. The tests check that they tie to the paisa on every measure.
+
+**The effect on the opinion** is the opinion gate's reading (D18), not a new rule:
+`blocked`, `not_blocked` or `undetermined`, with the gate's own reasons, the line, the
+highest measure, and the partner's conclusion when one is recorded. The gate tests the
+current year's aggregate; the extract carries the prior-period items (D61) and says the
+gate does not read them.
+
+**The request to correct** is one fixed sentence, the standard's requirement put plainly:
+"We request that the uncorrected misstatements set out in this schedule be corrected."
+It applies when something uncorrected is accumulated or could not be assessed; otherwise the
+extract says there is nothing to request. The firm's own wording, and whom the
+communication is addressed to, are the firm's and are not built.
+
+**The screen** (`pages/TcwgExtractPage.tsx`; tab "TCWG extract"; address
+`#/engagements/{id}/tcwg-extract`). Laid out as a document: what is communicated, the
+effect on the opinion, the misstatements named individually, those that could not be
+assessed, the others summarised and listed, the totals, the prior-period items, what is
+outside the communication, and the request. An incomplete extract says so at the top with
+the reasons. "Print or save as PDF" hands the page to the browser's print dialog; the
+application's header, tabs and buttons carry `print:hidden`. The page sends nothing.
+
+**Verified, 6 November 2026.** Backend `pytest` on PostgreSQL (`oak_misstatements_test`,
+rolled back; no new migration): 522 passed, 0 skipped. In memory: 486 passed, 36 skipped.
+`ruff`, `mypy` strict clean (107 files). Frontend `vitest` 379 passed (21 files); `tsc`,
+`eslint`, `prettier --check` clean; the build succeeds; 153 captured API answers, 6 of them
+new. In a real browser, on the isolated preview (the real application over the test database in one transaction that was never committed; Spine test double; development identity): the extract opened from its tab, with two items named individually (one above PM, one escalated below the clearly-trivial threshold), the others summarised and listed, the totals, the clearly trivial item outside the communication, an unmodified opinion blocked and the request; no sideways scroll at 375 and 1280 pixels; the print rule present in the stylesheet. The engagement and its five misstatements were seeded through the preview's API. Not done: a printed page or PDF was not produced or inspected; a named
+partner; the live Financial Spine; a screen-reader session.

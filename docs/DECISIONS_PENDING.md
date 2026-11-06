@@ -491,3 +491,21 @@ change the Pass 1 count (18 open).
 **Not built with this feature:** revising an item and rolling one forward from the screen
 (both are in the API); prior-period items on the schedule screen; any detection that an
 item reversed or still stands.
+
+## Pass 2, feature 3: the TCWG extract — 6 November 2026 (architecture D62)
+
+Built on instruction on 6 November 2026. Read-only, computed on read, nothing stored. This
+section records what the feature leaves to people. It does not change the Pass 1 count.
+
+| # | Question | Who | What is built meanwhile |
+|---|---|---|---|
+| T1 | Which items does the extract name individually? Spec section 4 lists items above PM by name; acceptance 9 says "individually material"; B14 leaves "material individually" to the partner | CA | Every uncorrected item above PM and every escalated item, each with its reason and a mark when its own effect is at or above OM. The extract says "named individually", not "material" |
+| T2 | Do clearly trivial items that were communicated or refused belong in the TCWG communication? (S14 question 5) | CA | No: an item not accumulated is outside the communication, and is named apart with what the group comes to |
+| T3 | The wording of the request to correct, and whether it is addressed to management, to those charged with governance, or both | Firm | One sentence, the requirement of SA 450 paragraph 12 put plainly. No addressee |
+| T4 | Should the extract be recorded when it is communicated (who, when, which figures), so that later changes can be seen against it? | Lead | Not recorded. It is a view of the evaluation as it stands; it says whether an evaluation run records the same figures |
+| T5 | How should the effect on the opinion treat prior-period items? (with P1) | CA and the firm | It is the opinion gate's reading, which tests the current year's aggregate. The prior-period items are shown in the extract and are not part of that test |
+| T6 | May the other uncorrected items be communicated as a number and an overall effect only, where there are many? | Lead | Both are given: a summary by type and the full list |
+
+**Not built with this feature:** the written representation attachment (spec section 6,
+item 3); a file export other than the browser's own print dialog; any record of the
+communication having been made.

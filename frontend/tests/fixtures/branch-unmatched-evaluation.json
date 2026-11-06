@@ -17,7 +17,7 @@
         "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
       }
     },
-    "id": "b29b9075-3a9a-4041-b7b7-a73b89af6b35",
+    "id": "59682c16-8e57-405e-a5f0-a72f52fe6c00",
     "label": "Test engagement B: display branches",
     "spine": {
       "engagement_id": "11111111-1111-4111-8111-111111111111",
@@ -27,14 +27,14 @@
       "detail": null
     },
     "misstatements": 3,
-    "current_threshold_id": "81f38296-8a73-4942-b4bd-df17d6ec095d",
+    "current_threshold_id": "7d61021f-3f9e-404e-a8fe-47d423e0aabf",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T11:46:27"
+    "created_at": "2026-11-06T12:33:30"
   },
   "evaluation": {
-    "engagement_id": "b29b9075-3a9a-4041-b7b7-a73b89af6b35",
+    "engagement_id": "59682c16-8e57-405e-a5f0-a72f52fe6c00",
     "threshold": {
-      "id": "81f38296-8a73-4942-b4bd-df17d6ec095d",
+      "id": "7d61021f-3f9e-404e-a8fe-47d423e0aabf",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00",
@@ -258,7 +258,7 @@
     },
     "items": [
       {
-        "id": "2f4d4969-1c9d-438a-8905-f5bc87f5c440",
+        "id": "1fb3580d-071c-4e04-b283-25afc7dcbd80",
         "ref": "M-1",
         "type": "judgemental",
         "projected": false,
@@ -275,7 +275,7 @@
         "expected_spine_adjustment_status": "refused"
       },
       {
-        "id": "8d61c108-1c12-4d3d-8339-4d1b89a78cce",
+        "id": "c848827d-a362-486f-94d6-7d1ba72a6b97",
         "ref": "M-2",
         "type": "factual",
         "projected": false,
@@ -292,7 +292,7 @@
         "expected_spine_adjustment_status": "accepted"
       },
       {
-        "id": "5ebcba8a-ddf1-45a0-a434-199afc0d112b",
+        "id": "9da5a1d1-a010-4ed7-8341-2c89aaf71760",
         "ref": "M-3",
         "type": "factual",
         "projected": false,
@@ -343,9 +343,9 @@
       "M-3 is raised and cannot be banded"
     ],
     "scope": "whether an unmodified opinion is blocked by the size of the uncorrected misstatements: the hard gate at overall materiality (spec section 7), and the gate at performance materiality when the firm has set it to hard. It says nothing about items above PM not yet dealt with or about the partner's acknowledgement: the sign-off gate does",
-    "engagement_id": "b29b9075-3a9a-4041-b7b7-a73b89af6b35",
+    "engagement_id": "59682c16-8e57-405e-a5f0-a72f52fe6c00",
     "threshold": {
-      "id": "81f38296-8a73-4942-b4bd-df17d6ec095d",
+      "id": "7d61021f-3f9e-404e-a8fe-47d423e0aabf",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"
@@ -497,9 +497,9 @@
       "M-3 is raised and cannot be banded"
     ],
     "scope": "whether sign-off is blocked for any reason this module knows: the hard gate, the soft gate without a current partner acknowledgement, an item above PM still raised or communicated (spec section 7; acceptance 6 and 7)",
-    "engagement_id": "b29b9075-3a9a-4041-b7b7-a73b89af6b35",
+    "engagement_id": "59682c16-8e57-405e-a5f0-a72f52fe6c00",
     "threshold": {
-      "id": "81f38296-8a73-4942-b4bd-df17d6ec095d",
+      "id": "7d61021f-3f9e-404e-a8fe-47d423e0aabf",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"

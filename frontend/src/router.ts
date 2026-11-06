@@ -3,6 +3,7 @@
 //   #/engagements/new                     create an engagement
 //   #/engagements/<id>                    one engagement's schedule of misstatements
 //   #/engagements/<id>/evaluation         the engagement's evaluation
+//   #/engagements/<id>/tcwg-extract       its extract for those charged with governance
 //   #/engagements/<id>/thresholds         its thresholds, their history and their revision
 //   #/engagements/<id>/spine              its Financial Spine link and the reconciliation
 //   #/engagements/<id>/events             its event trail
@@ -13,6 +14,7 @@ import { useEffect, useState } from 'react'
 // The screens that belong to one engagement, by the last part of their address.
 const ENGAGEMENT_SCREENS = {
   evaluation: 'evaluation',
+  'tcwg-extract': 'tcwg-extract',
   thresholds: 'thresholds',
   spine: 'spine',
   events: 'events',

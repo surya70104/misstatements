@@ -334,6 +334,7 @@ def test_the_detail_fixtures_are_the_apis_real_answers(api: TestClient) -> None:
     check("workflow-evaluation-screen", snapshot(api, engagement))
     check("workflow-thresholds-screen", thresholds_screen(api, engagement))
     check("workflow-spine-screen", spine_screen(api, engagement))
+    check("workflow-tcwg-extract", tcwg_extract(api, engagement))
     check("transition-raised-cannot-be-corrected", attempt(api, rent, 409, to="corrected"))
     act_as(api, MANAGER)
     check("transition-communicated", attempt(api, rent, 201, to="communicated"))
@@ -1283,3 +1284,95 @@ def test_the_prior_period_fixtures_are_the_apis_real_answers(api: TestClient) ->
     check("prior-period-removed", post(api, f"{path}/PY-1/removal", 201, removal))
     check("prior-period-not-carried", post(api, f"{path}/PY-1/removal", 409, removal))
     check("prior-period-removed-screen", snapshot(api, engagement))
+
+
+# The TCWG extract (Pass 2, feature 3; architecture D62). One engagement read at three
+# moments: with nothing above PM and the opinion not blocked; with every place an item can
+# fall filled and an unmodified opinion blocked; and with the Financial Spine unreachable.
+# A second engagement has no thresholds, and a third has nothing raised.
+TCWG = "Test engagement T: TCWG extract"
+
+
+def tcwg_extract(client: TestClient, engagement: str) -> Any:
+    return got(client, f"/api/engagements/{engagement}/tcwg-extract")
+
+
+def test_the_tcwg_extract_fixtures_are_the_apis_real_answers(api: TestClient) -> None:
+    spine = use_spine(api)
+    act_as(api, SENIOR)
+
+    # Nothing raised: nothing to communicate and nothing to request.
+    nothing = with_thresholds(api, "Test engagement U: TCWG extract, nothing raised")
+    check("tcwg-extract-nothing", tcwg_extract(api, nothing))
+
+    # No thresholds: nothing can be banded, so the extract is incomplete.
+    unset = create(api, "Test engagement W: TCWG extract, no thresholds", **PINNED_LINK)
+    item(api, unset, "300000.00", "Rent for the last quarter not accrued")
+    check("tcwg-extract-no-thresholds", tcwg_extract(api, unset))
+
+    engagement = with_thresholds(api, TCWG)  # OM 4,00,000; PM 2,50,000; CTT 12,500
+    item(api, engagement, "60000.00", "Rent for March not accrued")  # M-1
+    item(
+        api,
+        engagement,
+        "40000.00",
+        "Sales cut-off errors projected over the March population",
+        type="projected",
+        pair=(4, 1),
+        sample_ref="S-12",
+        projection_basis="Ratio of error to sample value, applied to the population",
+    )  # M-2
+    refused = item(api, engagement, "50000.00", "Repairs charged to plant")  # M-3
+    act_as(api, MANAGER)
+    move(api, refused, "communicated")
+    move(api, refused, "refused", "Management considers the amount immaterial")
+    trivial = item(api, engagement, "2000.00", "Petty cash shortage")  # M-4: below CTT
+    assert trivial
+    settled = item(api, engagement, "45000.00", "Bonus provision understated")  # M-5
+    move(api, settled, "communicated")
+    move(api, settled, "corrected")
+    # Nothing above PM, nothing escalated: the others only, and the opinion not blocked.
+    check("tcwg-extract-not-blocked", tcwg_extract(api, engagement))
+
+    act_as(api, SENIOR)
+    item(
+        api,
+        engagement,
+        "300000.00",
+        "Depreciation on plant understated: useful life taken as 15 years",
+        type="judgemental",
+        pair=(15, 14),
+        range_low="270000.00",
+        range_high="330000.00",
+    )  # M-6: above PM
+    related = item(api, engagement, "3000.00", "Sale to a related party not invoiced")  # M-7
+    act_as(api, MANAGER)
+    post(
+        api,
+        f"/api/misstatements/{related}/qualitative",
+        201,
+        {"factor": "related_party", "note": "Sale to a firm owned by a director; see E-12"},
+    )
+    post(
+        api,
+        f"/api/engagements/{engagement}/prior-period",
+        201,
+        {
+            "description": "Depreciation on plant understated in the prior year",
+            "prior_period": "FY 2024-25",
+            "source_ref": "PY schedule M-7",
+            "current_profit_before_tax": "0.00",
+            "current_net_assets": "-30000.00",
+            "cumulative_profit_before_tax": "-30000.00",
+            "cumulative_net_assets": "-30000.00",
+            "basis": "Carrying amount still overstated at the year end; see PY F-3.4",
+        },
+    )
+    post(api, f"/api/engagements/{engagement}/evaluation/runs", 201, REASSESSED)
+    # Two items named individually, three others, one clearly trivial left outside, one
+    # corrected; the aggregate at or above overall materiality: an unmodified opinion blocked.
+    check("tcwg-extract-blocked", tcwg_extract(api, engagement))
+
+    spine.unreachable = True
+    check("tcwg-extract-spine-down", tcwg_extract(api, engagement))
+    spine.unreachable = False

@@ -1,9 +1,9 @@
 {
-  "id": "2f8563e9-9607-44c3-b61a-7f8817c40ca3",
-  "engagement_id": "048f33c7-d7ea-4da3-a884-2d9c8a9fbb60",
+  "id": "be58b3d9-47e2-45c6-b180-5e63e7aef481",
+  "engagement_id": "7588e69c-d5c9-4381-bdce-77cf0d6d7c96",
   "ref": "M-2",
   "created_by": "senior@firm",
-  "created_at": "2026-11-06T11:46:23",
+  "created_at": "2026-11-06T12:33:27",
   "current": {
     "version_no": 3,
     "type": "judgemental",
@@ -12,23 +12,23 @@
     "raised_from": "wp",
     "source_ref": "F-3.4",
     "state": "refused",
-    "communicated_at": "2026-11-06T11:46:23.453740",
-    "decided_at": "2026-11-06T11:46:23.526546",
+    "communicated_at": "2026-11-06T12:33:27.811681",
+    "decided_at": "2026-11-06T12:33:27.842480",
     "refusal_reason": "Management considers the useful life appropriate",
     "withdrawal_reason": null,
-    "spine_adjustment_id": "7b36931c-8418-424b-ad61-e4e112de0844",
+    "spine_adjustment_id": "663cc70c-4af4-4faf-a3e2-36b938a67e39",
     "spine_kind": "correction",
     "range_low": "70000.00",
     "range_high": "110000.00",
     "sample_ref": null,
     "projection_basis": null,
     "created_by": "manager@firm",
-    "created_at": "2026-11-06T11:46:23"
+    "created_at": "2026-11-06T12:33:27"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "7b36931c-8418-424b-ad61-e4e112de0844",
+    "adjustment_id": "663cc70c-4af4-4faf-a3e2-36b938a67e39",
     "adjustment_status": "refused",
     "kind": "correction",
     "finding_ref": "M-2",
@@ -117,7 +117,7 @@
       "profit": "90000.00",
       "net_assets": "90000.00"
     },
-    "threshold_id": "5faccb27-0d9d-4fb9-be6c-a1d1ec7c0b77",
+    "threshold_id": "2052ebdb-6417-4c2e-9dd6-8c69a4b0e9de",
     "threshold_version_no": 1,
     "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
     "projected": false,
@@ -218,14 +218,14 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "7b36931c-8418-424b-ad61-e4e112de0844",
+      "spine_adjustment_id": "663cc70c-4af4-4faf-a3e2-36b938a67e39",
       "spine_kind": "correction",
       "range_low": "70000.00",
       "range_high": "110000.00",
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T11:46:23"
+      "created_at": "2026-11-06T12:33:27"
     },
     {
       "version_no": 2,
@@ -235,18 +235,18 @@
       "raised_from": "wp",
       "source_ref": "F-3.4",
       "state": "communicated",
-      "communicated_at": "2026-11-06T11:46:23.453740",
+      "communicated_at": "2026-11-06T12:33:27.811681",
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "7b36931c-8418-424b-ad61-e4e112de0844",
+      "spine_adjustment_id": "663cc70c-4af4-4faf-a3e2-36b938a67e39",
       "spine_kind": "correction",
       "range_low": "70000.00",
       "range_high": "110000.00",
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "manager@firm",
-      "created_at": "2026-11-06T11:46:23"
+      "created_at": "2026-11-06T12:33:27"
     },
     {
       "version_no": 3,
@@ -256,18 +256,18 @@
       "raised_from": "wp",
       "source_ref": "F-3.4",
       "state": "refused",
-      "communicated_at": "2026-11-06T11:46:23.453740",
-      "decided_at": "2026-11-06T11:46:23.526546",
+      "communicated_at": "2026-11-06T12:33:27.811681",
+      "decided_at": "2026-11-06T12:33:27.842480",
       "refusal_reason": "Management considers the useful life appropriate",
       "withdrawal_reason": null,
-      "spine_adjustment_id": "7b36931c-8418-424b-ad61-e4e112de0844",
+      "spine_adjustment_id": "663cc70c-4af4-4faf-a3e2-36b938a67e39",
       "spine_kind": "correction",
       "range_low": "70000.00",
       "range_high": "110000.00",
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "manager@firm",
-      "created_at": "2026-11-06T11:46:23"
+      "created_at": "2026-11-06T12:33:27"
     }
   ]
 }
