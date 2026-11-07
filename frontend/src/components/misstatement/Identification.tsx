@@ -1,7 +1,8 @@
 // What the misstatement is (spec sections 3.2, 6.1 and 9): its reference, type,
 // description, state, band, the working paper it came from and who raised it. A judgemental
 // item carries the auditor's range; a projected one names its sample and projection basis.
-import type { Misstatement } from '../../api'
+// An agent run's misstatement shows the run and its citations; a review note's, the note.
+import { isRunOrigin, type Misstatement, type Origin } from '../../api'
 import { dateTime, rupees } from '../../format'
 import {
   BAND_LABEL,
@@ -14,6 +15,72 @@ import {
 } from '../../labels'
 import { Pill } from '../states'
 import { Basis, Fact, Panel } from '../panels'
+
+// Where it came from (spec section 8): the working paper; or the agent run with its id and
+// source-row citations; or the review note with its reference and link.
+function Source({
+  raisedFrom,
+  sourceRef,
+  origin,
+}: {
+  raisedFrom: string
+  sourceRef: string
+  origin: Origin | null
+}) {
+  if (origin !== null && isRunOrigin(origin)) {
+    return (
+      <>
+        <Fact label="Agent run">{origin.run_id}</Fact>
+        <Fact label="Source-row citations" wide>
+          <ul aria-label="Source-row citations" className="list-disc space-y-1 pl-5">
+            {origin.citations.map((citation, index) => (
+              <li key={`${citation.source}-${citation.row}-${String(index)}`}>
+                <span className="font-medium">{citation.source}</span>
+                <span className="text-slate-500">, row </span>
+                <span className="tabular-nums">{citation.row}</span>
+                {citation.detail !== undefined && (
+                  <span className="text-slate-700">: {citation.detail}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </Fact>
+      </>
+    )
+  }
+  if (origin !== null) {
+    return (
+      <Fact label="Review note">
+        {origin.note_ref}
+        {origin.note_link !== null && (
+          <span className="block">
+            {/^https?:\/\//.test(origin.note_link) ? (
+              <a
+                href={origin.note_link}
+                className="break-all underline decoration-slate-300 underline-offset-2 hover:decoration-slate-700"
+              >
+                {origin.note_link}
+              </a>
+            ) : (
+              <span className="break-all">{origin.note_link}</span>
+            )}
+          </span>
+        )}
+      </Fact>
+    )
+  }
+  return (
+    <Fact
+      label={
+        raisedFrom === 'manual'
+          ? 'Working paper reference (manual entry)'
+          : 'Working paper reference'
+      }
+    >
+      {sourceRef}
+    </Fact>
+  )
+}
 
 export function Identification({ misstatement }: { misstatement: Misstatement }) {
   const { current, band, banding } = misstatement
@@ -40,8 +107,12 @@ export function Identification({ misstatement }: { misstatement: Misstatement })
         <Fact label="Description" wide>
           {current.description}
         </Fact>
-        <Fact label="Working paper reference">{current.source_ref}</Fact>
         <Fact label="Raised from">{raisedFromLabel(current.raised_from)}</Fact>
+        <Source
+          raisedFrom={current.raised_from}
+          sourceRef={current.source_ref}
+          origin={current.origin}
+        />
         <Fact label="Raised by">{current.raised_by}</Fact>
         <Fact label="Raised">
           <time dateTime={misstatement.created_at}>{dateTime(misstatement.created_at)}</time>

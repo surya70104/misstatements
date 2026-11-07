@@ -17,7 +17,7 @@
         "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
       }
     },
-    "id": "9aedec3f-a584-477b-93e6-82510c953c0e",
+    "id": "d4c27c7f-11d7-4388-9714-985a1daa5344",
     "label": "Test engagement V: evaluation",
     "spine": {
       "engagement_id": "11111111-1111-4111-8111-111111111111",
@@ -27,14 +27,14 @@
       "detail": null
     },
     "misstatements": 6,
-    "current_threshold_id": "2215d720-f7d7-47e0-b898-097ee5d5f67e",
+    "current_threshold_id": "71fec7bd-bfe1-450a-9296-fe36361929c8",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T12:57:35"
+    "created_at": "2026-11-07T06:56:32"
   },
   "evaluation": {
-    "engagement_id": "9aedec3f-a584-477b-93e6-82510c953c0e",
+    "engagement_id": "d4c27c7f-11d7-4388-9714-985a1daa5344",
     "threshold": {
-      "id": "2215d720-f7d7-47e0-b898-097ee5d5f67e",
+      "id": "71fec7bd-bfe1-450a-9296-fe36361929c8",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00",
@@ -251,7 +251,7 @@
     },
     "items": [
       {
-        "id": "619cfaf0-5f28-44a0-91b3-a60a49b48471",
+        "id": "97351c89-c644-47d7-ac9a-4dce1df616a2",
         "ref": "M-1",
         "type": "factual",
         "projected": false,
@@ -268,7 +268,7 @@
         "expected_spine_adjustment_status": "proposed"
       },
       {
-        "id": "41f6cc0b-073a-44e2-9c07-cf3d104230b5",
+        "id": "41ab3dea-5aac-4f99-a932-a46e849e2adf",
         "ref": "M-2",
         "type": "factual",
         "projected": false,
@@ -285,7 +285,7 @@
         "expected_spine_adjustment_status": "proposed"
       },
       {
-        "id": "ee11c870-5708-4671-a719-cf5d1abd43d3",
+        "id": "eb463b50-8f28-48f7-a5b9-a0f7dbf7102c",
         "ref": "M-3",
         "type": "judgemental",
         "projected": false,
@@ -302,7 +302,7 @@
         "expected_spine_adjustment_status": "refused"
       },
       {
-        "id": "0b0a2191-6156-44e3-8cda-c79d1d284d4d",
+        "id": "742fc268-a190-4545-bc4f-9f35e7070c88",
         "ref": "M-4",
         "type": "projected",
         "projected": true,
@@ -319,7 +319,7 @@
         "expected_spine_adjustment_status": "proposed"
       },
       {
-        "id": "65958bca-e6d4-499a-a13e-2f2e8ae0d9a3",
+        "id": "36259067-b449-4a4b-82bf-9988c72bbd95",
         "ref": "M-5",
         "type": "factual",
         "projected": false,
@@ -336,7 +336,7 @@
         "expected_spine_adjustment_status": "accepted"
       },
       {
-        "id": "6cc06289-8000-47ae-84c2-7645f17985e2",
+        "id": "2c0a0fd6-3e0b-47cb-9167-a57eafcfc2f1",
         "ref": "M-6",
         "type": "factual",
         "projected": false,
@@ -357,10 +357,10 @@
       "status": "current",
       "detail": "the latest run describes the evaluation as it stands",
       "run": {
-        "id": "faece4c9-6bcd-4150-aae3-fa3109d1d564",
-        "engagement_id": "9aedec3f-a584-477b-93e6-82510c953c0e",
+        "id": "7e2267cc-7e6b-42ac-b245-0263bd43c201",
+        "engagement_id": "d4c27c7f-11d7-4388-9714-985a1daa5344",
         "run_no": 1,
-        "threshold_id": "2215d720-f7d7-47e0-b898-097ee5d5f67e",
+        "threshold_id": "71fec7bd-bfe1-450a-9296-fe36361929c8",
         "threshold_version_no": 1,
         "agg_gross_pbt": "195000.00",
         "agg_net_pbt": "-195000.00",
@@ -368,7 +368,7 @@
         "agg_net_na": "-195000.00",
         "materiality_reassessed": true,
         "evaluated_by": "manager@firm",
-        "at": "2026-11-06T12:57:36",
+        "at": "2026-11-07T06:56:32",
         "concluded": false,
         "determination": null,
         "conclusion": null,
@@ -445,7 +445,7 @@
         },
         "detail": {
           "threshold": {
-            "id": "2215d720-f7d7-47e0-b898-097ee5d5f67e",
+            "id": "71fec7bd-bfe1-450a-9296-fe36361929c8",
             "version_no": 1,
             "om": "400000.00",
             "pm": "250000.00",
@@ -631,10 +631,10 @@
   },
   "runs": [
     {
-      "id": "faece4c9-6bcd-4150-aae3-fa3109d1d564",
-      "engagement_id": "9aedec3f-a584-477b-93e6-82510c953c0e",
+      "id": "7e2267cc-7e6b-42ac-b245-0263bd43c201",
+      "engagement_id": "d4c27c7f-11d7-4388-9714-985a1daa5344",
       "run_no": 1,
-      "threshold_id": "2215d720-f7d7-47e0-b898-097ee5d5f67e",
+      "threshold_id": "71fec7bd-bfe1-450a-9296-fe36361929c8",
       "threshold_version_no": 1,
       "agg_gross_pbt": "195000.00",
       "agg_net_pbt": "-195000.00",
@@ -642,7 +642,7 @@
       "agg_net_na": "-195000.00",
       "materiality_reassessed": true,
       "evaluated_by": "manager@firm",
-      "at": "2026-11-06T12:57:36",
+      "at": "2026-11-07T06:56:32",
       "concluded": false,
       "determination": null,
       "conclusion": null,
@@ -719,7 +719,7 @@
       },
       "detail": {
         "threshold": {
-          "id": "2215d720-f7d7-47e0-b898-097ee5d5f67e",
+          "id": "71fec7bd-bfe1-450a-9296-fe36361929c8",
           "version_no": 1,
           "om": "400000.00",
           "pm": "250000.00",
@@ -909,9 +909,9 @@
     "blocked_by": [],
     "undetermined_because": [],
     "scope": "whether an unmodified opinion is blocked by the size of the uncorrected misstatements: the hard gate at overall materiality (spec section 7), and the gate at performance materiality when the firm has set it to hard. It says nothing about items above PM not yet dealt with or about the partner's acknowledgement: the sign-off gate does",
-    "engagement_id": "9aedec3f-a584-477b-93e6-82510c953c0e",
+    "engagement_id": "d4c27c7f-11d7-4388-9714-985a1daa5344",
     "threshold": {
-      "id": "2215d720-f7d7-47e0-b898-097ee5d5f67e",
+      "id": "71fec7bd-bfe1-450a-9296-fe36361929c8",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"
@@ -1061,9 +1061,9 @@
     "blocked_by": [],
     "undetermined_because": [],
     "scope": "whether sign-off is blocked for any reason this module knows: the hard gate, the soft gate without a current partner acknowledgement, an item above PM still raised or communicated (spec section 7; acceptance 6 and 7)",
-    "engagement_id": "9aedec3f-a584-477b-93e6-82510c953c0e",
+    "engagement_id": "d4c27c7f-11d7-4388-9714-985a1daa5344",
     "threshold": {
-      "id": "2215d720-f7d7-47e0-b898-097ee5d5f67e",
+      "id": "71fec7bd-bfe1-450a-9296-fe36361929c8",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"

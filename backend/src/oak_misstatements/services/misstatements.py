@@ -401,7 +401,7 @@ def raise_misstatement(
         version.version_id,
         kind=kind,
         narration=body.description,
-        working_paper_ref=body.source_ref,
+        working_paper_ref=body.reference,
         finding_ref=f"M-{ref_no}",
         lines=[line.to_spine() for line in body.lines],
     )
@@ -413,7 +413,8 @@ def raise_misstatement(
         description=body.description,
         raised_by=raised_by,
         raised_from=body.raised_from,
-        source_ref=body.source_ref,
+        source_ref=body.reference,
+        origin=body.origin(),
         state="raised",
         spine_adjustment_id=adjustment.adjustment_id,
         spine_kind=kind,

@@ -1,0 +1,30 @@
+{
+  "detail": [
+    {
+      "type": "value_error",
+      "loc": [
+        "body"
+      ],
+      "msg": "Value error, a misstatement raised from an agent run carries run.run_id and at least one source-row citation in run.citations (spec section 8)",
+      "input": {
+        "type": "factual",
+        "description": "x",
+        "raised_from": "run",
+        "source_ref": "run-7",
+        "lines": [
+          {
+            "line_no": 5,
+            "dr": "1.00"
+          },
+          {
+            "line_no": 3,
+            "cr": "1.00"
+          }
+        ]
+      },
+      "ctx": {
+        "error": {}
+      }
+    }
+  ]
+}

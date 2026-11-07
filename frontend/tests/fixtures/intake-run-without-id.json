@@ -1,0 +1,37 @@
+{
+  "detail": [
+    {
+      "type": "missing",
+      "loc": [
+        "body",
+        "run_id"
+      ],
+      "msg": "Field required",
+      "input": {
+        "type": "factual",
+        "description": "x",
+        "citations": [
+          {
+            "source": "sales_register.csv",
+            "row": "1042",
+            "detail": "Invoice dated 2 April booked in March"
+          },
+          {
+            "source": "sales_register.csv",
+            "row": "1057"
+          }
+        ],
+        "lines": [
+          {
+            "line_no": 5,
+            "dr": "1.00"
+          },
+          {
+            "line_no": 3,
+            "cr": "1.00"
+          }
+        ]
+      }
+    }
+  ]
+}

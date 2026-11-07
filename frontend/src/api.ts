@@ -46,6 +46,19 @@ export type MisstatementType = 'factual' | 'judgemental' | 'projected'
 export type MisstatementState = 'raised' | 'communicated' | 'corrected' | 'refused' | 'withdrawn'
 export type Band = 'clearly_trivial' | 'accumulated' | 'individually_significant'
 
+// Where a misstatement comes from (spec section 8). A source carries what it attaches: an
+// agent run its id and source-row citations, a review note its reference and a link. A
+// working paper or a manual entry attaches nothing beyond the working paper itself.
+export type RaisedFrom = 'wp' | 'run' | 'note' | 'manual'
+export type Citation = { source: string; row: string; detail?: string }
+export type RunOrigin = { run_id: string; citations: Citation[] }
+export type NoteOrigin = { note_ref: string; note_link: string | null }
+export type Origin = RunOrigin | NoteOrigin
+
+export function isRunOrigin(origin: Origin): origin is RunOrigin {
+  return 'run_id' in origin
+}
+
 // One append-only version of a misstatement: what it says, and the state it is in.
 export type MisstatementVersion = {
   version_no: number
@@ -53,7 +66,11 @@ export type MisstatementVersion = {
   description: string
   raised_by: string
   raised_from: string
+  // The working paper, the run id or the note reference.
   source_ref: string
+  // What the source attaches beyond its reference; null for a working paper or a
+  // manual entry (backend D64).
+  origin: Origin | null
   state: MisstatementState
   communicated_at: string | null
   decided_at: string | null
@@ -983,11 +1000,15 @@ export type LineInput = {
   cr?: string
 }
 
+// The source named, with what it attaches: `source_ref` (the working paper) for a working
+// paper or a manual entry; `run` for an agent run; `note` for a review note.
 export type MisstatementInput = {
   type: MisstatementType
   description: string
-  raised_from: 'wp' | 'manual'
-  source_ref: string
+  raised_from: RaisedFrom
+  source_ref?: string
+  run?: RunOrigin
+  note?: { note_ref: string; note_link?: string }
   lines: LineInput[]
   range_low?: string
   range_high?: string

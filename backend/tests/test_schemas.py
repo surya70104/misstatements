@@ -102,5 +102,7 @@ def test_projected_needs_its_sample_and_basis_and_nothing_else_may_carry_them() 
 def test_stage_1_sources_carry_a_working_paper_reference() -> None:
     with pytest.raises(ValidationError, match="at least 1 character"):
         MisstatementIn(**body(source_ref="   "))
-    with pytest.raises(ValidationError, match="'wp' or 'manual'"):
+    # Since Pass 2 (D64) a run is a source too, with its own attribution: a working
+    # paper reference is not what it needs.
+    with pytest.raises(ValidationError, match=r"run.run_id"):
         MisstatementIn(**body(raised_from="run"))

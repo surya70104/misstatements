@@ -61,7 +61,7 @@ attachment · intake hooks · projected misstatements from Sampling · the gener
 | 5 | Gates: OM hard gate, PM soft gate, strategy trigger, individually-significant block; the conclusion | done on 5 Nov 2026 (D45); see "Stage 5 verification". The conclusion is a new append-only `evaluation` row carrying its figures and threshold version (migration 0009), partner-only, naming the run reviewed; a conclusion of not material is blocked by every gate in the write path and by a database trigger at overall materiality; the strategy trigger is built with no default band (B5). Readings to confirm: B14, B15 |
 | 6 | The schedule, misstatement detail and evaluation screens | built, reviewed and its gaps closed on 5 Nov 2026 (D47 to D52); see "Stage 6 closure verification". Nine screens over 24 of the 26 routes, used on live rows in an isolated preview. **Pass 1 implementation complete (`docs/CLOSURE_REVIEW.md` section 13); production acceptance pending:** the conclusion and the partner's acknowledgement have not been made by a named partner (V12), and nothing has been seen against the live Spine. In parts: Part 1 done on 5 Nov 2026 (D47); see "Stage 6 part 1 verification": routing, the typed API client, formatting, the shared loading, empty and error states, the layout, the engagement list, and the schedule address. Part 2 done on 5 Nov 2026 (D48); see "Stage 6 part 2 verification": the schedule screen with its ten columns, its filters by band, type and state, and the running totals against CTT, PM and OM; and the misstatement detail address. Part 3 done on 5 Nov 2026 (D49); see "Stage 6 part 3 verification": the misstatement detail screen with its identification, Dr/Cr lines and classification, effects, state history, and the moves of the state machine with their mandatory reasons. Part 4 done on 5 Nov 2026 (D50); see "Stage 6 part 4 verification": the evaluation screen with the aggregate against the three lines, the gates, the run history, recording a run, the strategy prompt, and the conclusion shown with what blocks it. The two partner-only writes are shown and never sent |
 | 7 | Pass 1 acceptance run: criteria 1, 2, 3, 4, 6, 7, 10, 11 | |
-| 8–14 | Pass 2 | Started 6 Nov 2026, on instruction. Stage 8, qualitative factors and escalation (spec section 5; acceptance 8): backend and screens built and tested, on PostgreSQL and in a browser on the isolated preview (D59, D60); migration 0011 is applied to the test database only. Stage 9, prior-period carry-forward (SA 450 paragraph 11(b); acceptance 5): backend and evaluation screen built and tested the same way, as an interim reading with B6 still open (D61); migration 0012 is applied to the test database only. Stage 10, the TCWG extract (SA 450 paragraph 12; acceptance 9): a read-only endpoint and its own screen, built and tested the same way (D62); no migration. Stage 11, the written representation attachment (SA 450 paragraph 14): a read-only endpoint and its own screen, built and tested the same way (D63); no migration. The rest of Pass 2 is not started |
+| 8–14 | Pass 2 | Started 6 Nov 2026, on instruction. Stage 8, qualitative factors and escalation (spec section 5; acceptance 8): backend and screens built and tested, on PostgreSQL and in a browser on the isolated preview (D59, D60); migration 0011 is applied to the test database only. Stage 9, prior-period carry-forward (SA 450 paragraph 11(b); acceptance 5): backend and evaluation screen built and tested the same way, as an interim reading with B6 still open (D61); migration 0012 is applied to the test database only. Stage 10, the TCWG extract (SA 450 paragraph 12; acceptance 9): a read-only endpoint and its own screen, built and tested the same way (D62); no migration. Stage 11, the written representation attachment (SA 450 paragraph 14): a read-only endpoint and its own screen, built and tested the same way (D63); no migration. Stage 12, the intake hooks (spec section 8): one endpoint per source and the origin kept with the record (D64); migrations 0013 and 0014 are applied to the test database only. Not started: Sampling as a source of its own, and the generated binder paper |
 
 ## Setup on Windows
 
@@ -361,10 +361,35 @@ Built on 6 November 2026. Read-only; nothing is stored and there is no migration
   material, no current run), the answer says so. None blocks the attachment.
 - **Screen:** the "Representation attachment" tab of an engagement, with "Print or save as
   PDF". The printed page is the attachment alone; the cautions are on screen only.
-- **Tests, 6 November 2026 (latest):** backend `pytest` on PostgreSQL **540 passed, 0
+- **Tests, 6 November 2026, after this feature:** backend `pytest` on PostgreSQL **540 passed, 0
   skipped**; on the in-memory stand-in **504 passed, 36 skipped**; `ruff` and `mypy` strict
   clean (110 files); frontend `vitest` **395 passed** (22 files); `tsc`, `eslint`,
-  `prettier` clean; build succeeds; 159 captured API answers. These supersede the counts in
+  `prettier` clean; build succeeds; 159 captured API answers. The latest counts are in the
+  next section.
+
+## Pass 2, feature 5: the intake hooks (D64)
+
+Built on 7 November 2026.
+
+- **Four hooks:** `POST /api/engagements/{id}/intake/wp` (an area tester, with the working
+  paper reference), `.../intake/run` (a WorkMind agent run, with `run_id` and at least one
+  source-row citation), `.../intake/note` (a review note, with `note_ref` and an optional
+  `note_link`), `.../intake/manual` (a manual entry, which requires a working paper
+  reference). Each takes exactly what its source attaches and refuses anything else, and
+  each raises the record exactly as the general endpoint does: balanced Dr/Cr lines proposed
+  to the Spine, the `raised` state, the origin kept on every version.
+- **The general endpoint** takes every source too: `raised_from` names it, with `source_ref`
+  for a working paper or a manual entry, `run` for a run, `note` for a note.
+- **The record:** `misstatement_version.origin` (migrations 0013 and 0014) holds the run id
+  and citations or the note reference and link; the database holds a run or a note to its
+  origin.
+- **Screens:** the record form offers the four sources and asks for what each attaches; the
+  detail shows the run and its citations, or the note with its link; the schedule's source
+  column says what kind of source a reference is.
+- **Tests, 7 November 2026 (latest):** backend `pytest` on PostgreSQL **554 passed, 0
+  skipped**; on the in-memory stand-in **517 passed, 37 skipped**; `ruff` and `mypy` strict
+  clean (115 files); frontend `vitest` **407 passed** (23 files); `tsc`, `eslint`,
+  `prettier` clean; build succeeds; 173 captured API answers. These supersede the counts in
   every other section, which are those of their own dates.
 
 ## Clearly trivial items and the percentage display (D53, D54)
@@ -861,9 +886,9 @@ Run on 4 November 2026:
 
 - The `qualitative` table (Stage 8, D59) and the `prior_period` table with
   `evaluation.py_carried` (Stage 9, D61) now exist, and so do the TCWG extract (Stage
-  10, D62) and the written representation attachment (Stage 11, D63). The rest of Pass 2
-  does not: intake from agent runs and review notes, Sampling, and the generated binder
-  paper.
+  10, D62), the written representation attachment (Stage 11, D63) and the intake hooks
+  (Stage 12, D64). The rest of Pass 2 does not: Sampling as a source of its own, and the
+  generated binder paper.
 - No edit after raising (F9), no Opinion hand-off (no such module exists). Withdrawal is
   built on an interim treatment in the Spine (B1).
 - Of the screens (Stage 6), the engagement list (D47), the schedule (D48), the

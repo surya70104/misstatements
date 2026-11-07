@@ -151,7 +151,12 @@ export function measureLabel(code: string): string {
   return MEASURE[code] ?? code
 }
 
-const RAISED_FROM: Record<string, string> = { wp: 'Working paper', manual: 'Manual entry' }
+const RAISED_FROM: Record<string, string> = {
+  wp: 'Working paper',
+  run: 'Agent run',
+  note: 'Review note',
+  manual: 'Manual entry',
+}
 const NATURE: Record<string, string> = { PL: 'Profit and loss', BS: 'Balance sheet' }
 const SECTION: Record<string, string> = {
   assets: 'Assets',

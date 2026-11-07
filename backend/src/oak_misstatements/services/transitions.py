@@ -147,6 +147,7 @@ def transition(
         raised_by=current.raised_by,
         raised_from=current.raised_from,
         source_ref=current.source_ref,
+        origin=current.origin,
         state=body.to,
         communicated_at=now if body.to == "communicated" else current.communicated_at,
         decided_at=now if body.to in FINAL else None,

@@ -1426,3 +1426,177 @@ def test_the_representation_attachment_fixture_with_no_caution_is_the_apis_real_
     move(api, estimate, "refused", "Management considers its estimate reasonable")
     post(api, f"/api/engagements/{engagement}/evaluation/runs", 201, REASSESSED)
     check("rep-letter-attachment-ready", rep_attachment(api, engagement))
+
+
+# The intake hooks (Pass 2, feature 5; architecture D64): one misstatement from each source,
+# the schedule and detail that show their attribution, and each refusal a person can meet.
+INTAKE = "Test engagement I: intake"
+CITATIONS = [
+    {
+        "source": "sales_register.csv",
+        "row": "1042",
+        "detail": "Invoice dated 2 April booked in March",
+    },
+    {"source": "sales_register.csv", "row": "1057"},
+]
+
+
+def test_the_intake_fixtures_are_the_apis_real_answers(api: TestClient) -> None:
+    use_spine(api)
+    act_as(api, SENIOR)
+    engagement = with_thresholds(api, INTAKE)
+    path = f"/api/engagements/{engagement}/intake"
+    common = {"type": "factual", "raised_from": None}
+    del common["raised_from"]
+
+    check(
+        "intake-wp",
+        post(
+            api,
+            f"{path}/wp",
+            201,
+            {
+                **common,
+                "description": "Rent for March not accrued",
+                "working_paper_ref": "E-4.2",
+                "lines": [{"line_no": 5, "dr": "60000.00"}, {"line_no": 3, "cr": "60000.00"}],
+            },
+        ),
+    )
+    act_as(api, "workmind@firm")
+    run = post(
+        api,
+        f"{path}/run",
+        201,
+        {
+            **common,
+            "description": "Sales of April booked in March",
+            "run_id": "run-2026-11-07-0042",
+            "citations": CITATIONS,
+            "lines": [{"line_no": 4, "dr": "40000.00"}, {"line_no": 1, "cr": "40000.00"}],
+        },
+    )
+    check("intake-run", run)
+    act_as(api, MANAGER)
+    check(
+        "intake-note",
+        post(
+            api,
+            f"{path}/note",
+            201,
+            {
+                **common,
+                "description": "Repairs charged to plant",
+                "note_ref": "RN-17",
+                "note_link": "https://review.example.test/notes/RN-17",
+                "lines": [{"line_no": 5, "dr": "50000.00"}, {"line_no": 3, "cr": "50000.00"}],
+            },
+        ),
+    )
+    act_as(api, SENIOR)
+    check(
+        "intake-manual",
+        post(
+            api,
+            f"{path}/manual",
+            201,
+            {
+                **common,
+                "description": "Bonus provision understated",
+                "working_paper_ref": "C-9.1",
+                "lines": [{"line_no": 5, "dr": "45000.00"}, {"line_no": 3, "cr": "45000.00"}],
+            },
+        ),
+    )
+    # The schedule and the detail of the run's misstatement, with its citations.
+    check("intake-engagement", api.get(f"/api/engagements/{engagement}").json())
+    check("intake-misstatements", schedule_of(api, engagement, "misstatements"))
+    check("intake-evaluation", schedule_of(api, engagement, "evaluation"))
+    check("intake-detail-run", detail(api, run["id"]))
+    # The general endpoint takes the same, with the source named.
+    check(
+        "intake-general-note",
+        post(
+            api,
+            f"/api/engagements/{engagement}/misstatements",
+            201,
+            {
+                **common,
+                "description": "Freight accrued twice",
+                "raised_from": "note",
+                "note": {"note_ref": "RN-21"},
+                "lines": [{"line_no": 3, "dr": "20000.00"}, {"line_no": 5, "cr": "20000.00"}],
+            },
+        ),
+    )
+    # What each hook refuses.
+    check(
+        "intake-run-without-citations",
+        post(
+            api,
+            f"{path}/run",
+            422,
+            {
+                **common,
+                "description": "x",
+                "run_id": "run-7",
+                "citations": [],
+                "lines": [{"line_no": 5, "dr": "1.00"}, {"line_no": 3, "cr": "1.00"}],
+            },
+        ),
+    )
+    check(
+        "intake-run-without-id",
+        post(
+            api,
+            f"{path}/run",
+            422,
+            {
+                **common,
+                "description": "x",
+                "citations": CITATIONS,
+                "lines": [{"line_no": 5, "dr": "1.00"}, {"line_no": 3, "cr": "1.00"}],
+            },
+        ),
+    )
+    check(
+        "intake-note-without-ref",
+        post(
+            api,
+            f"{path}/note",
+            422,
+            {
+                **common,
+                "description": "x",
+                "lines": [{"line_no": 5, "dr": "1.00"}, {"line_no": 3, "cr": "1.00"}],
+            },
+        ),
+    )
+    check(
+        "intake-manual-without-wp",
+        post(
+            api,
+            f"{path}/manual",
+            422,
+            {
+                **common,
+                "description": "x",
+                "lines": [{"line_no": 5, "dr": "1.00"}, {"line_no": 3, "cr": "1.00"}],
+            },
+        ),
+    )
+    check(
+        "intake-general-run-without-details",
+        post(
+            api,
+            f"/api/engagements/{engagement}/misstatements",
+            422,
+            {
+                **common,
+                "description": "x",
+                "raised_from": "run",
+                "source_ref": "run-7",
+                "lines": [{"line_no": 5, "dr": "1.00"}, {"line_no": 3, "cr": "1.00"}],
+            },
+        ),
+    )

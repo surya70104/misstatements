@@ -1,5 +1,5 @@
 {
-  "misstatement_id": "311e1c3d-599d-4540-818d-8515fbc4b190",
+  "misstatement_id": "8023f31c-dde1-4716-bb7c-867a1de8c003",
   "ref": "M-2",
   "escalated": true,
   "factors": [
@@ -8,7 +8,7 @@
       "text": "relates to a related party transaction",
       "note": "Sale to a firm owned by a director; see E-12",
       "escalated_by": "manager@firm",
-      "at": "2026-11-06T12:57:39"
+      "at": "2026-11-07T06:56:38"
     }
   ],
   "escalation_basis": "an item is escalated while at least one factor of the qualitative checklist is recorded against it, each with its reason (spec section 5); an escalated item is listed individually regardless of its size (acceptance 8) and is accumulated whatever its band, because a matter is clearly trivial only when it is clearly inconsequential 'whether judged by any criteria of size, nature or circumstances' (SA 450 paragraph A2; register F5; architecture D59); which factors apply is a person's judgement and is never detected (spec section 12)",
@@ -51,7 +51,7 @@
       "applies": true,
       "note": "Sale to a firm owned by a director; see E-12",
       "escalated_by": "manager@firm",
-      "at": "2026-11-06T12:57:39"
+      "at": "2026-11-07T06:56:38"
     },
     {
       "factor": "segment_or_remuneration",
@@ -77,7 +77,7 @@
       "applies": true,
       "note": "Sale to a firm owned by a director; see E-12",
       "escalated_by": "manager@firm",
-      "at": "2026-11-06T12:57:39"
+      "at": "2026-11-07T06:56:38"
     }
   ],
   "authorisation": {

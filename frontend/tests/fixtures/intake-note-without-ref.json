@@ -1,0 +1,26 @@
+{
+  "detail": [
+    {
+      "type": "missing",
+      "loc": [
+        "body",
+        "note_ref"
+      ],
+      "msg": "Field required",
+      "input": {
+        "type": "factual",
+        "description": "x",
+        "lines": [
+          {
+            "line_no": 5,
+            "dr": "1.00"
+          },
+          {
+            "line_no": 3,
+            "cr": "1.00"
+          }
+        ]
+      }
+    }
+  ]
+}

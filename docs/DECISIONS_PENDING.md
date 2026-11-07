@@ -527,3 +527,21 @@ Pass 1 count.
 
 **Not built with this feature:** the representation letter itself; a file export other than
 the browser's own print dialog; any record that a representation was received.
+
+## Pass 2, feature 5: the intake hooks — 7 November 2026 (architecture D64)
+
+Built on instruction on 7 November 2026. This section records what the feature leaves to
+people. It does not change the Pass 1 count.
+
+| # | Question | Who | What is built meanwhile |
+|---|---|---|---|
+| I1 | What the Financial Spine should receive as `working_paper_ref` for a misstatement raised from an agent run or a review note, which has no working paper | Spine's owner and the lead | The run id, or the note reference |
+| I2 | Who may raise from each source: whether an agent run's exceptions may be posted by a service identity, and whether a reviewer alone may convert a note | Firm (with B9b) | Any authenticated identity, through any hook |
+| I3 | Should a run's exception be checked against WorkMind (that the run exists and was accepted) before it is raised? | Lead and WorkMind's owner | No: the hook records the run id and citations it is given. No WorkMind is connected |
+| I4 | What a citation must name: the fields of a source-row citation, and whether a link to the source is wanted | WorkMind's owner | A source, a row, and optionally what was found |
+| I5 | Whether a note's link must be a URL of the firm's review tool, and whether the note should be marked as converted there | Lead | Free text up to 500 characters; shown as a link when it is an http(s) URL. Nothing is written to any review tool |
+| M3 | Applying migrations 0013 and 0014 to `oak_misstatements_test`, and later to `oak_misstatements` | Whoever approves migrations (with O2) | **Applied to `oak_misstatements_test` on 7 Nov 2026** by the PostgreSQL suite, which was asked for with this feature (554 passed); an intermediate draft of 0014 was reversed there by a one-off script before the final 0014 was applied (architecture D64). Not applied to `oak_misstatements`, which still waits (O2) |
+
+**Not built with this feature:** a connection to WorkMind or to a review tool; Sampling as a
+source of its own (a projected misstatement arrives through any hook, as before; N16 stays
+open); the generated binder paper.

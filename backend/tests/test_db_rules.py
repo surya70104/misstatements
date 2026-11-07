@@ -891,3 +891,103 @@ def test_py_carried_is_recorded_with_a_run_and_can_never_be_changed(db: Connecti
             db.execute(
                 text("UPDATE evaluation SET py_carried = '{}'::jsonb WHERE id = :r"), {"r": target}
             )
+
+
+# ---- Pass 2 (migration 0013): where a misstatement comes from (architecture D64) ------------
+
+WITH_ORIGIN = (
+    "INSERT INTO misstatement_version (misstatement_id, version_no, type, description, "
+    "raised_by, raised_from, source_ref, origin, spine_adjustment_id, spine_kind, created_by) "
+    "VALUES (:m, :v, 'factual', 'Rent', 'test', :source, :ref, CAST(:origin AS jsonb), :a, "
+    "'correction', 'test') RETURNING id"
+)
+
+
+def test_a_run_or_a_note_must_carry_its_origin_and_nothing_else_may(db: Connection) -> None:
+    _engagement, misstatement_id, _version = seed(db)  # version 1: raised from a working paper
+    run = '{"run_id": "run-7", "citations": [{"source": "sales.csv", "row": "1042"}]}'
+    note = '{"note_ref": "RN-3", "note_link": null}'
+    for extra, rule in (
+        (
+            {"source": "run", "ref": "run-7", "origin": None},
+            "ck_misstatement_version_(run_)?origin",
+        ),
+        (
+            {"source": "note", "ref": "RN-3", "origin": None},
+            "ck_misstatement_version_(note_)?origin",
+        ),
+        ({"source": "wp", "ref": "E-1", "origin": run}, "ck_misstatement_version_origin"),
+        ({"source": "manual", "ref": "C-1", "origin": note}, "ck_misstatement_version_origin"),
+        # A run's origin names the run and cites at least one row.
+        # A missing key: refused by the check 0014 added (0013's reads NULL as a pass).
+        (
+            {"source": "run", "ref": "run-7", "origin": '{"citations": [{"row": "1"}]}'},
+            "ck_misstatement_version_run_origin_named",
+        ),
+        (
+            {"source": "run", "ref": "run-7", "origin": '{"run_id": "run-7", "citations": []}'},
+            "ck_misstatement_version_run_origin",
+        ),
+        (
+            {
+                "source": "run",
+                "ref": "run-7",
+                "origin": '{"run_id": "  ", "citations": [{"row": "1"}]}',
+            },
+            "ck_misstatement_version_run_origin",
+        ),
+        (
+            {"source": "run", "ref": "run-7", "origin": '{"run_id": "run-7", "citations": "1042"}'},
+            "ck_misstatement_version_run_origin",
+        ),
+        # A note's origin names the note.
+        (
+            {"source": "note", "ref": "RN-3", "origin": '{"note_link": "x"}'},
+            "ck_misstatement_version_note_origin_named",
+        ),
+        (
+            {"source": "note", "ref": "RN-3", "origin": '{"note_ref": ""}'},
+            "ck_misstatement_version_note_origin",
+        ),
+        ({"source": "sampling", "ref": "S-1", "origin": None}, "ck_misstatement_version_source"),
+    ):
+        with pytest.raises(DBAPIError, match=rule), db.begin_nested():
+            db.execute(
+                text(WITH_ORIGIN),
+                {"m": misstatement_id, "v": 2, "a": uuid.uuid4(), **extra},
+            )
+    db.execute(
+        text(WITH_ORIGIN),
+        {
+            "m": misstatement_id,
+            "v": 2,
+            "a": uuid.uuid4(),
+            "source": "run",
+            "ref": "run-7",
+            "origin": run,
+        },
+    )
+    db.execute(
+        text(WITH_ORIGIN),
+        {
+            "m": misstatement_id,
+            "v": 3,
+            "a": uuid.uuid4(),
+            "source": "note",
+            "ref": "RN-3",
+            "origin": note,
+        },
+    )
+    # Like every field of a version, the origin can never be rewritten.
+    with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
+        db.execute(
+            text("UPDATE misstatement_version SET origin = NULL WHERE misstatement_id = :m"),
+            {"m": misstatement_id},
+        )
+    assert (
+        db.scalar(
+            text("SELECT count(*) FROM misstatement_version WHERE misstatement_id = :m"),
+            {"m": misstatement_id},
+        )
+        == 3
+    )

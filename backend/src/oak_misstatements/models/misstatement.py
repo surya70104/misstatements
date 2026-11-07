@@ -10,6 +10,11 @@ Amounts never live here (spec section 1): ``spine_adjustment_id`` links the vers
 Financial Spine adjustment that holds the Dr/Cr lines, and every effect is computed from
 those lines on read. The one exception the spec itself makes is the judgemental range,
 which is the auditor's own estimate, not a posted amount (spec 3.2, D14).
+
+``origin`` (Pass 2, D64; migration 0013) carries what spec section 8 says a source attaches
+beyond its reference: an agent run's id and source-row citations, a review note's
+reference and link. It is null for a working-paper or manual entry, whose ``source_ref``
+is the working paper, and is copied unchanged onto every later version.
 """
 
 from __future__ import annotations
@@ -17,8 +22,10 @@ from __future__ import annotations
 import datetime as dt
 import uuid
 from decimal import Decimal
+from typing import Any
 
 from sqlalchemy import (
+    JSON,
     CheckConstraint,
     DateTime,
     ForeignKey,
@@ -30,6 +37,7 @@ from sqlalchemy import (
     Uuid,
     func,
 )
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
 from oak_misstatements.db import Base
@@ -81,6 +89,13 @@ class MisstatementVersion(Base):
             "length(trim(description)) > 0", name="ck_misstatement_version_description"
         ),
         CheckConstraint("length(trim(source_ref)) > 0", name="ck_misstatement_version_source_ref"),
+        # Spec section 8 (D64): a run or a note carries its origin; a working paper or a manual
+        # entry carries none beyond the working paper itself. The shape of the origin is held
+        # by migration 0013 on PostgreSQL and by the schema here.
+        CheckConstraint(
+            "(raised_from IN ('run', 'note')) = (origin IS NOT NULL)",
+            name="ck_misstatement_version_origin",
+        ),
         # Spec 3.2: a judgemental item carries the range; no other type does (D14).
         CheckConstraint(
             "(type <> 'judgemental') OR "
@@ -135,6 +150,10 @@ class MisstatementVersion(Base):
     raised_by: Mapped[str] = mapped_column(Text())
     raised_from: Mapped[str] = mapped_column(Text())
     source_ref: Mapped[str] = mapped_column(Text())
+    origin: Mapped[dict[str, Any] | None] = mapped_column(
+        # None is SQL NULL, never the JSON text "null": the CHECK above reads it.
+        JSON(none_as_null=True).with_variant(JSONB(none_as_null=True), "postgresql")
+    )
     state: Mapped[str] = mapped_column(Text(), server_default="raised")
     communicated_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True))
     decided_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True))

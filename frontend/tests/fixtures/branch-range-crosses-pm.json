@@ -1,9 +1,9 @@
 {
-  "id": "c26d085c-1bee-49da-bed9-dfa34d56ac1d",
-  "engagement_id": "6b9a8981-3337-4c97-b61d-420e1558f1dd",
+  "id": "e74236bc-e48f-4a12-bc3c-c5fd7f02e54d",
+  "engagement_id": "4b8b78ea-c1c6-44af-bdb0-72b5aa928c11",
   "ref": "M-1",
   "created_by": "senior@firm",
-  "created_at": "2026-11-06T12:57:38",
+  "created_at": "2026-11-07T06:56:36",
   "current": {
     "version_no": 1,
     "type": "judgemental",
@@ -11,24 +11,25 @@
     "raised_by": "senior@firm",
     "raised_from": "wp",
     "source_ref": "E-4.2",
+    "origin": null,
     "state": "raised",
     "communicated_at": null,
     "decided_at": null,
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "12b6a6b0-4a8d-4c20-af90-8b18e83564fe",
+    "spine_adjustment_id": "919f8c5b-4d27-4130-b06f-26469c7115b8",
     "spine_kind": "correction",
     "range_low": "200000.00",
     "range_high": "300000.00",
     "sample_ref": null,
     "projection_basis": null,
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T12:57:38"
+    "created_at": "2026-11-07T06:56:36"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "12b6a6b0-4a8d-4c20-af90-8b18e83564fe",
+    "adjustment_id": "919f8c5b-4d27-4130-b06f-26469c7115b8",
     "adjustment_status": "proposed",
     "kind": "correction",
     "finding_ref": "M-1",
@@ -117,7 +118,7 @@
       "profit": "240000.00",
       "net_assets": "240000.00"
     },
-    "threshold_id": "42e5cac6-b65e-4499-89d8-005da9a5d67d",
+    "threshold_id": "7b813041-0bd8-4f68-b55f-38bfdb589856",
     "threshold_version_no": 1,
     "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
     "projected": false,
@@ -213,19 +214,20 @@
       "raised_by": "senior@firm",
       "raised_from": "wp",
       "source_ref": "E-4.2",
+      "origin": null,
       "state": "raised",
       "communicated_at": null,
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "12b6a6b0-4a8d-4c20-af90-8b18e83564fe",
+      "spine_adjustment_id": "919f8c5b-4d27-4130-b06f-26469c7115b8",
       "spine_kind": "correction",
       "range_low": "200000.00",
       "range_high": "300000.00",
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T12:57:38"
+      "created_at": "2026-11-07T06:56:36"
     }
   ]
 }

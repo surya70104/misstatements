@@ -23,9 +23,11 @@ Positive = Annotated[Decimal, Field(gt=0, max_digits=15, decimal_places=2)]
 Amount = Annotated[Decimal, Field(max_digits=15, decimal_places=2)]
 
 MisstatementType = Literal["factual", "judgemental", "projected"]
-# Spec section 8: Stage 1 takes the two sources that carry a working paper reference (D25).
-# The agent-run, review-note and Sampling intakes are Pass 2.
-RaisedFrom = Literal["wp", "manual"]
+# Spec section 8, every source (D25 for the two of Stage 1; D64 for the rest): a working
+# paper and a manual entry carry a working paper reference; an agent run carries its run
+# id and source-row citations; a review note carries its reference, and a link if it has
+# one. Sampling arrives as a projected misstatement from a working paper (spec 3.2).
+RaisedFrom = Literal["wp", "run", "note", "manual"]
 
 
 class LineIn(BaseModel):
@@ -83,16 +85,46 @@ class LineIn(BaseModel):
         return body
 
 
-class MisstatementIn(BaseModel):
+class CitationIn(BaseModel):
+    """One source-row citation of an agent run's exception (spec section 8): where in the
+    source the run found it."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    source: Label = Field(description="The source the run read: a file, a table, an import")
+    row: Label = Field(description="The row, line or key within it")
+    detail: Narration | None = Field(default=None, description="What the run found there")
+
+
+class RunOriginIn(BaseModel):
+    """An accepted WorkMind agent run: its id, and at least one citation."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    run_id: Label
+    citations: list[CitationIn] = Field(min_length=1, max_length=500)
+
+
+class NoteOriginIn(BaseModel):
+    """A review note a reviewer converts into a misstatement: its reference, and a link
+    to it where the firm's review tool has one."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    note_ref: Label
+    note_link: (
+        Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=500)]
+        | None
+    ) = None
+
+
+class MisstatementBase(BaseModel):
+    """What every misstatement says, whichever source it comes from."""
+
     model_config = ConfigDict(extra="forbid")  # an actor or any unknown field is refused (D36)
 
     type: MisstatementType
     description: Narration
-    raised_from: RaisedFrom
-    source_ref: Label = Field(
-        description="The working paper that found it (spec section 8); sent to the Spine as "
-        "working_paper_ref"
-    )
     lines: list[LineIn] = Field(min_length=2, max_length=500)
     # Spec 3.2: a judgemental item carries the auditor's point estimate (the lines) and the
     # range (these two); a projected item names its sample and projection basis (D14).
@@ -102,7 +134,7 @@ class MisstatementIn(BaseModel):
     projection_basis: Narration | None = None
 
     @model_validator(mode="after")
-    def _double_entry(self) -> MisstatementIn:
+    def _double_entry(self) -> MisstatementBase:
         debits = sum((line.dr for line in self.lines if line.dr is not None), ZERO)
         credits = sum((line.cr for line in self.lines if line.cr is not None), ZERO)
         if debits != credits:
@@ -116,7 +148,7 @@ class MisstatementIn(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def _type_fields(self) -> MisstatementIn:
+    def _type_fields(self) -> MisstatementBase:
         has_range = self.range_low is not None or self.range_high is not None
         has_projection = self.sample_ref is not None or self.projection_basis is not None
         if self.type == "judgemental":
@@ -134,3 +166,87 @@ class MisstatementIn(BaseModel):
         elif has_projection:
             raise ValueError("only a projected misstatement names a sample and projection basis")
         return self
+
+    def common(self) -> dict[str, Any]:
+        """The fields every source shares, for building a ``MisstatementIn``."""
+        return {
+            "type": self.type,
+            "description": self.description,
+            "lines": self.lines,
+            "range_low": self.range_low,
+            "range_high": self.range_high,
+            "sample_ref": self.sample_ref,
+            "projection_basis": self.projection_basis,
+        }
+
+
+class MisstatementIn(MisstatementBase):
+    """The misstatement as the general endpoint takes it: the source named, with what that
+    source attaches (spec section 8)."""
+
+    raised_from: RaisedFrom
+    source_ref: Label | None = Field(
+        default=None,
+        description="For a working paper or a manual entry: the working paper that found it "
+        "(spec section 8), sent to the Spine as working_paper_ref. For a run or a note it is "
+        "not sent: the run id or the note reference is the reference",
+    )
+    run: RunOriginIn | None = Field(default=None, description="With raised_from 'run' only")
+    note: NoteOriginIn | None = Field(default=None, description="With raised_from 'note' only")
+
+    @model_validator(mode="after")
+    def _source_attribution(self) -> MisstatementIn:
+        if self.raised_from in ("wp", "manual"):
+            if self.source_ref is None:
+                source = "a working paper" if self.raised_from == "wp" else "a manual entry"
+                raise ValueError(
+                    f"a misstatement raised from {source} needs its working paper reference "
+                    "in source_ref (spec section 8)"
+                )
+            if self.run is not None or self.note is not None:
+                raise ValueError("only a run or a note carries run or note details")
+        elif self.raised_from == "run":
+            if self.run is None:
+                raise ValueError(
+                    "a misstatement raised from an agent run carries run.run_id and at least "
+                    "one source-row citation in run.citations (spec section 8)"
+                )
+            if self.note is not None or self.source_ref is not None:
+                raise ValueError(
+                    "a run's reference is its run_id: send run, not source_ref or note"
+                )
+        else:  # note
+            if self.note is None:
+                raise ValueError(
+                    "a misstatement raised from a review note carries note.note_ref (spec "
+                    "section 8)"
+                )
+            if self.run is not None or self.source_ref is not None:
+                raise ValueError(
+                    "a note's reference is its note_ref: send note, not source_ref or run"
+                )
+        return self
+
+    @property
+    def reference(self) -> str:
+        """What the record and the Spine hold as the reference: the working paper, the run
+        id, or the note reference."""
+        if self.run is not None:
+            return self.run.run_id
+        if self.note is not None:
+            return self.note.note_ref
+        assert self.source_ref is not None  # noqa: S101 - the validator requires it
+        return self.source_ref
+
+    def origin(self) -> dict[str, Any] | None:
+        """What the source attaches beyond its reference, as the record stores it."""
+        if self.run is not None:
+            return {
+                "run_id": self.run.run_id,
+                "citations": [
+                    citation.model_dump(exclude_none=True) for citation in self.run.citations
+                ],
+            }
+        if self.note is not None:
+            return {"note_ref": self.note.note_ref, "note_link": self.note.note_link}
+        return None

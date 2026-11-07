@@ -1,10 +1,10 @@
 {
   "engagement": {
-    "id": "4297197d-8acd-40ab-8345-370750f2004d",
+    "id": "cbf21931-a51a-4b1f-a3c6-14b75710cb56",
     "label": "Test engagement R: representation attachment"
   },
   "threshold": {
-    "id": "190d3cb4-7ca1-449d-95f6-92a304cb402e",
+    "id": "e5d8dd0d-4a9d-464e-a81e-d696f88730d5",
     "version_no": 1,
     "om": "400000.00",
     "pm": "250000.00",
@@ -32,7 +32,7 @@
         },
         "items": [
           {
-            "id": "2d9b5a8b-02f0-4c5a-9b8e-7456eff29a33",
+            "id": "35149c60-b9df-4323-b7ed-688780f9dd91",
             "ref": "M-1",
             "type": "factual",
             "state": "communicated",
@@ -45,7 +45,7 @@
             "refusal_reason": null
           },
           {
-            "id": "5ffc14b9-d320-43aa-9c69-32e32b4d7902",
+            "id": "40829294-1879-4972-9022-3d5e2d31fae5",
             "ref": "M-4",
             "type": "factual",
             "state": "communicated",
@@ -72,7 +72,7 @@
         },
         "items": [
           {
-            "id": "a942db2c-3fc8-48f5-ba0d-e4d67d3148eb",
+            "id": "cdd6843b-2c8a-4c6a-a38e-754fe2f29b7c",
             "ref": "M-2",
             "type": "judgemental",
             "state": "refused",
@@ -99,7 +99,7 @@
         },
         "items": [
           {
-            "id": "e68d2066-2532-48f6-b4dc-c42974c827d5",
+            "id": "b29ea46b-10b0-4462-ad98-adf1e55d3937",
             "ref": "M-3",
             "type": "projected",
             "state": "communicated",

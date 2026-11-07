@@ -604,3 +604,50 @@ def test_py_carried_is_added_to_the_evaluation_row_by_0012_and_changes_no_row() 
     assert "ALTER TABLE evaluation DROP COLUMN py_carried" in down
     assert "DROP TABLE prior_period;" in down
     assert down.index("DROP TABLE prior_period;") < down.index("DROP TABLE misstatement;")
+
+
+# ---- 0013: where a misstatement comes from (architecture D64) ---------------------------------
+
+
+def test_the_origin_column_and_its_rules_are_added_by_0013_and_change_no_row() -> None:
+    sql = rendered("upgrade")
+    added = "ALTER TABLE misstatement_version ADD COLUMN origin JSONB"
+    assert added in sql
+    line = next(entry for entry in sql.splitlines() if added in entry)
+    assert "NOT NULL" not in line
+    assert "UPDATE misstatement_version" not in sql
+    # 0002 stays frozen: the column is not in its CREATE TABLE.
+    assert "origin" not in table_block(sql, "misstatement_version")
+    for name, words in (
+        (
+            "ck_misstatement_version_origin",
+            "(raised_from IN ('run', 'note')) = (origin IS NOT NULL)",
+        ),
+        ("ck_misstatement_version_run_origin", "jsonb_array_length(origin->'citations') >= 1"),
+        ("ck_misstatement_version_note_origin", "length(trim(origin->>'note_ref')) > 0"),
+    ):
+        assert f"ADD CONSTRAINT {name} CHECK ({words}" in sql or (
+            f"ADD CONSTRAINT {name} CHECK" in sql and words in sql
+        ), name
+    # The append-only protection of the version table is untouched.
+    assert "DROP TRIGGER" not in sql
+    down = rendered("downgrade")
+    assert "ALTER TABLE misstatement_version DROP COLUMN origin" in down
+
+
+def test_0014_adds_origin_checks_that_fail_on_a_missing_key_and_drops_nothing() -> None:
+    """A CHECK that comes out NULL passes in PostgreSQL, and jsonb_typeof of a missing key is
+    NULL: 0013's shape checks let a run with no run_id through. 0014 adds the checks that
+    read a missing key as empty; 0013's stay, since no migration after 0007 removes a rule."""
+    sql = rendered("upgrade")
+    for name in ("ck_misstatement_version_run_origin", "ck_misstatement_version_note_origin"):
+        assert sql.count(f"ADD CONSTRAINT {name} CHECK") == 1, name
+        assert sql.count(f"ADD CONSTRAINT {name}_named CHECK") == 1, name
+    assert "COALESCE(jsonb_typeof(origin->'run_id'), '') = 'string'" in sql
+    assert "length(trim(COALESCE(origin->>'run_id', ''))) > 0" in sql
+    assert "COALESCE(jsonb_typeof(origin->'note_ref'), '') = 'string'" in sql
+    assert "jsonb_array_length(origin->'citations') >= 1" in sql
+    assert "UPDATE misstatement_version" not in sql
+    down = rendered("downgrade")
+    assert "DROP CONSTRAINT ck_misstatement_version_run_origin_named" in down
+    assert "DROP CONSTRAINT ck_misstatement_version_note_origin_named" in down

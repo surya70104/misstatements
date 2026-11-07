@@ -17,7 +17,7 @@
         "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
       }
     },
-    "id": "8e072076-bd68-4429-a67b-2da100adf524",
+    "id": "dd29b222-a436-485f-a476-a9c37644fcd7",
     "label": "Test engagement K: created unlinked",
     "spine": {
       "engagement_id": null,
@@ -29,10 +29,10 @@
     "misstatements": 0,
     "current_threshold_id": null,
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T12:57:37"
+    "created_at": "2026-11-07T06:56:34"
   },
   "reconciliation": {
-    "engagement_id": "8e072076-bd68-4429-a67b-2da100adf524",
+    "engagement_id": "dd29b222-a436-485f-a476-a9c37644fcd7",
     "spine_version_id": null,
     "status": "unpinned",
     "detail": "no Spine version is pinned",

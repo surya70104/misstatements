@@ -67,7 +67,9 @@ test('the evaluation’s statuses are worded, and an unknown one is shown as sen
 test('a code with no word of its own is shown as the backend sent it', () => {
   expect(raisedFromLabel('wp')).toBe('Working paper')
   expect(raisedFromLabel('manual')).toBe('Manual entry')
-  expect(raisedFromLabel('run')).toBe('run')
+  expect(raisedFromLabel('run')).toBe('Agent run')
+  expect(raisedFromLabel('note')).toBe('Review note')
+  expect(raisedFromLabel('sampling')).toBe('sampling')
   expect(natureLabel('PL')).toBe('Profit and loss')
   expect(natureLabel('BS')).toBe('Balance sheet')
   expect(natureLabel('XX')).toBe('XX')

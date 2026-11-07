@@ -184,6 +184,8 @@ prove. The fixture says which it is using, and the README says so too.
 
 ## D25 · Stage 1 intake is working-paper or manual, and `source_ref` is the working paper — 4 Nov 2026
 
+*Superseded in part by D64 (7 Nov 2026): every source of spec section 8 is now taken.*
+
 Spec section 8 lists five sources; the intake hooks for agent runs, review notes and
 Sampling are Pass 2. Stage 1 accepts `raised_from` of `wp` or `manual`, both of which the
 spec says carry a working paper reference, so `source_ref` is that reference and is sent to
@@ -1823,3 +1825,64 @@ rolled back; no new migration): 540 passed, 0 skipped. In memory: 504 passed, 36
 `eslint`, `prettier --check` clean; the build succeeds; 159 captured API answers, 6 of them
 new. In a real browser, on the isolated preview (the real application over the test database in one transaction that was never committed; Spine test double; development identity): the attachment opened from its tab, with the breakdown by type and its total, each type's misstatements listed, gross not netting an item and its reverse, the statement, and for the auditor two cautions and the clearly trivial item left out; no sideways scroll at 375 and 1280 pixels; the print rule present in the stylesheet and the auditor's panel marked to be left off the printed page. The engagement, its five misstatements and their moves were seeded through the preview's API. Not done: a printed page or PDF was not produced or inspected; a named
 partner; the live Financial Spine; a screen-reader session.
+
+## D64 · Pass 2: the intake hooks — 7 Nov 2026 (spec section 8; acceptance 1)
+
+Built on instruction. Every source of spec section 8 now raises a misstatement, each with
+what the specification says it attaches, and nothing arrives without it.
+
+**What a source attaches.** An area tester: the working paper reference. A WorkMind agent
+run: the run id and at least one source-row citation (the source the run read, the row
+within it, and what it found there). A review note: the note's reference, and a link where
+the firm's review tool has one. A manual entry: a working paper reference, as section 8
+requires. Sampling is not a fifth hook: it arrives through any of them as a projected
+misstatement naming its sample and projection basis (spec section 3.2), as Stage 1 built it.
+
+**The record.** `misstatement_version.origin` (migrations 0013 and 0014; nullable JSONB) holds what a
+run or a note attaches beyond its reference: `{run_id, citations: [{source, row, detail?}]}`
+or `{note_ref, note_link}`. It is null for a working paper or a manual entry, whose
+`source_ref` is the working paper; for a run `source_ref` is the run id and for a note the
+note reference, and that is what the Spine receives as `working_paper_ref`. The origin is
+copied unchanged onto every later version, so the state trail keeps it. The database holds
+it: a run or a note has an origin and nothing else does (0013); a run's origin names the
+run and cites at least one row, and a note's names the note (0013, and again in 0014 with
+a missing key read as empty, because a CHECK that comes out NULL passes in PostgreSQL and
+`jsonb_typeof` of a missing key is NULL; nothing is dropped, as no migration after 0007
+removes a rule). The schemas hold the same shape, so the in-memory stand-in refuses the
+same requests.
+
+*A note on the test database.* The first draft of 0014 dropped and recreated 0013's two
+checks under the same names, and the rule tests applied it to `oak_misstatements_test`
+before it was rewritten as additive. That intermediate state was reversed by a one-off
+script on the test database only (the two checks restored to their 0013 form, the version
+set back to 0013, no row touched), after which the suite applied the 0014 that is in the
+files. The main database was never involved.
+
+**The hooks** (`api/intake.py`, `schemas/intake.py`). `POST .../intake/wp`, `.../intake/run`,
+`.../intake/note`, `.../intake/manual`: one request shape per source, each asking for
+exactly what that source attaches and refusing anything else (an actor, a state, another
+source's fields). Each is turned into the one `MisstatementIn` the record is raised from,
+so a hook and the general endpoint write the same record: balanced Dr/Cr lines over the
+Spine's ledgers, at least two, proposed to the Spine (acceptance 1); the record in the
+`raised` state; the reference issued under the engagement lock. The general endpoint
+(`POST .../misstatements`) takes every source too, with `raised_from` naming it and `run`
+or `note` carrying the details; a source and its details must agree.
+
+**Who raises.** Any authenticated identity, as before; a run's misstatement records the
+identity that posted it (`raised_by`), which is whatever WorkMind authenticates as. Whether
+the run was accepted is WorkMind's to say: this module records what it is told and by whom.
+
+**The screens.** The record form offers the four sources; choosing one shows what it
+attaches: the working paper reference, the run id with a list of citations (add, remove, at
+least one complete), or the note reference with an optional link. What was typed for one
+source is not sent for another. The misstatement detail shows the run and its citations, or
+the note with its link, or the working paper; the schedule's "WP ref" column is now
+"Source" and says what kind of source a reference is when it is not a working paper.
+
+**Verified, 7 November 2026.** Backend `pytest` on PostgreSQL (`oak_misstatements_test`,
+rolled back; the runs applied migrations 0013 and 0014 to that database): 554 passed, 0
+skipped. In memory: 517 passed, 37 skipped. `ruff`, `mypy` strict clean (115 files). Frontend `vitest`
+407 passed (23 files); `tsc`, `eslint`, `prettier --check` clean; the build succeeds; 173
+captured API answers, 14 of them new. In a real browser, on the isolated preview (the real application over the test database in one transaction that was never committed; Spine test double; development identity): a misstatement recorded through the form with 'A WorkMind agent run' chosen, the working paper field gone, the record button disabled until the run id and a complete citation were typed, the detail then showing the run and its citation, and the schedule's Source column showing the run id marked 'Agent run'; no sideways scroll. The engagement and its thresholds were seeded through the preview's API. Not done: a real WorkMind run or review
+tool (none is connected; the hooks take what they are sent); a named partner; the live
+Financial Spine; a screen-reader session.

@@ -1,9 +1,9 @@
 {
-  "id": "7639105e-ade7-48aa-aef7-50de52cdd028",
-  "engagement_id": "c704d051-9f04-4d74-951d-70d8319a6ebd",
+  "id": "1e2be1f9-31c4-41c5-8769-ff14e8e786b0",
+  "engagement_id": "16ac82d2-3477-4120-a20b-5ede2d9778b0",
   "ref": "M-4",
   "created_by": "senior@firm",
-  "created_at": "2026-11-06T12:57:35",
+  "created_at": "2026-11-07T06:56:31",
   "current": {
     "version_no": 1,
     "type": "factual",
@@ -11,24 +11,25 @@
     "raised_by": "senior@firm",
     "raised_from": "manual",
     "source_ref": "L-1.3",
+    "origin": null,
     "state": "raised",
     "communicated_at": null,
     "decided_at": null,
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "5cd01732-de04-4c72-9763-5e4fac1e2e88",
+    "spine_adjustment_id": "9fdc22ef-f151-4c54-a1f1-a5d61e85db39",
     "spine_kind": "reclass",
     "range_low": null,
     "range_high": null,
     "sample_ref": null,
     "projection_basis": null,
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T12:57:35"
+    "created_at": "2026-11-07T06:56:31"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "5cd01732-de04-4c72-9763-5e4fac1e2e88",
+    "adjustment_id": "9fdc22ef-f151-4c54-a1f1-a5d61e85db39",
     "adjustment_status": "proposed",
     "kind": "reclass",
     "finding_ref": "M-4",
@@ -157,7 +158,7 @@
       "profit": "0.00",
       "net_assets": "0.00"
     },
-    "threshold_id": "5ae5574f-6a9c-403e-bb72-208f4aaeaf26",
+    "threshold_id": "30e2ddbb-c25e-4e12-a269-12a5afe9000e",
     "threshold_version_no": 1,
     "basis": "clearly trivial on amount: both effects are nil, so the item moves balances between captions only; proposed to the Spine as a reclassification; its significance is qualitative (spec section 5, Pass 2) and its gross size is shown as measure (D37)",
     "projected": false,
@@ -253,19 +254,20 @@
       "raised_by": "senior@firm",
       "raised_from": "manual",
       "source_ref": "L-1.3",
+      "origin": null,
       "state": "raised",
       "communicated_at": null,
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "5cd01732-de04-4c72-9763-5e4fac1e2e88",
+      "spine_adjustment_id": "9fdc22ef-f151-4c54-a1f1-a5d61e85db39",
       "spine_kind": "reclass",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T12:57:35"
+      "created_at": "2026-11-07T06:56:31"
     }
   ]
 }

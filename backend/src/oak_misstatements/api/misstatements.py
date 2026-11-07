@@ -72,6 +72,8 @@ def version_json(version: MisstatementVersion) -> dict[str, Any]:
         "raised_by": version.raised_by,
         "raised_from": version.raised_from,
         "source_ref": version.source_ref,
+        # Spec section 8 (D64): a run's id and citations, or a note's reference and link.
+        "origin": version.origin,
         "state": version.state,
         "communicated_at": _time(version.communicated_at),
         "decided_at": _time(version.decided_at),

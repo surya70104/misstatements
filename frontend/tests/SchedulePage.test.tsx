@@ -132,7 +132,7 @@ test('the columns are the ten the specification names', async () => {
     'Net assets effect',
     'Band',
     'State',
-    'WP ref',
+    'Source',
     'Raised by',
   ])
 })
@@ -160,7 +160,7 @@ test('a row shows the backend’s values for every column', async () => {
     'Net assets effect',
     'Band',
     'State',
-    'WP ref',
+    'Source',
     'Raised by',
   ])
 })

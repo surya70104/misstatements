@@ -1,6 +1,7 @@
 // The Summary of Audit Differences (spec section 6.1): every misstatement with its
 // reference, type, description, Dr/Cr lines, effect on profit, effect on net assets, band,
-// state, working paper reference and who raised it. Display only: the lines are the
+// state, its source (the working paper, the agent run or the review note) and who raised
+// it. Display only: the lines are the
 // Financial Spine's, the effects and the band are computed by the backend. A misstatement
 // with a qualitative factor recorded is marked Escalated beside its band, whatever its
 // amount (spec section 5; acceptance 8).
@@ -11,7 +12,15 @@ import type { ReactNode } from 'react'
 
 import type { Misstatement } from '../api'
 import { count, isZero, rupees } from '../format'
-import { BAND_LABEL, BAND_TONE, NOT_BANDED, STATE_LABEL, STATE_TONE, TYPE_LABEL } from '../labels'
+import {
+  BAND_LABEL,
+  BAND_TONE,
+  NOT_BANDED,
+  raisedFromLabel,
+  STATE_LABEL,
+  STATE_TONE,
+  TYPE_LABEL,
+} from '../labels'
 import { href } from '../router'
 import { Pill } from './states'
 
@@ -163,8 +172,13 @@ function Row({ misstatement }: { misstatement: Misstatement }) {
           )}
         </div>
       </Cell>
-      <Cell label="WP ref" className="xl:whitespace-nowrap">
-        {current.source_ref}
+      <Cell label="Source" className="xl:whitespace-nowrap">
+        <div>
+          {current.source_ref}
+          {current.raised_from !== 'wp' && (
+            <p className="text-xs text-slate-500">{raisedFromLabel(current.raised_from)}</p>
+          )}
+        </div>
       </Cell>
       <Cell label="Raised by" className="text-slate-700">
         <span className="min-w-0 break-words">{current.raised_by}</span>
@@ -205,7 +219,7 @@ export function ScheduleTable({ misstatements }: { misstatements: Misstatement[]
               State
             </th>
             <th scope="col" className={HEAD}>
-              WP ref
+              Source
             </th>
             <th scope="col" className={HEAD}>
               Raised by
