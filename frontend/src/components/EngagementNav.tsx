@@ -7,6 +7,7 @@ type Tab =
   | 'evaluation'
   | 'tcwg-extract'
   | 'rep-letter-attachment'
+  | 'working-paper'
   | 'thresholds'
   | 'spine'
   | 'events'
@@ -16,6 +17,7 @@ const TABS: { name: Tab; label: string }[] = [
   { name: 'evaluation', label: 'Evaluation' },
   { name: 'tcwg-extract', label: 'TCWG extract' },
   { name: 'rep-letter-attachment', label: 'Representation attachment' },
+  { name: 'working-paper', label: 'Working paper' },
   { name: 'thresholds', label: 'Thresholds' },
   { name: 'spine', label: 'Financial Spine' },
   { name: 'events', label: 'Events' },

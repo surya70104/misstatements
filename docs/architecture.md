@@ -1940,3 +1940,64 @@ memory: 527 passed, 38 skipped. `ruff`, `mypy` strict clean (117 files). Fronten
 captured API answers, every one with a projected item regenerated. In a real browser, on the isolated preview (the real application over the test database in one transaction that was never committed; Spine test double; development identity): a projected misstatement recorded through the form, the sampling fields appearing when the type was chosen, the record button disabled until every figure was given, a projected amount that differed from the lines refused in the backend's words, the corrected one recorded, the detail showing the method, population, sample and misstatement found, and the schedule's Type cell reading 'Projected · From sample S-12'; no sideways scroll. The engagement and its thresholds were seeded through the preview's API. Not done: a
 real Sampling module (none exists; the figures are typed); a named partner; the live
 Financial Spine; a screen-reader session.
+
+## D66 · Pass 2: the generated working paper — 7 Nov 2026 (SA 230; SA 450 para 15; spec 2, 6 item 5, 11)
+
+Built on instruction; the last feature of Pass 2. The module now generates the SA 450
+working paper as one document, checks the three things SA 450 paragraph 15 requires to be
+documented as fields, and exports a frozen, hashed snapshot tied to the current evaluation
+run.
+
+**The paper** (`GET /api/engagements/{id}/working-paper`) is generated from the same reads
+the screens make, in one place (`api/working_paper.py`), so it never disagrees with them:
+the engagement and its Spine link; every threshold version with the reassessment of
+materiality recorded at each run (paragraph 10); every misstatement with every version, its
+Dr/Cr lines as the Spine holds them, effects, band, state trail, origin (D64), qualitative
+checklist (D59) and sampling details (D65); the prior-period items (D61); the evaluation
+with its gates; every run, strategy answer, acknowledgement and conclusion; the TCWG
+extract (D62) and the representation attachment (D63). The `authorisation` notices are
+stripped at every depth, since they describe the reader and not the record. No figure is
+computed here that the evaluation does not compute. Spec section 2 says paragraph 15 is
+"fields, not prose": `documentation` carries the three checks, each saying whether it is
+documented and with what (the clearly trivial amount with its fraction, basis and threshold
+version; the count of misstatements accumulated with the uncorrected, corrected and
+withdrawn refs; the conclusion with its determination, basis, who concluded and on which
+run), and `complete` is true only when the amount and the conclusion are both documented.
+
+**Immutability.** The content's hash is the SHA-256 of its canonical JSON (keys sorted, no
+spaces, non-ASCII kept; `core/working_paper.py`), computed by the backend alone. An export
+(`POST .../working-paper/export`, 201) stores the content, its hash, the current evaluation
+run, who exported and when in `working_paper` (migration 0016: append-only triggers,
+`SELECT, INSERT` only, `paper_no` unique per engagement, the hash checked as 64 lowercase
+hex). Reading a registered paper (`GET /api/working-papers/{paper_id}`) recomputes the hash
+from the stored content and says whether it matches. The export is refused (409) while the
+engagement is not evaluable; while no run records the figures as they stand ("record a run
+first"); while the latest run is stale ("record a new run first"); and when the content's
+hash equals the latest paper's ("nothing has changed since paper N"). So a paper is tied to a
+run that records the figures it shows, and the same state is never registered twice. The
+paper as read says which it is: `export.status` is `none`, `current` or `stale`.
+
+**The Binder.** The Working Paper Binder's generated-paper intake
+(`POST /api/binders/{binder_id}/generated-papers`, read from its source and not modified)
+names its sources as materiality, sampling, analytical_review, workmind and spine. It has
+no source for this module, and the export does not pretend otherwise: it registers the
+snapshot here and answers the delivery in the Binder's shape (`ref` `W-SA450-N`, section W,
+title, SA refs, objective, procedure, result, conclusion, `generated` with the module, run,
+inputs and citations), marked `deliverable: false` with the reason. Delivering it is
+register W1.
+
+**Screens.** A "Working paper" tab shows the whole paper: the paragraph 15 checks as a
+checklist, the misstatements accumulated with type, state, band, effects, source and what is
+recorded with each, the prior-period items, the thresholds, aggregate, runs and
+conclusions, and the export panel: the latest export's status, the content hash as it
+stands, the button "Export to the binder" (disabled with the backend's reasons when it would
+be refused), the registration shown with its hash and the Binder note, the registered
+papers, and print. Nothing else on the screen writes.
+
+**Verified, 7 November 2026.** Backend `pytest` on PostgreSQL (`oak_misstatements_test`,
+rolled back; the run applied migration 0016 to that database): 580 passed, 0 skipped. In
+memory: 540 passed, 40 skipped. `ruff`, `mypy` strict clean (122 files). Frontend `vitest`
+428 passed (25 files); `tsc`, `eslint`, `prettier --check` clean; the build succeeds; 184
+captured API answers, 11 of them the paper's. In a browser on the isolated preview (port 8014, over the test database in one transaction never committed, the Spine double, the development identity): an engagement with five misstatements of every type, a refused and a corrected one, an escalated item, a prior-period item and one run was seeded through the API; the Working paper tab showed the whole paper with the paragraph 15 checklist and the content hash; 'Export to the binder' registered paper 1 on run 1 (201) and the page re-read itself as current; a second press was refused as unchanged (409) in the backend's words; the registered paper read by id recomputed its hash and matched; at phone width nothing overflowed. Not done: a delivery to the Binder
+(W1); a named partner, so no paper yet documents a conclusion; the live Financial Spine; a
+screen-reader session.

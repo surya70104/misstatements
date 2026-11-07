@@ -1,9 +1,9 @@
 {
-  "id": "53eabfa4-0191-42e9-a889-b6370d41d908",
-  "engagement_id": "8b67ecbd-9fc2-4f85-bc54-1d2a991a2a58",
+  "id": "da929cb8-879c-4ee8-b8dd-185af1fd2971",
+  "engagement_id": "0ee8001a-349f-45a0-9a0c-bd9f425a0cab",
   "ref": "M-2",
   "created_by": "workmind@firm",
-  "created_at": "2026-11-07T07:38:57",
+  "created_at": "2026-11-07T08:11:57",
   "current": {
     "version_no": 1,
     "type": "factual",
@@ -30,7 +30,7 @@
     "decided_at": null,
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "809a655f-8bcc-4201-9190-4f124e32cc6a",
+    "spine_adjustment_id": "6613ffb1-705a-458a-bb3d-3f2db716b1b9",
     "spine_kind": "correction",
     "range_low": null,
     "range_high": null,
@@ -38,12 +38,12 @@
     "projection_basis": null,
     "sampling": null,
     "created_by": "workmind@firm",
-    "created_at": "2026-11-07T07:38:57"
+    "created_at": "2026-11-07T08:11:57"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "809a655f-8bcc-4201-9190-4f124e32cc6a",
+    "adjustment_id": "6613ffb1-705a-458a-bb3d-3f2db716b1b9",
     "adjustment_status": "proposed",
     "kind": "correction",
     "finding_ref": "M-2",
@@ -132,7 +132,7 @@
       "profit": "40000.00",
       "net_assets": "40000.00"
     },
-    "threshold_id": "a5001494-9420-4332-b743-98db75334e6c",
+    "threshold_id": "682a7680-cb46-47e2-8fc7-d30354173d7e",
     "threshold_version_no": 1,
     "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
     "projected": false,
@@ -247,7 +247,7 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "809a655f-8bcc-4201-9190-4f124e32cc6a",
+      "spine_adjustment_id": "6613ffb1-705a-458a-bb3d-3f2db716b1b9",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
@@ -255,7 +255,7 @@
       "projection_basis": null,
       "sampling": null,
       "created_by": "workmind@firm",
-      "created_at": "2026-11-07T07:38:57"
+      "created_at": "2026-11-07T08:11:57"
     }
   ]
 }

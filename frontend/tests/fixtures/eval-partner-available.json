@@ -17,7 +17,7 @@
         "detail": "a partner-only action succeeds only when the trusted proxy's role claim names the acting identity a partner"
       }
     },
-    "id": "95923f83-fb5e-46ba-9491-ccc2d040caef",
+    "id": "b7858e66-2edb-4200-ad1c-81dfd60292a1",
     "label": "Test engagement C: conclusion",
     "spine": {
       "engagement_id": "11111111-1111-4111-8111-111111111111",
@@ -27,14 +27,14 @@
       "detail": null
     },
     "misstatements": 1,
-    "current_threshold_id": "90f94a31-2b98-42fc-aba5-4291e40db22a",
+    "current_threshold_id": "5310f3aa-17d3-4bc0-ae06-c10a3f1cb7ee",
     "created_by": "senior@firm",
-    "created_at": "2026-11-07T07:38:49"
+    "created_at": "2026-11-07T08:11:49"
   },
   "evaluation": {
-    "engagement_id": "95923f83-fb5e-46ba-9491-ccc2d040caef",
+    "engagement_id": "b7858e66-2edb-4200-ad1c-81dfd60292a1",
     "threshold": {
-      "id": "90f94a31-2b98-42fc-aba5-4291e40db22a",
+      "id": "5310f3aa-17d3-4bc0-ae06-c10a3f1cb7ee",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00",
@@ -237,7 +237,7 @@
     },
     "items": [
       {
-        "id": "bcd8a4e8-ee93-4cd4-8ccc-0574178d9b24",
+        "id": "d373eab4-943e-4c85-8fbf-b51a79ce8ad6",
         "ref": "M-1",
         "type": "factual",
         "projected": false,
@@ -258,10 +258,10 @@
       "status": "current",
       "detail": "the latest run describes the evaluation as it stands",
       "run": {
-        "id": "29678bb9-6de6-4947-b1ab-3c47df3a493e",
-        "engagement_id": "95923f83-fb5e-46ba-9491-ccc2d040caef",
+        "id": "046c2499-159a-4cf7-8bb0-1eff20034e4a",
+        "engagement_id": "b7858e66-2edb-4200-ad1c-81dfd60292a1",
         "run_no": 1,
-        "threshold_id": "90f94a31-2b98-42fc-aba5-4291e40db22a",
+        "threshold_id": "5310f3aa-17d3-4bc0-ae06-c10a3f1cb7ee",
         "threshold_version_no": 1,
         "agg_gross_pbt": "60000.00",
         "agg_net_pbt": "-60000.00",
@@ -269,7 +269,7 @@
         "agg_net_na": "-60000.00",
         "materiality_reassessed": true,
         "evaluated_by": "senior@firm",
-        "at": "2026-11-07T07:38:49",
+        "at": "2026-11-07T08:11:49",
         "concluded": false,
         "determination": null,
         "conclusion": null,
@@ -346,7 +346,7 @@
         },
         "detail": {
           "threshold": {
-            "id": "90f94a31-2b98-42fc-aba5-4291e40db22a",
+            "id": "5310f3aa-17d3-4bc0-ae06-c10a3f1cb7ee",
             "version_no": 1,
             "om": "400000.00",
             "pm": "250000.00",
@@ -468,10 +468,10 @@
   },
   "runs": [
     {
-      "id": "29678bb9-6de6-4947-b1ab-3c47df3a493e",
-      "engagement_id": "95923f83-fb5e-46ba-9491-ccc2d040caef",
+      "id": "046c2499-159a-4cf7-8bb0-1eff20034e4a",
+      "engagement_id": "b7858e66-2edb-4200-ad1c-81dfd60292a1",
       "run_no": 1,
-      "threshold_id": "90f94a31-2b98-42fc-aba5-4291e40db22a",
+      "threshold_id": "5310f3aa-17d3-4bc0-ae06-c10a3f1cb7ee",
       "threshold_version_no": 1,
       "agg_gross_pbt": "60000.00",
       "agg_net_pbt": "-60000.00",
@@ -479,7 +479,7 @@
       "agg_net_na": "-60000.00",
       "materiality_reassessed": true,
       "evaluated_by": "senior@firm",
-      "at": "2026-11-07T07:38:49",
+      "at": "2026-11-07T08:11:49",
       "concluded": false,
       "determination": null,
       "conclusion": null,
@@ -556,7 +556,7 @@
       },
       "detail": {
         "threshold": {
-          "id": "90f94a31-2b98-42fc-aba5-4291e40db22a",
+          "id": "5310f3aa-17d3-4bc0-ae06-c10a3f1cb7ee",
           "version_no": 1,
           "om": "400000.00",
           "pm": "250000.00",
@@ -682,9 +682,9 @@
     "blocked_by": [],
     "undetermined_because": [],
     "scope": "whether an unmodified opinion is blocked by the size of the uncorrected misstatements: the hard gate at overall materiality (spec section 7), and the gate at performance materiality when the firm has set it to hard. It says nothing about items above PM not yet dealt with or about the partner's acknowledgement: the sign-off gate does",
-    "engagement_id": "95923f83-fb5e-46ba-9491-ccc2d040caef",
+    "engagement_id": "b7858e66-2edb-4200-ad1c-81dfd60292a1",
     "threshold": {
-      "id": "90f94a31-2b98-42fc-aba5-4291e40db22a",
+      "id": "5310f3aa-17d3-4bc0-ae06-c10a3f1cb7ee",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"
@@ -832,9 +832,9 @@
     "blocked_by": [],
     "undetermined_because": [],
     "scope": "whether sign-off is blocked for any reason this module knows: the hard gate, the soft gate without a current partner acknowledgement, an item above PM still raised or communicated (spec section 7; acceptance 6 and 7)",
-    "engagement_id": "95923f83-fb5e-46ba-9491-ccc2d040caef",
+    "engagement_id": "b7858e66-2edb-4200-ad1c-81dfd60292a1",
     "threshold": {
-      "id": "90f94a31-2b98-42fc-aba5-4291e40db22a",
+      "id": "5310f3aa-17d3-4bc0-ae06-c10a3f1cb7ee",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"

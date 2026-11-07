@@ -1,7 +1,7 @@
 {
-  "engagement_id": "12729648-7061-4f66-957a-21de4d37cce1",
+  "engagement_id": "404a45c8-3f1d-4a7c-9cc0-044be7a333af",
   "threshold": {
-    "id": "57035e73-7769-474a-ac32-65fa04916916",
+    "id": "c75b966d-e3b9-44ba-b91e-f39a858907c7",
     "version_no": 1,
     "om": "400000.00",
     "pm": "250000.00",
@@ -78,11 +78,11 @@
         "detail": "acknowledged on these figures",
         "event": {
           "seq": 2,
-          "id": "d2e877f3-f776-4c61-a0a4-854a77d561a7",
-          "engagement_id": "12729648-7061-4f66-957a-21de4d37cce1",
+          "id": "caf78dc6-18d9-45b2-98c0-b29c4d6bc87f",
+          "engagement_id": "404a45c8-3f1d-4a7c-9cc0-044be7a333af",
           "kind": "soft_gate_acknowledged",
           "payload": {
-            "threshold_id": "57035e73-7769-474a-ac32-65fa04916916",
+            "threshold_id": "c75b966d-e3b9-44ba-b91e-f39a858907c7",
             "threshold_version_no": 1,
             "pm": "250000.00",
             "pm_gate": "soft",
@@ -117,7 +117,7 @@
             "identity_mode": "header"
           },
           "actor": "partner@firm",
-          "at": "2026-11-07T07:38:53"
+          "at": "2026-11-07T08:11:53"
         }
       }
     },
@@ -262,7 +262,7 @@
   },
   "items": [
     {
-      "id": "231fbedd-c1cb-4a97-a244-1533fe714ec0",
+      "id": "e60cff53-bdb6-4cce-959e-d62c906c0a1a",
       "ref": "M-1",
       "type": "factual",
       "projected": false,
@@ -279,7 +279,7 @@
       "expected_spine_adjustment_status": "proposed"
     },
     {
-      "id": "b03552d3-8958-4f8f-b0fc-64eb6749e429",
+      "id": "798ed91c-8883-48e7-888a-e3f30c4375bf",
       "ref": "M-2",
       "type": "factual",
       "projected": false,
@@ -300,10 +300,10 @@
     "status": "current",
     "detail": "the latest run describes the evaluation as it stands",
     "run": {
-      "id": "d478b587-018d-4993-86df-2e2930a73056",
-      "engagement_id": "12729648-7061-4f66-957a-21de4d37cce1",
+      "id": "f4ac4044-8a6a-4949-aced-2bc75c5b8ed8",
+      "engagement_id": "404a45c8-3f1d-4a7c-9cc0-044be7a333af",
       "run_no": 1,
-      "threshold_id": "57035e73-7769-474a-ac32-65fa04916916",
+      "threshold_id": "c75b966d-e3b9-44ba-b91e-f39a858907c7",
       "threshold_version_no": 1,
       "agg_gross_pbt": "250000.00",
       "agg_net_pbt": "-250000.00",
@@ -311,7 +311,7 @@
       "agg_net_na": "-250000.00",
       "materiality_reassessed": true,
       "evaluated_by": "senior@firm",
-      "at": "2026-11-07T07:38:52",
+      "at": "2026-11-07T08:11:52",
       "concluded": false,
       "determination": null,
       "conclusion": null,
@@ -398,7 +398,7 @@
       },
       "detail": {
         "threshold": {
-          "id": "57035e73-7769-474a-ac32-65fa04916916",
+          "id": "c75b966d-e3b9-44ba-b91e-f39a858907c7",
           "version_no": 1,
           "om": "400000.00",
           "pm": "250000.00",
@@ -537,11 +537,11 @@
   },
   "acknowledgement_event": {
     "seq": 2,
-    "id": "d2e877f3-f776-4c61-a0a4-854a77d561a7",
-    "engagement_id": "12729648-7061-4f66-957a-21de4d37cce1",
+    "id": "caf78dc6-18d9-45b2-98c0-b29c4d6bc87f",
+    "engagement_id": "404a45c8-3f1d-4a7c-9cc0-044be7a333af",
     "kind": "soft_gate_acknowledged",
     "payload": {
-      "threshold_id": "57035e73-7769-474a-ac32-65fa04916916",
+      "threshold_id": "c75b966d-e3b9-44ba-b91e-f39a858907c7",
       "threshold_version_no": 1,
       "pm": "250000.00",
       "pm_gate": "soft",
@@ -576,6 +576,6 @@
       "identity_mode": "header"
     },
     "actor": "partner@firm",
-    "at": "2026-11-07T07:38:53"
+    "at": "2026-11-07T08:11:53"
   }
 }

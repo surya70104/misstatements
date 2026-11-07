@@ -4,7 +4,8 @@ Stage 1 (spec section 9): ``engagement`` (architecture D8), ``misstatement`` and
 ``misstatement_version`` (D9, D21). Stage 2: ``threshold`` (D26) and the ``event`` trail
 (D13). Stage 4: ``evaluation``, one append-only row per evaluation run (D43). Pass 2:
 ``qualitative``, the entries of the qualitative checklist (D59), and ``prior_period``,
-the versions of the prior-period items carried forward (D61).
+the versions of the prior-period items carried forward (D61), and ``working_paper``, the
+registered exports of the generated working paper (D66).
 """
 
 from __future__ import annotations
@@ -25,6 +26,7 @@ from oak_misstatements.models.misstatement import (
 from oak_misstatements.models.prior_period import PriorPeriodItem
 from oak_misstatements.models.qualitative import QualitativeFactor
 from oak_misstatements.models.threshold import Threshold
+from oak_misstatements.models.working_paper import WorkingPaper
 
 # Registers the application-level append-only guard on every session (D42).
 from oak_misstatements.models import guard as guard  # isort: skip
@@ -47,4 +49,5 @@ __all__ = [
     "PriorPeriodItem",
     "QualitativeFactor",
     "Threshold",
+    "WorkingPaper",
 ]

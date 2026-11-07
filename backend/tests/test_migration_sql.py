@@ -67,6 +67,7 @@ def test_upgrade_creates_exactly_the_stage_1_and_2_tables() -> None:
         "evaluation",
         "qualitative",
         "prior_period",
+        "working_paper",
     ]
 
 
@@ -691,3 +692,41 @@ def test_the_sampling_columns_and_rules_are_added_by_0015_and_the_amounts_are_mo
     assert "projected_amount" not in sql
     assert "UPDATE misstatement_version" not in sql
     assert "DROP TRIGGER" not in sql
+
+
+# ---- 0016: the registered working paper (architecture D66) ------------------------------------
+
+
+def test_the_working_paper_table_is_append_only_and_tied_to_a_run_by_0016() -> None:
+    sql = rendered("upgrade")
+    block = table_block(sql, "working_paper")
+    for column in (
+        "engagement_id",
+        "paper_no",
+        "evaluation_run_id",
+        "content",
+        "content_hash",
+        "generated_by",
+        "at",
+    ):
+        assert f"{column} " in block, column
+    assert "content JSONB NOT NULL" in block
+    assert "CONSTRAINT fk_working_paper_engagement FOREIGN KEY(engagement_id)" in block
+    assert "CONSTRAINT fk_working_paper_evaluation_run FOREIGN KEY(evaluation_run_id)" in block
+    assert "ON DELETE RESTRICT" in block
+    assert "CONSTRAINT uq_working_paper_no UNIQUE (engagement_id, paper_no)" in block
+    assert "length(content_hash) = 64 AND content_hash = lower(content_hash)" in block
+    assert (
+        "CREATE TRIGGER trg_working_paper_append_only BEFORE UPDATE OR DELETE ON working_paper "
+        "FOR EACH ROW EXECUTE FUNCTION oak_misstatements_append_only()"
+    ) in sql
+    assert "CREATE TRIGGER trg_working_paper_no_truncate BEFORE TRUNCATE ON working_paper" in sql
+    assert "GRANT SELECT, INSERT ON working_paper TO oak_misstatements_app" in sql
+    for line in sql.splitlines():
+        if "GRANT" in line and "working_paper" in line:
+            assert "UPDATE" not in line and "DELETE" not in line, line
+    # No money column: the paper holds figures only inside its frozen content.
+    assert "NUMERIC" not in block
+    down = rendered("downgrade")
+    assert "DROP TABLE working_paper;" in down
+    assert down.index("DROP TABLE working_paper;") < down.index("DROP TABLE evaluation;")

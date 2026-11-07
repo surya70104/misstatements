@@ -16,7 +16,7 @@
       "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
     }
   },
-  "id": "6eabba4d-6798-47ef-bc7a-2e3780cbb21f",
+  "id": "8c8e6386-0add-46f2-ab55-07a25400c493",
   "label": "Test engagement K: created unlinked",
   "spine": {
     "engagement_id": "11111111-1111-4111-8111-111111111111",
@@ -28,5 +28,5 @@
   "misstatements": 0,
   "current_threshold_id": null,
   "created_by": "senior@firm",
-  "created_at": "2026-11-07T07:38:50"
+  "created_at": "2026-11-07T08:11:50"
 }

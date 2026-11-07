@@ -37,6 +37,8 @@ import {
 import listJson from './fixtures/workflow-engagements.json'
 import screenJson from './fixtures/workflow-evaluation-screen.json'
 import repJson from './fixtures/workflow-rep-letter-attachment.json'
+import exportsJson from './fixtures/workflow-working-paper-exports.json'
+import paperJson from './fixtures/workflow-working-paper.json'
 import tcwgJson from './fixtures/workflow-tcwg-extract.json'
 import { mockApi, requested } from './mockApi'
 import {
@@ -61,6 +63,8 @@ const EVERYTHING = {
   ...spineAnswers(workflowSpine),
   [`GET /api/engagements/${workflowEngagement.id}/tcwg-extract`]: tcwgJson,
   [`GET /api/engagements/${workflowEngagement.id}/rep-letter-attachment`]: repJson,
+  [`GET /api/engagements/${workflowEngagement.id}/working-paper`]: paperJson,
+  [`GET /api/engagements/${workflowEngagement.id}/working-paper/exports`]: exportsJson,
   [detailPath(raised)]: raised,
 }
 
@@ -203,6 +207,7 @@ test(
         `#/engagements/${id}/evaluation`,
         `#/engagements/${id}/tcwg-extract`,
         `#/engagements/${id}/rep-letter-attachment`,
+        `#/engagements/${id}/working-paper`,
         `#/engagements/${id}/thresholds`,
         `#/engagements/${id}/spine`,
         `#/engagements/${id}/events`,

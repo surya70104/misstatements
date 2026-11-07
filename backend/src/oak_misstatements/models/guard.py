@@ -27,6 +27,7 @@ from oak_misstatements.models.line_class import MisstatementLineClass
 from oak_misstatements.models.misstatement import Misstatement, MisstatementVersion
 from oak_misstatements.models.prior_period import PriorPeriodItem
 from oak_misstatements.models.qualitative import QualitativeFactor
+from oak_misstatements.models.working_paper import WorkingPaper
 
 APPEND_ONLY_MODELS: tuple[type[Any], ...] = (
     Misstatement,
@@ -36,6 +37,7 @@ APPEND_ONLY_MODELS: tuple[type[Any], ...] = (
     EvaluationRun,
     QualitativeFactor,
     PriorPeriodItem,
+    WorkingPaper,
 )
 APPEND_ONLY_TABLES = frozenset(model.__tablename__ for model in APPEND_ONLY_MODELS)
 

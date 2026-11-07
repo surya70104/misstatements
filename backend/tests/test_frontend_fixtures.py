@@ -39,6 +39,8 @@ WRITE = os.environ.get("OAK_WRITE_FIXTURES") == "1"
 UUID = re.compile(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
 TIME = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?")
 SEQ = re.compile(r'"seq": \d+')
+# A content hash (D66) differs whenever an identifier or a timestamp inside the content does.
+HASH = re.compile(r"\b[0-9a-f]{64}\b")
 
 # Labels say what each engagement is for. They are test data and name no real client.
 PINNED = "Test engagement A: linked, version pinned"
@@ -50,7 +52,8 @@ def masked(value: Any) -> Any:
     """``value`` with every identifier and timestamp replaced by a placeholder. An event's
     ``seq`` is an identifier too: the database issues it, and it differs on every run."""
     text = json.dumps(value, sort_keys=True)
-    return json.loads(SEQ.sub('"seq": "<seq>"', TIME.sub("<time>", UUID.sub("<id>", text))))
+    text = HASH.sub("<hash>", TIME.sub("<time>", UUID.sub("<id>", text)))
+    return json.loads(SEQ.sub('"seq": "<seq>"', text))
 
 
 def check(name: str, answer: Any) -> None:
@@ -339,6 +342,11 @@ def test_the_detail_fixtures_are_the_apis_real_answers(api: TestClient) -> None:
     check("workflow-spine-screen", spine_screen(api, engagement))
     check("workflow-tcwg-extract", tcwg_extract(api, engagement))
     check("workflow-rep-letter-attachment", rep_attachment(api, engagement))
+    check("workflow-working-paper", got(api, f"/api/engagements/{engagement}/working-paper"))
+    check(
+        "workflow-working-paper-exports",
+        got(api, f"/api/engagements/{engagement}/working-paper/exports"),
+    )
     check("transition-raised-cannot-be-corrected", attempt(api, rent, 409, to="corrected"))
     act_as(api, MANAGER)
     check("transition-communicated", attempt(api, rent, 201, to="communicated"))
@@ -1607,3 +1615,86 @@ def test_the_intake_fixtures_are_the_apis_real_answers(api: TestClient) -> None:
             },
         ),
     )
+
+
+# The generated working paper (Pass 2, feature 7; architecture D66). One engagement with
+# every kind of record, read before a run (not exportable), exported after a run, read again
+# (the export current), and after a move (the export stale); the registrations; a refusal.
+WORKING_PAPER_ENGAGEMENT = "Test engagement W: working paper"
+
+
+def working_paper(client: TestClient, engagement: str) -> Any:
+    return got(client, f"/api/engagements/{engagement}/working-paper")
+
+
+def test_the_working_paper_fixtures_are_the_apis_real_answers(api: TestClient) -> None:
+    use_spine(api)
+    act_as(api, SENIOR)
+    engagement = with_thresholds(api, WORKING_PAPER_ENGAGEMENT)
+    base = f"/api/engagements/{engagement}/working-paper"
+    rent = item(api, engagement, "60000.00", "Rent for March not accrued")  # M-1
+    estimate = item(
+        api,
+        engagement,
+        "35000.00",
+        "Provision for doubtful debts understated",
+        type="judgemental",
+        range_low="30000.00",
+        range_high="40000.00",
+    )  # M-2
+    item(
+        api,
+        engagement,
+        "40000.00",
+        "Sales cut-off errors projected over the March population",
+        type="projected",
+        pair=(4, 1),
+        sample_ref="S-12",
+        projection_basis="Ratio of error to sample value, applied to the population",
+    )  # M-3
+    related = item(api, engagement, "3000.00", "Sale to a related party not invoiced")  # M-4
+    settled = item(api, engagement, "45000.00", "Bonus provision understated")  # M-5
+    act_as(api, MANAGER)
+    move(api, rent, "communicated")
+    move(api, estimate, "communicated")
+    move(api, estimate, "refused", "Management considers its estimate reasonable")
+    move(api, settled, "communicated")
+    move(api, settled, "corrected")
+    post(
+        api,
+        f"/api/misstatements/{related}/qualitative",
+        201,
+        {"factor": "related_party", "note": "Sale to a firm owned by a director; see E-12"},
+    )
+    post(
+        api,
+        f"/api/engagements/{engagement}/prior-period",
+        201,
+        {
+            "description": "Depreciation on plant understated in the prior year",
+            "prior_period": "FY 2024-25",
+            "source_ref": "PY schedule M-7",
+            "current_profit_before_tax": "0.00",
+            "current_net_assets": "-30000.00",
+            "cumulative_profit_before_tax": "-30000.00",
+            "cumulative_net_assets": "-30000.00",
+            "basis": "Carrying amount still overstated at the year end; see PY F-3.4",
+        },
+    )
+    # Before a run: the paper generates, and says why it cannot be exported.
+    check("working-paper-no-run", working_paper(api, engagement))
+    check("working-paper-export-no-run", post(api, f"{base}/export", 409, {}))
+
+    post(api, f"/api/engagements/{engagement}/evaluation/runs", 201, REASSESSED)
+    check("working-paper-ready", working_paper(api, engagement))
+    exported = post(api, f"{base}/export", 201, {})
+    check("working-paper-exported", exported)
+    check("working-paper-export-unchanged", post(api, f"{base}/export", 409, {}))
+    check("working-paper-current", working_paper(api, engagement))
+    check("working-paper-exports", got(api, f"{base}/exports"))
+    check("working-paper-registered", got(api, f"/api/working-papers/{exported['paper']['id']}"))
+
+    # The engagement moves on: the export is stale until a new run and a new export.
+    act_as(api, SENIOR)
+    move(api, rent, "corrected")
+    check("working-paper-stale", working_paper(api, engagement))

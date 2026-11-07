@@ -1,9 +1,9 @@
 {
-  "id": "bd9f46b4-54c4-49e0-b6a9-55d68cebdae4",
-  "engagement_id": "68f8f27a-d2fb-442c-9a67-adbab876e8c9",
+  "id": "a1ebc4a7-c261-4922-ad5c-ffe73e051797",
+  "engagement_id": "74d1cc8f-3c14-47c5-8699-68b233e6ad50",
   "ref": "M-3",
   "created_by": "senior@firm",
-  "created_at": "2026-11-07T07:38:47",
+  "created_at": "2026-11-07T08:11:47",
   "current": {
     "version_no": 3,
     "type": "projected",
@@ -13,11 +13,11 @@
     "source_ref": "R-5.3",
     "origin": null,
     "state": "withdrawn",
-    "communicated_at": "2026-11-07T07:38:47.339546",
-    "decided_at": "2026-11-07T07:38:47.396587",
+    "communicated_at": "2026-11-07T08:11:47.144990",
+    "decided_at": "2026-11-07T08:11:47.199137",
     "refusal_reason": null,
     "withdrawal_reason": "Sample re-performed: the errors were recorded in the correct period",
-    "spine_adjustment_id": "fbca5315-0dd4-42a0-8fc6-7193b5cfc927",
+    "spine_adjustment_id": "740c7c9d-e66c-4b2f-ac60-2cb300f2f338",
     "spine_kind": "correction",
     "range_low": null,
     "range_high": null,
@@ -32,12 +32,12 @@
       "known_error_in_sample": "4000.00"
     },
     "created_by": "senior@firm",
-    "created_at": "2026-11-07T07:38:47"
+    "created_at": "2026-11-07T08:11:47"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "fbca5315-0dd4-42a0-8fc6-7193b5cfc927",
+    "adjustment_id": "740c7c9d-e66c-4b2f-ac60-2cb300f2f338",
     "adjustment_status": "refused",
     "kind": "correction",
     "finding_ref": "M-3",
@@ -126,7 +126,7 @@
       "profit": "45000.00",
       "net_assets": "45000.00"
     },
-    "threshold_id": "448098b6-92b6-4794-8046-e217c4e3f09a",
+    "threshold_id": "cb688988-cee3-42cb-b62d-10e78531b54e",
     "threshold_version_no": 1,
     "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
     "projected": true,
@@ -228,7 +228,7 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "fbca5315-0dd4-42a0-8fc6-7193b5cfc927",
+      "spine_adjustment_id": "740c7c9d-e66c-4b2f-ac60-2cb300f2f338",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
@@ -243,7 +243,7 @@
         "known_error_in_sample": "4000.00"
       },
       "created_by": "senior@firm",
-      "created_at": "2026-11-07T07:38:47"
+      "created_at": "2026-11-07T08:11:47"
     },
     {
       "version_no": 2,
@@ -254,11 +254,11 @@
       "source_ref": "R-5.3",
       "origin": null,
       "state": "communicated",
-      "communicated_at": "2026-11-07T07:38:47.339546",
+      "communicated_at": "2026-11-07T08:11:47.144990",
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "fbca5315-0dd4-42a0-8fc6-7193b5cfc927",
+      "spine_adjustment_id": "740c7c9d-e66c-4b2f-ac60-2cb300f2f338",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
@@ -273,7 +273,7 @@
         "known_error_in_sample": "4000.00"
       },
       "created_by": "senior@firm",
-      "created_at": "2026-11-07T07:38:47"
+      "created_at": "2026-11-07T08:11:47"
     },
     {
       "version_no": 3,
@@ -284,11 +284,11 @@
       "source_ref": "R-5.3",
       "origin": null,
       "state": "withdrawn",
-      "communicated_at": "2026-11-07T07:38:47.339546",
-      "decided_at": "2026-11-07T07:38:47.396587",
+      "communicated_at": "2026-11-07T08:11:47.144990",
+      "decided_at": "2026-11-07T08:11:47.199137",
       "refusal_reason": null,
       "withdrawal_reason": "Sample re-performed: the errors were recorded in the correct period",
-      "spine_adjustment_id": "fbca5315-0dd4-42a0-8fc6-7193b5cfc927",
+      "spine_adjustment_id": "740c7c9d-e66c-4b2f-ac60-2cb300f2f338",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
@@ -303,7 +303,7 @@
         "known_error_in_sample": "4000.00"
       },
       "created_by": "senior@firm",
-      "created_at": "2026-11-07T07:38:47"
+      "created_at": "2026-11-07T08:11:47"
     }
   ]
 }

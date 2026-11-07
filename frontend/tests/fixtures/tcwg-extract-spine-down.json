@@ -1,10 +1,10 @@
 {
   "engagement": {
-    "id": "f4644c43-1d4a-4488-b187-621c595dc660",
+    "id": "0ea9a320-3fb4-4bd8-a089-903f8c12ab03",
     "label": "Test engagement T: TCWG extract"
   },
   "threshold": {
-    "id": "dfebc606-d6b9-4826-8418-026b1ffaefd2",
+    "id": "a394b8c3-1f9f-4b40-9111-96d0611348f8",
     "version_no": 1,
     "om": "400000.00",
     "pm": "250000.00",
@@ -24,7 +24,7 @@
   },
   "named_individually": [
     {
-      "id": "01ebe5dc-b436-446f-85dd-79897184230b",
+      "id": "23639946-9a59-4a1c-9f67-b6de6fbd90d7",
       "ref": "M-7",
       "type": "factual",
       "state": "raised",
@@ -47,7 +47,7 @@
           "text": "relates to a related party transaction",
           "note": "Sale to a firm owned by a director; see E-12",
           "escalated_by": "manager@firm",
-          "at": "2026-11-07T07:38:56"
+          "at": "2026-11-07T08:11:56"
         }
       ],
       "range": null,
@@ -58,7 +58,7 @@
   ],
   "undetermined": [
     {
-      "id": "8f79b595-013b-4259-bf04-af4a74e48128",
+      "id": "f1573918-ccec-45ee-bdf4-e2895745cd3b",
       "ref": "M-1",
       "type": "factual",
       "state": "raised",
@@ -72,7 +72,7 @@
       "reason": "its effects cannot be determined, so it cannot be banded"
     },
     {
-      "id": "116221d5-1d00-42a4-a371-49dd6db9a143",
+      "id": "eac924f1-3d70-4b28-9609-5c3c6062fdcb",
       "ref": "M-2",
       "type": "projected",
       "state": "raised",
@@ -86,7 +86,7 @@
       "reason": "its effects cannot be determined, so it cannot be banded"
     },
     {
-      "id": "577284c2-0975-4f33-a94b-09fa9e1c098a",
+      "id": "12883f34-12c0-4e2c-bf55-10d9d5d79656",
       "ref": "M-3",
       "type": "factual",
       "state": "refused",
@@ -100,7 +100,7 @@
       "reason": "its effects cannot be determined, so it cannot be banded"
     },
     {
-      "id": "2ea3e3bf-27bb-4e6b-90fd-cbbcf5a721d5",
+      "id": "e5bfe59b-51aa-49a6-a548-7c3f24197ef0",
       "ref": "M-4",
       "type": "factual",
       "state": "raised",
@@ -114,7 +114,7 @@
       "reason": "its effects cannot be determined, so it cannot be banded"
     },
     {
-      "id": "1ab3fec2-e57b-40d7-a8be-ba2258edb1fc",
+      "id": "6017c8c4-7d08-4554-8f87-270f931056ca",
       "ref": "M-6",
       "type": "judgemental",
       "state": "raised",
@@ -238,7 +238,7 @@
   "prior_period": {
     "items": [
       {
-        "id": "fe979984-ef09-4ca5-bd6f-d34f988b3eae",
+        "id": "3fcbac61-f405-46d4-9633-5905d92ea379",
         "ref": "PY-1",
         "version_no": 1,
         "carried": true,
@@ -258,7 +258,7 @@
         },
         "basis": "Carrying amount still overstated at the year end; see PY F-3.4",
         "recorded_by": "manager@firm",
-        "at": "2026-11-07T07:38:56"
+        "at": "2026-11-07T08:11:56"
       }
     ],
     "totals": {

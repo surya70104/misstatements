@@ -564,3 +564,25 @@ It does not change the Pass 1 count.
 **Not built with this feature:** an amount-only projected misstatement (J1); any
 recomputation of the projection (J3); a Sampling module or an intake from one (J5); the
 generated binder paper.
+
+## Pass 2, feature 7: the generated working paper — 7 November 2026 (architecture D66)
+
+Built on instruction on 7 November 2026, the last feature of Pass 2. This section records
+what the feature leaves to people. It does not change the Pass 1 count.
+
+| # | Question | Who | What is built meanwhile |
+|---|---|---|---|
+| W1 | **Delivering the paper to the Working Paper Binder.** Its generated-paper intake names five sources (materiality, sampling, analytical_review, workmind, spine) and has none for this module; the Binder is read-only to this module and was not changed | Lead, with the Binder's owner: a source for this module, or another route | The export registers the snapshot here and answers the delivery in the Binder's shape, marked not deliverable with the reason. Nothing is sent |
+| W2 | Should an export require the paragraph 15 documentation to be complete (a partner's conclusion recorded), or is a paper on a current run without a conclusion a valid interim paper? | CA | Allowed on a current run; the paper says "Documentation incomplete" and which check is not documented |
+| W3 | Who may export (B9): any member of the engagement, or the manager and partner only? | Firm | Any authenticated user may; `generated_by` records who. No partner can yet be named (V12) |
+| W4 | The paper's reference and section in the firm's binder index (`W-SA450-N`, section W, are placeholders), and its title | Firm | `W-SA450-<paper_no>`, section W, "Evaluation of misstatements identified during the audit (SA 450)" |
+| W5 | Retention: once the Binder holds a paper, is this module's copy the record or a duplicate to be dropped, and for how long are stale papers kept? | Lead | Every registered paper is kept, append-only, and readable by id with its hash recomputed |
+| M5 | Applying migration 0016 to `oak_misstatements_test`, and later to `oak_misstatements` | Whoever approves migrations (with O2) | **Applied to `oak_misstatements_test` on 7 Nov 2026** by the PostgreSQL suite, which was asked for with this feature (580 passed). Not applied to `oak_misstatements`, which still waits (O2) |
+
+**Not built with this feature:** a delivery to the Binder (W1); a PDF or other file (the
+screen prints); any figure the evaluation does not already compute.
+
+**Pass 2 is complete at code level.** Every feature of Pass 2 (D59 to D66) exists, tested on
+PostgreSQL and in a browser on the isolated preview. What stands between the module and
+production is unchanged and listed above: the firm's and the CA's decisions, a named partner
+(V12), the live Financial Spine, and the migrations to `oak_misstatements` (O2).

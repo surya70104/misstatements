@@ -574,8 +574,15 @@ def test_an_evaluation_run_is_append_only_for_every_role(db: Connection) -> None
     ):
         with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
             db.execute(text(statement), {"r": run_id})
-    with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
+    # `working_paper` references `evaluation` (D66), so a plain TRUNCATE is refused by
+    # PostgreSQL itself, before any trigger. With CASCADE the triggers must hold.
+    with (
+        pytest.raises(DBAPIError, match=r"append-only|cannot truncate a table referenced"),
+        db.begin_nested(),
+    ):
         db.execute(text("TRUNCATE evaluation"))
+    with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
+        db.execute(text("TRUNCATE evaluation CASCADE"))
 
 
 def test_the_evaluation_aggregates_are_checked_at_the_database(db: Connection) -> None:
@@ -1075,3 +1082,79 @@ def test_a_projected_item_says_how_it_was_projected_and_no_other_type_may(db: Co
             text("UPDATE misstatement_version SET sample_size = 1 WHERE misstatement_id = :m"),
             {"m": misstatement_id},
         )
+
+
+# ---- Pass 2 (migration 0016): the registered working paper (architecture D66) ----------------
+
+WORKING_PAPER = (
+    "INSERT INTO working_paper (engagement_id, paper_no, evaluation_run_id, content, "
+    "content_hash, generated_by) "
+    "VALUES (:e, :n, :r, CAST(:content AS jsonb), :hash, :by) RETURNING id"
+)
+HASH = "a" * 64
+
+
+def test_a_registered_working_paper_is_append_only_and_tied_to_a_run(db: Connection) -> None:
+    engagement_id, _misstatement, _version = seed(db)
+    threshold_id = seed_threshold(db, engagement_id)
+    run_id = db.scalar(text(EVALUATION), evaluation_values(engagement_id, threshold_id))
+    values = {
+        "e": engagement_id,
+        "n": 1,
+        "r": run_id,
+        "content": '{"paper": 1}',
+        "hash": HASH,
+        "by": "test",
+    }
+    for extra, rule in (
+        ({"n": 0}, "ck_working_paper_no_positive"),
+        ({"hash": "abc"}, "ck_working_paper_hash"),
+        ({"hash": "A" * 64}, "ck_working_paper_hash"),
+        ({"by": "  "}, "ck_working_paper_generated_by"),
+        ({"r": uuid.uuid4()}, "fk_working_paper_evaluation_run"),
+        ({"e": uuid.uuid4()}, "fk_working_paper_engagement"),
+    ):
+        with pytest.raises(DBAPIError, match=rule), db.begin_nested():
+            db.execute(text(WORKING_PAPER), {**values, **extra})
+    paper_id = db.scalar(text(WORKING_PAPER), values)
+    with pytest.raises(DBAPIError, match="uq_working_paper_no"), db.begin_nested():
+        db.execute(text(WORKING_PAPER), values)
+    for statement in (
+        "UPDATE working_paper SET content = '{}'::jsonb WHERE id = :p",
+        "UPDATE working_paper SET content_hash = :h WHERE id = :p",
+        "DELETE FROM working_paper WHERE id = :p",
+    ):
+        with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
+            db.execute(text(statement), {"p": paper_id, "h": "b" * 64})
+    with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
+        db.execute(text("TRUNCATE working_paper"))
+    # The run a paper rests on can never be deleted from under it.
+    with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
+        db.execute(text("DELETE FROM evaluation WHERE id = :r"), {"r": run_id})
+    assert db.scalar(text("SELECT count(*) FROM working_paper")) == 1
+
+
+def test_the_application_role_may_register_a_paper_and_nothing_else(app_db: Connection) -> None:
+    engagement_id, _misstatement, _version = seed(app_db)
+    threshold_id = seed_threshold(app_db, engagement_id)
+    run_id = app_db.scalar(text(EVALUATION), evaluation_values(engagement_id, threshold_id))
+    paper_id = app_db.scalar(
+        text(WORKING_PAPER),
+        {
+            "e": engagement_id,
+            "n": 1,
+            "r": run_id,
+            "content": '{"paper": 1}',
+            "hash": HASH,
+            "by": "test",
+        },
+    )
+    for statement in (
+        "UPDATE working_paper SET paper_no = 2 WHERE id = :p",
+        "DELETE FROM working_paper WHERE id = :p",
+    ):
+        with (
+            pytest.raises(DBAPIError, match=r"permission denied|append-only"),
+            app_db.begin_nested(),
+        ):
+            app_db.execute(text(statement), {"p": paper_id})

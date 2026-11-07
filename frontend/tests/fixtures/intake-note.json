@@ -1,9 +1,9 @@
 {
-  "id": "b00bd020-ad60-4077-9f86-c19e0211390e",
-  "engagement_id": "8b67ecbd-9fc2-4f85-bc54-1d2a991a2a58",
+  "id": "879c8c5b-5f95-46d9-9b6c-32c4edc85d6b",
+  "engagement_id": "0ee8001a-349f-45a0-9a0c-bd9f425a0cab",
   "ref": "M-3",
   "created_by": "manager@firm",
-  "created_at": "2026-11-07T07:38:57",
+  "created_at": "2026-11-07T08:11:57",
   "current": {
     "version_no": 1,
     "type": "factual",
@@ -20,7 +20,7 @@
     "decided_at": null,
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "80a521c7-2f2a-449f-bf4c-1e867bbf3bcf",
+    "spine_adjustment_id": "306a419c-ae80-4305-911a-3771ac056beb",
     "spine_kind": "correction",
     "range_low": null,
     "range_high": null,
@@ -28,12 +28,12 @@
     "projection_basis": null,
     "sampling": null,
     "created_by": "manager@firm",
-    "created_at": "2026-11-07T07:38:57"
+    "created_at": "2026-11-07T08:11:57"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "80a521c7-2f2a-449f-bf4c-1e867bbf3bcf",
+    "adjustment_id": "306a419c-ae80-4305-911a-3771ac056beb",
     "adjustment_status": "proposed",
     "kind": "correction",
     "finding_ref": "M-3",
@@ -122,7 +122,7 @@
       "profit": "50000.00",
       "net_assets": "50000.00"
     },
-    "threshold_id": "a5001494-9420-4332-b743-98db75334e6c",
+    "threshold_id": "682a7680-cb46-47e2-8fc7-d30354173d7e",
     "threshold_version_no": 1,
     "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
     "projected": false,
@@ -227,7 +227,7 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "80a521c7-2f2a-449f-bf4c-1e867bbf3bcf",
+      "spine_adjustment_id": "306a419c-ae80-4305-911a-3771ac056beb",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
@@ -235,7 +235,7 @@
       "projection_basis": null,
       "sampling": null,
       "created_by": "manager@firm",
-      "created_at": "2026-11-07T07:38:57"
+      "created_at": "2026-11-07T08:11:57"
     }
   ]
 }

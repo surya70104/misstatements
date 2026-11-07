@@ -1,9 +1,9 @@
 {
-  "id": "8d9a7520-1668-457d-91b2-9fa05837a1cd",
-  "engagement_id": "cfa7ef7b-c36a-44cf-bc58-c1a55184291f",
+  "id": "bba6e950-3a32-4c33-8ade-be748c00eda7",
+  "engagement_id": "c76c6370-4a85-453f-81c0-2387fff48868",
   "ref": "M-3",
   "created_by": "senior@firm",
-  "created_at": "2026-11-07T07:38:52",
+  "created_at": "2026-11-07T08:11:52",
   "current": {
     "version_no": 1,
     "type": "factual",
@@ -17,7 +17,7 @@
     "decided_at": null,
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "d624acc7-e3f6-46d5-aafc-32b615d9a619",
+    "spine_adjustment_id": "5b481ffd-eae7-4f47-b93d-8fc93665c330",
     "spine_kind": "correction",
     "range_low": null,
     "range_high": null,
@@ -25,12 +25,12 @@
     "projection_basis": null,
     "sampling": null,
     "created_by": "senior@firm",
-    "created_at": "2026-11-07T07:38:52"
+    "created_at": "2026-11-07T08:11:52"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "d624acc7-e3f6-46d5-aafc-32b615d9a619",
+    "adjustment_id": "5b481ffd-eae7-4f47-b93d-8fc93665c330",
     "adjustment_status": "proposed",
     "kind": "correction",
     "finding_ref": "M-3",
@@ -151,7 +151,7 @@
     "band": null,
     "bands": null,
     "amounts": null,
-    "threshold_id": "117508df-5165-4eea-9588-92d539332cf8",
+    "threshold_id": "c7e907cc-5545-4d76-b01f-c96c2ab5410d",
     "threshold_version_no": 1,
     "basis": "no band: the effects are unresolved (Salaries, Salaries), and nothing is banded on a guess (architecture D31, D32, D33)",
     "projected": false,
@@ -253,7 +253,7 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "d624acc7-e3f6-46d5-aafc-32b615d9a619",
+      "spine_adjustment_id": "5b481ffd-eae7-4f47-b93d-8fc93665c330",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
@@ -261,7 +261,7 @@
       "projection_basis": null,
       "sampling": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-07T07:38:52"
+      "created_at": "2026-11-07T08:11:52"
     }
   ]
 }

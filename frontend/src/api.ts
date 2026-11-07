@@ -642,6 +642,85 @@ export type RepLetterAttachment = {
   authorisation: Authorisation
 }
 
+// ---- the generated working paper (SA 230; SA 450 paragraph 15; backend D66) ----
+
+// SA 450 paragraph 15, as three checks: each names what is documented, or that it is not.
+export type Documentation = {
+  standard: string
+  clearly_trivial_amount: {
+    documented: boolean
+    amount: string | null
+    fraction_of_pm: string | null
+    basis: string | null
+    threshold_version_no: number | null
+  }
+  misstatements_accumulated_and_whether_corrected: {
+    documented: boolean
+    count: number
+    uncorrected: string[]
+    corrected: string[]
+    withdrawn: string[]
+  }
+  conclusion_and_basis: {
+    documented: boolean
+    determination: string | null
+    conclusion: string | null
+    basis: string | null
+    concluded_by: string | null
+    run_no: number | null
+    status: string | null
+  }
+  complete: boolean
+}
+
+// A registered paper, without its content.
+export type WorkingPaperSummary = {
+  id: string
+  engagement_id: string
+  paper_no: number
+  evaluation_run_id: string
+  run_no: number | null
+  content_hash: string
+  generated_by: string
+  at: string
+}
+
+// The paper as it stands: the engagement's whole record, with its hash, whether it can be
+// exported and whether the latest export still matches it.
+export type WorkingPaper = {
+  paper: { title: string; standards: string[]; module: string; module_version: string }
+  engagement: Omit<Engagement, 'authorisation'>
+  thresholds: { current: Threshold | null; history: Threshold[] }
+  materiality_reassessment: { runs: number[]; events: ModuleEvent[] }
+  misstatements: Misstatement[]
+  prior_period: PriorPeriodListing
+  evaluation: Evaluation
+  runs: EvaluationRun[]
+  conclusions: EvaluationRun[]
+  events: ModuleEvent[]
+  tcwg_extract: TcwgExtract
+  representation_attachment: RepLetterAttachment
+  documentation: Documentation
+  basis: string
+  content_hash: string
+  exportable: { allowed: boolean; reasons: string[] }
+  export: { status: string; latest: WorkingPaperSummary | null }
+  authorisation: Authorisation
+}
+
+// What the export answers: the registration, and the delivery the Binder would receive.
+export type WorkingPaperExport = {
+  paper: WorkingPaperSummary
+  binder_delivery: {
+    deliverable: boolean
+    not_deliverable_because: string
+    binder_endpoint: string
+    paper: Record<string, unknown>
+    generated: Record<string, unknown>
+  }
+  authorisation: Authorisation
+}
+
 // A gate as another module reads it (architecture D18): open, blocked or undetermined.
 export type GateExposure = {
   gate: string
@@ -788,6 +867,28 @@ export function getRepLetterAttachment(engagementId: string): Promise<RepLetterA
   return request<RepLetterAttachment>(
     `/api/engagements/${encodeURIComponent(engagementId)}/rep-letter-attachment`,
   )
+}
+
+function workingPaperPath(engagementId: string, rest = ''): string {
+  return `/api/engagements/${encodeURIComponent(engagementId)}/working-paper${rest}`
+}
+
+/** The working paper as it stands now. Read-only. */
+export function getWorkingPaper(engagementId: string): Promise<WorkingPaper> {
+  return request<WorkingPaper>(workingPaperPath(engagementId))
+}
+
+/** Every registered paper of the engagement, newest first, without its content. */
+export function listWorkingPaperExports(engagementId: string): Promise<WorkingPaperSummary[]> {
+  return request<WorkingPaperSummary[]>(workingPaperPath(engagementId, '/exports'))
+}
+
+/**
+ * Freeze the paper as it stands and register it, tied to the current evaluation run. The
+ * backend generates and hashes the content itself: nothing but the request is sent.
+ */
+export function exportWorkingPaper(engagementId: string): Promise<WorkingPaperExport> {
+  return post<WorkingPaperExport>(workingPaperPath(engagementId, '/export'), {})
 }
 
 function evaluationPath(engagementId: string, rest = ''): string {

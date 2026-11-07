@@ -15,6 +15,7 @@ from oak_misstatements.api.qualitative import router as qualitative_router
 from oak_misstatements.api.representation import router as representation_router
 from oak_misstatements.api.tcwg import router as tcwg_router
 from oak_misstatements.api.thresholds import router as thresholds_router
+from oak_misstatements.api.working_paper import router as working_paper_router
 
 router = APIRouter(prefix="/api")
 router.include_router(health_router)
@@ -27,5 +28,6 @@ router.include_router(thresholds_router)
 router.include_router(evaluation_router)
 router.include_router(tcwg_router)
 router.include_router(representation_router)
+router.include_router(working_paper_router)
 
 __all__ = ["router"]

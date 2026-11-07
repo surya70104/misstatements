@@ -12,6 +12,7 @@ import { SchedulePage } from './pages/SchedulePage'
 import { SpinePage } from './pages/SpinePage'
 import { TcwgExtractPage } from './pages/TcwgExtractPage'
 import { ThresholdsPage } from './pages/ThresholdsPage'
+import { WorkingPaperPage } from './pages/WorkingPaperPage'
 import { href, useRoute, type Route } from './router'
 
 type Backend = { state: 'checking' } | { state: 'up'; health: Health } | { state: 'down' }
@@ -48,6 +49,8 @@ function Screen({ route }: { route: Route }) {
       return <TcwgExtractPage id={route.id} />
     case 'rep-letter-attachment':
       return <RepLetterAttachmentPage id={route.id} />
+    case 'working-paper':
+      return <WorkingPaperPage id={route.id} />
     case 'thresholds':
       return <ThresholdsPage id={route.id} />
     case 'spine':
