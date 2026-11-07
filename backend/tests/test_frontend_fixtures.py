@@ -335,6 +335,7 @@ def test_the_detail_fixtures_are_the_apis_real_answers(api: TestClient) -> None:
     check("workflow-thresholds-screen", thresholds_screen(api, engagement))
     check("workflow-spine-screen", spine_screen(api, engagement))
     check("workflow-tcwg-extract", tcwg_extract(api, engagement))
+    check("workflow-rep-letter-attachment", rep_attachment(api, engagement))
     check("transition-raised-cannot-be-corrected", attempt(api, rent, 409, to="corrected"))
     act_as(api, MANAGER)
     check("transition-communicated", attempt(api, rent, 201, to="communicated"))
@@ -1297,6 +1298,11 @@ def tcwg_extract(client: TestClient, engagement: str) -> Any:
     return got(client, f"/api/engagements/{engagement}/tcwg-extract")
 
 
+def rep_attachment(client: TestClient, engagement: str) -> Any:
+    """The written representation attachment (Pass 2, feature 4; architecture D63)."""
+    return got(client, f"/api/engagements/{engagement}/rep-letter-attachment")
+
+
 def test_the_tcwg_extract_fixtures_are_the_apis_real_answers(api: TestClient) -> None:
     spine = use_spine(api)
     act_as(api, SENIOR)
@@ -1304,11 +1310,13 @@ def test_the_tcwg_extract_fixtures_are_the_apis_real_answers(api: TestClient) ->
     # Nothing raised: nothing to communicate and nothing to request.
     nothing = with_thresholds(api, "Test engagement U: TCWG extract, nothing raised")
     check("tcwg-extract-nothing", tcwg_extract(api, nothing))
+    check("rep-letter-attachment-nothing", rep_attachment(api, nothing))
 
     # No thresholds: nothing can be banded, so the extract is incomplete.
     unset = create(api, "Test engagement W: TCWG extract, no thresholds", **PINNED_LINK)
     item(api, unset, "300000.00", "Rent for the last quarter not accrued")
     check("tcwg-extract-no-thresholds", tcwg_extract(api, unset))
+    check("rep-letter-attachment-no-thresholds", rep_attachment(api, unset))
 
     engagement = with_thresholds(api, TCWG)  # OM 4,00,000; PM 2,50,000; CTT 12,500
     item(api, engagement, "60000.00", "Rent for March not accrued")  # M-1
@@ -1372,7 +1380,49 @@ def test_the_tcwg_extract_fixtures_are_the_apis_real_answers(api: TestClient) ->
     # Two items named individually, three others, one clearly trivial left outside, one
     # corrected; the aggregate at or above overall materiality: an unmodified opinion blocked.
     check("tcwg-extract-blocked", tcwg_extract(api, engagement))
+    # The same moment as the attachment to the written representation: every caution
+    # the auditor can meet is raised, and the statement is unchanged.
+    check("rep-letter-attachment-cautions", rep_attachment(api, engagement))
 
     spine.unreachable = True
     check("tcwg-extract-spine-down", tcwg_extract(api, engagement))
+    check("rep-letter-attachment-spine-down", rep_attachment(api, engagement))
     spine.unreachable = False
+
+
+def test_the_representation_attachment_fixture_with_no_caution_is_the_apis_real_answer(
+    api: TestClient,
+) -> None:
+    """An engagement whose evaluation sits with the statement: every item communicated to
+    management, three types, one refused, the aggregate below PM, and a run recording it."""
+    use_spine(api)
+    act_as(api, SENIOR)
+    engagement = with_thresholds(api, "Test engagement R: representation attachment")
+    rent = item(api, engagement, "60000.00", "Rent for March not accrued")
+    estimate = item(
+        api,
+        engagement,
+        "35000.00",
+        "Provision for doubtful debts understated",
+        type="judgemental",
+        pair=(5, 3),
+        range_low="30000.00",
+        range_high="40000.00",
+    )
+    projected = item(
+        api,
+        engagement,
+        "40000.00",
+        "Sales cut-off errors projected over the March population",
+        type="projected",
+        pair=(4, 1),
+        sample_ref="S-12",
+        projection_basis="Ratio of error to sample value, applied to the population",
+    )
+    reversal = item(api, engagement, "20000.00", "Repairs accrued twice", pair=(3, 5))
+    act_as(api, MANAGER)
+    for misstatement in (rent, estimate, projected, reversal):
+        move(api, misstatement, "communicated")
+    move(api, estimate, "refused", "Management considers its estimate reasonable")
+    post(api, f"/api/engagements/{engagement}/evaluation/runs", 201, REASSESSED)
+    check("rep-letter-attachment-ready", rep_attachment(api, engagement))

@@ -1,10 +1,10 @@
 [
   {
-    "id": "caccd904-0daa-4b50-b148-5933a1a31902",
-    "engagement_id": "ca61218c-d01b-49b2-9ff8-f20bcd8b8aca",
+    "id": "060442ee-e6ec-4e76-8749-8e43c08fa6aa",
+    "engagement_id": "f38f74ad-75c8-46da-8166-4d27b33b4434",
     "ref": "M-1",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T12:33:26",
+    "created_at": "2026-11-06T12:57:34",
     "current": {
       "version_no": 2,
       "type": "factual",
@@ -13,18 +13,18 @@
       "raised_from": "wp",
       "source_ref": "E-4.2",
       "state": "communicated",
-      "communicated_at": "2026-11-06T12:33:26.885439",
+      "communicated_at": "2026-11-06T12:57:34.552918",
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "cb152087-ce7d-4bb5-bdbf-f3aee8144e9e",
+      "spine_adjustment_id": "c75e514d-4696-4f62-ba67-22f947668288",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T12:33:26"
+      "created_at": "2026-11-06T12:57:34"
     },
     "spine": {
       "status": "unreachable",
@@ -57,7 +57,7 @@
       "band": null,
       "bands": null,
       "amounts": null,
-      "threshold_id": "c3411bd0-2876-4cf7-9769-3d1ddd4c0c44",
+      "threshold_id": "d520d406-9ad4-45eb-8fd1-3a6d2d43470a",
       "threshold_version_no": 1,
       "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
       "projected": false,
@@ -87,11 +87,11 @@
     }
   },
   {
-    "id": "6568e102-26d8-47f9-b6a6-a62f608b002b",
-    "engagement_id": "ca61218c-d01b-49b2-9ff8-f20bcd8b8aca",
+    "id": "6025ce12-d65b-42e5-be8d-4520f42d5b1d",
+    "engagement_id": "f38f74ad-75c8-46da-8166-4d27b33b4434",
     "ref": "M-2",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T12:33:26",
+    "created_at": "2026-11-06T12:57:34",
     "current": {
       "version_no": 1,
       "type": "factual",
@@ -104,14 +104,14 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "3328d8f1-48bc-4588-b033-c2f4f67de029",
+      "spine_adjustment_id": "39fdede3-9954-4b9d-a2e3-65f6da69a266",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T12:33:26"
+      "created_at": "2026-11-06T12:57:34"
     },
     "spine": {
       "status": "unreachable",
@@ -144,7 +144,7 @@
       "band": null,
       "bands": null,
       "amounts": null,
-      "threshold_id": "c3411bd0-2876-4cf7-9769-3d1ddd4c0c44",
+      "threshold_id": "d520d406-9ad4-45eb-8fd1-3a6d2d43470a",
       "threshold_version_no": 1,
       "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
       "projected": false,
@@ -174,11 +174,11 @@
     }
   },
   {
-    "id": "9b3fa478-ae92-462a-a594-f824884e625b",
-    "engagement_id": "ca61218c-d01b-49b2-9ff8-f20bcd8b8aca",
+    "id": "75e9940a-f201-4471-99fc-d61c7a65bf8b",
+    "engagement_id": "f38f74ad-75c8-46da-8166-4d27b33b4434",
     "ref": "M-3",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T12:33:26",
+    "created_at": "2026-11-06T12:57:34",
     "current": {
       "version_no": 3,
       "type": "judgemental",
@@ -187,18 +187,18 @@
       "raised_from": "wp",
       "source_ref": "F-3.4",
       "state": "refused",
-      "communicated_at": "2026-11-06T12:33:26.919735",
-      "decided_at": "2026-11-06T12:33:26.931310",
+      "communicated_at": "2026-11-06T12:57:34.585923",
+      "decided_at": "2026-11-06T12:57:34.598188",
       "refusal_reason": "Management considers the useful life appropriate",
       "withdrawal_reason": null,
-      "spine_adjustment_id": "4f4b5f8a-c2ad-4529-a282-c9a4414db899",
+      "spine_adjustment_id": "bf6ca6e1-28f9-4099-a636-08700f66b486",
       "spine_kind": "correction",
       "range_low": "70000.00",
       "range_high": "110000.00",
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T12:33:26"
+      "created_at": "2026-11-06T12:57:34"
     },
     "spine": {
       "status": "unreachable",
@@ -231,7 +231,7 @@
       "band": null,
       "bands": null,
       "amounts": null,
-      "threshold_id": "c3411bd0-2876-4cf7-9769-3d1ddd4c0c44",
+      "threshold_id": "d520d406-9ad4-45eb-8fd1-3a6d2d43470a",
       "threshold_version_no": 1,
       "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
       "projected": false,
@@ -261,11 +261,11 @@
     }
   },
   {
-    "id": "f468c876-853e-413c-bb18-2eae9be758fb",
-    "engagement_id": "ca61218c-d01b-49b2-9ff8-f20bcd8b8aca",
+    "id": "52927a0b-6def-41fc-978c-4d9ebc367a19",
+    "engagement_id": "f38f74ad-75c8-46da-8166-4d27b33b4434",
     "ref": "M-4",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T12:33:26",
+    "created_at": "2026-11-06T12:57:34",
     "current": {
       "version_no": 1,
       "type": "projected",
@@ -278,14 +278,14 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "a4af8aa7-0d39-4781-ad26-52ea93811895",
+      "spine_adjustment_id": "2e4b20ac-b0bb-458e-990a-5563f1e976df",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": "S-12",
       "projection_basis": "Ratio of error to sample value, applied to the population",
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T12:33:26"
+      "created_at": "2026-11-06T12:57:34"
     },
     "spine": {
       "status": "unreachable",
@@ -318,7 +318,7 @@
       "band": null,
       "bands": null,
       "amounts": null,
-      "threshold_id": "c3411bd0-2876-4cf7-9769-3d1ddd4c0c44",
+      "threshold_id": "d520d406-9ad4-45eb-8fd1-3a6d2d43470a",
       "threshold_version_no": 1,
       "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
       "projected": true,
@@ -348,11 +348,11 @@
     }
   },
   {
-    "id": "faf60d03-06c9-427b-95b8-c4717078b59f",
-    "engagement_id": "ca61218c-d01b-49b2-9ff8-f20bcd8b8aca",
+    "id": "e83979af-0c60-440b-bbfb-63fb19df16d7",
+    "engagement_id": "f38f74ad-75c8-46da-8166-4d27b33b4434",
     "ref": "M-5",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T12:33:26",
+    "created_at": "2026-11-06T12:57:34",
     "current": {
       "version_no": 3,
       "type": "factual",
@@ -361,18 +361,18 @@
       "raised_from": "wp",
       "source_ref": "E-2.6",
       "state": "corrected",
-      "communicated_at": "2026-11-06T12:33:26.963813",
-      "decided_at": "2026-11-06T12:33:26.975345",
+      "communicated_at": "2026-11-06T12:57:34.633861",
+      "decided_at": "2026-11-06T12:57:34.645270",
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "23453a7c-a0e5-442b-8892-f8177ef69709",
+      "spine_adjustment_id": "4a2dbce5-95c9-4668-be37-a8911e29acec",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T12:33:26"
+      "created_at": "2026-11-06T12:57:34"
     },
     "spine": {
       "status": "unreachable",
@@ -405,7 +405,7 @@
       "band": null,
       "bands": null,
       "amounts": null,
-      "threshold_id": "c3411bd0-2876-4cf7-9769-3d1ddd4c0c44",
+      "threshold_id": "d520d406-9ad4-45eb-8fd1-3a6d2d43470a",
       "threshold_version_no": 1,
       "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
       "projected": false,
@@ -435,11 +435,11 @@
     }
   },
   {
-    "id": "b03558c6-be36-4144-915c-56c5aaf7206e",
-    "engagement_id": "ca61218c-d01b-49b2-9ff8-f20bcd8b8aca",
+    "id": "7daa0e69-6fef-45cc-8748-3658acb687da",
+    "engagement_id": "f38f74ad-75c8-46da-8166-4d27b33b4434",
     "ref": "M-6",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T12:33:26",
+    "created_at": "2026-11-06T12:57:34",
     "current": {
       "version_no": 1,
       "type": "factual",
@@ -452,14 +452,14 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "8a2600a6-1eca-4273-b4e8-65156cc52861",
+      "spine_adjustment_id": "d7159422-eed2-4ec5-a324-c638e1ef8cbd",
       "spine_kind": "reclass",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T12:33:26"
+      "created_at": "2026-11-06T12:57:34"
     },
     "spine": {
       "status": "unreachable",
@@ -492,7 +492,7 @@
       "band": null,
       "bands": null,
       "amounts": null,
-      "threshold_id": "c3411bd0-2876-4cf7-9769-3d1ddd4c0c44",
+      "threshold_id": "d520d406-9ad4-45eb-8fd1-3a6d2d43470a",
       "threshold_version_no": 1,
       "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
       "projected": false,
@@ -522,11 +522,11 @@
     }
   },
   {
-    "id": "f997838c-c2d9-4a4d-95c5-1884eeecf480",
-    "engagement_id": "ca61218c-d01b-49b2-9ff8-f20bcd8b8aca",
+    "id": "c454b92f-e8ca-415d-83ff-35f3411e536f",
+    "engagement_id": "f38f74ad-75c8-46da-8166-4d27b33b4434",
     "ref": "M-7",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T12:33:26",
+    "created_at": "2026-11-06T12:57:34",
     "current": {
       "version_no": 3,
       "type": "factual",
@@ -535,18 +535,18 @@
       "raised_from": "wp",
       "source_ref": "B-1.2",
       "state": "withdrawn",
-      "communicated_at": "2026-11-06T12:33:27.006438",
-      "decided_at": "2026-11-06T12:33:27.018141",
+      "communicated_at": "2026-11-06T12:57:34.679234",
+      "decided_at": "2026-11-06T12:57:34.690601",
       "refusal_reason": null,
       "withdrawal_reason": "Recorded by the client in April; not an error of this year",
-      "spine_adjustment_id": "dcf1ea16-70c8-499e-9e02-365febeda8eb",
+      "spine_adjustment_id": "0a539b15-28da-420e-b3fc-c191019e5b85",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-06T12:33:27"
+      "created_at": "2026-11-06T12:57:34"
     },
     "spine": {
       "status": "unreachable",
@@ -579,7 +579,7 @@
       "band": null,
       "bands": null,
       "amounts": null,
-      "threshold_id": "c3411bd0-2876-4cf7-9769-3d1ddd4c0c44",
+      "threshold_id": "d520d406-9ad4-45eb-8fd1-3a6d2d43470a",
       "threshold_version_no": 1,
       "basis": "no band: the Financial Spine could not be read, so there are no effects to band",
       "projected": false,

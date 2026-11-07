@@ -17,7 +17,7 @@
         "detail": "a partner-only action succeeds only when the trusted proxy's role claim names the acting identity a partner"
       }
     },
-    "id": "97f505bb-e431-407b-ad9e-864dfc424a4b",
+    "id": "6ff4ca3d-00f8-4c4f-a515-94037b3d1530",
     "label": "Test engagement G: acknowledgement and conclusion",
     "spine": {
       "engagement_id": "11111111-1111-4111-8111-111111111111",
@@ -27,14 +27,14 @@
       "detail": null
     },
     "misstatements": 3,
-    "current_threshold_id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+    "current_threshold_id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T12:33:30"
+    "created_at": "2026-11-06T12:57:38"
   },
   "evaluation": {
-    "engagement_id": "97f505bb-e431-407b-ad9e-864dfc424a4b",
+    "engagement_id": "6ff4ca3d-00f8-4c4f-a515-94037b3d1530",
     "threshold": {
-      "id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+      "id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00",
@@ -112,11 +112,11 @@
           "detail": "the aggregate has changed since the last acknowledgement",
           "event": {
             "seq": 2,
-            "id": "8113c5e9-6fab-4e98-a744-f8660afb5e1b",
-            "engagement_id": "97f505bb-e431-407b-ad9e-864dfc424a4b",
+            "id": "79c9f927-a0ca-4c4f-866c-9ee3ab7a6140",
+            "engagement_id": "6ff4ca3d-00f8-4c4f-a515-94037b3d1530",
             "kind": "soft_gate_acknowledged",
             "payload": {
-              "threshold_id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+              "threshold_id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
               "threshold_version_no": 1,
               "pm": "250000.00",
               "pm_gate": "soft",
@@ -151,7 +151,7 @@
               "identity_mode": "header"
             },
             "actor": "partner@firm",
-            "at": "2026-11-06T12:33:31"
+            "at": "2026-11-06T12:57:38"
           }
         }
       },
@@ -284,10 +284,10 @@
       "status": "current",
       "detail": "the latest conclusion stands on the evaluation as it is",
       "run": {
-        "id": "dd455076-7ac7-44d3-8c11-eb488131041c",
-        "engagement_id": "97f505bb-e431-407b-ad9e-864dfc424a4b",
+        "id": "40785b39-76b4-4baf-ae95-a83e3ac054f8",
+        "engagement_id": "6ff4ca3d-00f8-4c4f-a515-94037b3d1530",
         "run_no": 4,
-        "threshold_id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+        "threshold_id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
         "threshold_version_no": 1,
         "agg_gross_pbt": "268000.00",
         "agg_net_pbt": "-268000.00",
@@ -295,7 +295,7 @@
         "agg_net_na": "-268000.00",
         "materiality_reassessed": true,
         "evaluated_by": "partner@firm",
-        "at": "2026-11-06T12:33:31",
+        "at": "2026-11-06T12:57:39",
         "concluded": true,
         "determination": "material",
         "conclusion": "Uncorrected misstatements are material in aggregate.",
@@ -382,7 +382,7 @@
         },
         "detail": {
           "threshold": {
-            "id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+            "id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
             "version_no": 1,
             "om": "400000.00",
             "pm": "250000.00",
@@ -511,7 +511,7 @@
             "response": "not_required"
           },
           "reviewed_run": {
-            "id": "c874e9e0-96ed-448e-9c61-5a77b1f08516",
+            "id": "32fd3c85-c2cf-49e9-8262-54df07737103",
             "run_no": 3
           }
         }
@@ -532,7 +532,7 @@
     },
     "items": [
       {
-        "id": "c4b45068-a8c8-4a0e-b114-9cbb44cf5f25",
+        "id": "58063abe-13d8-450a-9d64-63642aae96f0",
         "ref": "M-1",
         "type": "factual",
         "projected": false,
@@ -549,7 +549,7 @@
         "expected_spine_adjustment_status": "proposed"
       },
       {
-        "id": "9f1ed658-b080-40b8-b746-1892d2eddd46",
+        "id": "a9dbb664-96c4-4ade-b023-af1981ecd477",
         "ref": "M-2",
         "type": "factual",
         "projected": false,
@@ -566,7 +566,7 @@
         "expected_spine_adjustment_status": "proposed"
       },
       {
-        "id": "b44a9efa-c671-46a8-9c0a-b3b609c6a6c9",
+        "id": "7b610e13-818a-400d-94ae-965422d65082",
         "ref": "M-3",
         "type": "factual",
         "projected": false,
@@ -587,10 +587,10 @@
       "status": "current",
       "detail": "the latest run describes the evaluation as it stands",
       "run": {
-        "id": "dd455076-7ac7-44d3-8c11-eb488131041c",
-        "engagement_id": "97f505bb-e431-407b-ad9e-864dfc424a4b",
+        "id": "40785b39-76b4-4baf-ae95-a83e3ac054f8",
+        "engagement_id": "6ff4ca3d-00f8-4c4f-a515-94037b3d1530",
         "run_no": 4,
-        "threshold_id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+        "threshold_id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
         "threshold_version_no": 1,
         "agg_gross_pbt": "268000.00",
         "agg_net_pbt": "-268000.00",
@@ -598,7 +598,7 @@
         "agg_net_na": "-268000.00",
         "materiality_reassessed": true,
         "evaluated_by": "partner@firm",
-        "at": "2026-11-06T12:33:31",
+        "at": "2026-11-06T12:57:39",
         "concluded": true,
         "determination": "material",
         "conclusion": "Uncorrected misstatements are material in aggregate.",
@@ -685,7 +685,7 @@
         },
         "detail": {
           "threshold": {
-            "id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+            "id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
             "version_no": 1,
             "om": "400000.00",
             "pm": "250000.00",
@@ -814,7 +814,7 @@
             "response": "not_required"
           },
           "reviewed_run": {
-            "id": "c874e9e0-96ed-448e-9c61-5a77b1f08516",
+            "id": "32fd3c85-c2cf-49e9-8262-54df07737103",
             "run_no": 3
           }
         }
@@ -840,10 +840,10 @@
   },
   "runs": [
     {
-      "id": "dd455076-7ac7-44d3-8c11-eb488131041c",
-      "engagement_id": "97f505bb-e431-407b-ad9e-864dfc424a4b",
+      "id": "40785b39-76b4-4baf-ae95-a83e3ac054f8",
+      "engagement_id": "6ff4ca3d-00f8-4c4f-a515-94037b3d1530",
       "run_no": 4,
-      "threshold_id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+      "threshold_id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
       "threshold_version_no": 1,
       "agg_gross_pbt": "268000.00",
       "agg_net_pbt": "-268000.00",
@@ -851,7 +851,7 @@
       "agg_net_na": "-268000.00",
       "materiality_reassessed": true,
       "evaluated_by": "partner@firm",
-      "at": "2026-11-06T12:33:31",
+      "at": "2026-11-06T12:57:39",
       "concluded": true,
       "determination": "material",
       "conclusion": "Uncorrected misstatements are material in aggregate.",
@@ -938,7 +938,7 @@
       },
       "detail": {
         "threshold": {
-          "id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+          "id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
           "version_no": 1,
           "om": "400000.00",
           "pm": "250000.00",
@@ -1067,7 +1067,7 @@
           "response": "not_required"
         },
         "reviewed_run": {
-          "id": "c874e9e0-96ed-448e-9c61-5a77b1f08516",
+          "id": "32fd3c85-c2cf-49e9-8262-54df07737103",
           "run_no": 3
         }
       },
@@ -1090,10 +1090,10 @@
       }
     },
     {
-      "id": "c874e9e0-96ed-448e-9c61-5a77b1f08516",
-      "engagement_id": "97f505bb-e431-407b-ad9e-864dfc424a4b",
+      "id": "32fd3c85-c2cf-49e9-8262-54df07737103",
+      "engagement_id": "6ff4ca3d-00f8-4c4f-a515-94037b3d1530",
       "run_no": 3,
-      "threshold_id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+      "threshold_id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
       "threshold_version_no": 1,
       "agg_gross_pbt": "268000.00",
       "agg_net_pbt": "-268000.00",
@@ -1101,7 +1101,7 @@
       "agg_net_na": "-268000.00",
       "materiality_reassessed": true,
       "evaluated_by": "senior@firm",
-      "at": "2026-11-06T12:33:31",
+      "at": "2026-11-06T12:57:39",
       "concluded": false,
       "determination": null,
       "conclusion": null,
@@ -1188,7 +1188,7 @@
       },
       "detail": {
         "threshold": {
-          "id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+          "id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
           "version_no": 1,
           "om": "400000.00",
           "pm": "250000.00",
@@ -1336,10 +1336,10 @@
       }
     },
     {
-      "id": "f0ec6a65-8e4c-45b9-a033-c3a5088e029b",
-      "engagement_id": "97f505bb-e431-407b-ad9e-864dfc424a4b",
+      "id": "b5f968de-7b72-462f-951b-87f85c7e8f71",
+      "engagement_id": "6ff4ca3d-00f8-4c4f-a515-94037b3d1530",
       "run_no": 2,
-      "threshold_id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+      "threshold_id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
       "threshold_version_no": 1,
       "agg_gross_pbt": "250000.00",
       "agg_net_pbt": "-250000.00",
@@ -1347,7 +1347,7 @@
       "agg_net_na": "-250000.00",
       "materiality_reassessed": true,
       "evaluated_by": "partner@firm",
-      "at": "2026-11-06T12:33:31",
+      "at": "2026-11-06T12:57:39",
       "concluded": true,
       "determination": "not_material",
       "conclusion": "Uncorrected misstatements are not material, individually or in aggregate.",
@@ -1434,7 +1434,7 @@
       },
       "detail": {
         "threshold": {
-          "id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+          "id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
           "version_no": 1,
           "om": "400000.00",
           "pm": "250000.00",
@@ -1550,7 +1550,7 @@
           "response": "not_required"
         },
         "reviewed_run": {
-          "id": "6011a286-0882-4c5f-9ff3-14c5cee3882f",
+          "id": "a3fa97cd-7c1f-4935-bc0e-1fdc40ccc417",
           "run_no": 1
         }
       },
@@ -1573,10 +1573,10 @@
       }
     },
     {
-      "id": "6011a286-0882-4c5f-9ff3-14c5cee3882f",
-      "engagement_id": "97f505bb-e431-407b-ad9e-864dfc424a4b",
+      "id": "a3fa97cd-7c1f-4935-bc0e-1fdc40ccc417",
+      "engagement_id": "6ff4ca3d-00f8-4c4f-a515-94037b3d1530",
       "run_no": 1,
-      "threshold_id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+      "threshold_id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
       "threshold_version_no": 1,
       "agg_gross_pbt": "250000.00",
       "agg_net_pbt": "-250000.00",
@@ -1584,7 +1584,7 @@
       "agg_net_na": "-250000.00",
       "materiality_reassessed": true,
       "evaluated_by": "senior@firm",
-      "at": "2026-11-06T12:33:31",
+      "at": "2026-11-06T12:57:38",
       "concluded": false,
       "determination": null,
       "conclusion": null,
@@ -1671,7 +1671,7 @@
       },
       "detail": {
         "threshold": {
-          "id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+          "id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
           "version_no": 1,
           "om": "400000.00",
           "pm": "250000.00",
@@ -1810,10 +1810,10 @@
   ],
   "conclusions": [
     {
-      "id": "dd455076-7ac7-44d3-8c11-eb488131041c",
-      "engagement_id": "97f505bb-e431-407b-ad9e-864dfc424a4b",
+      "id": "40785b39-76b4-4baf-ae95-a83e3ac054f8",
+      "engagement_id": "6ff4ca3d-00f8-4c4f-a515-94037b3d1530",
       "run_no": 4,
-      "threshold_id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+      "threshold_id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
       "threshold_version_no": 1,
       "agg_gross_pbt": "268000.00",
       "agg_net_pbt": "-268000.00",
@@ -1821,7 +1821,7 @@
       "agg_net_na": "-268000.00",
       "materiality_reassessed": true,
       "evaluated_by": "partner@firm",
-      "at": "2026-11-06T12:33:31",
+      "at": "2026-11-06T12:57:39",
       "concluded": true,
       "determination": "material",
       "conclusion": "Uncorrected misstatements are material in aggregate.",
@@ -1908,7 +1908,7 @@
       },
       "detail": {
         "threshold": {
-          "id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+          "id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
           "version_no": 1,
           "om": "400000.00",
           "pm": "250000.00",
@@ -2037,7 +2037,7 @@
           "response": "not_required"
         },
         "reviewed_run": {
-          "id": "c874e9e0-96ed-448e-9c61-5a77b1f08516",
+          "id": "32fd3c85-c2cf-49e9-8262-54df07737103",
           "run_no": 3
         }
       },
@@ -2060,10 +2060,10 @@
       }
     },
     {
-      "id": "f0ec6a65-8e4c-45b9-a033-c3a5088e029b",
-      "engagement_id": "97f505bb-e431-407b-ad9e-864dfc424a4b",
+      "id": "b5f968de-7b72-462f-951b-87f85c7e8f71",
+      "engagement_id": "6ff4ca3d-00f8-4c4f-a515-94037b3d1530",
       "run_no": 2,
-      "threshold_id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+      "threshold_id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
       "threshold_version_no": 1,
       "agg_gross_pbt": "250000.00",
       "agg_net_pbt": "-250000.00",
@@ -2071,7 +2071,7 @@
       "agg_net_na": "-250000.00",
       "materiality_reassessed": true,
       "evaluated_by": "partner@firm",
-      "at": "2026-11-06T12:33:31",
+      "at": "2026-11-06T12:57:39",
       "concluded": true,
       "determination": "not_material",
       "conclusion": "Uncorrected misstatements are not material, individually or in aggregate.",
@@ -2158,7 +2158,7 @@
       },
       "detail": {
         "threshold": {
-          "id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+          "id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
           "version_no": 1,
           "om": "400000.00",
           "pm": "250000.00",
@@ -2274,7 +2274,7 @@
           "response": "not_required"
         },
         "reviewed_run": {
-          "id": "6011a286-0882-4c5f-9ff3-14c5cee3882f",
+          "id": "a3fa97cd-7c1f-4935-bc0e-1fdc40ccc417",
           "run_no": 1
         }
       },
@@ -2303,9 +2303,9 @@
     "blocked_by": [],
     "undetermined_because": [],
     "scope": "whether an unmodified opinion is blocked by the size of the uncorrected misstatements: the hard gate at overall materiality (spec section 7), and the gate at performance materiality when the firm has set it to hard. It says nothing about items above PM not yet dealt with or about the partner's acknowledgement: the sign-off gate does",
-    "engagement_id": "97f505bb-e431-407b-ad9e-864dfc424a4b",
+    "engagement_id": "6ff4ca3d-00f8-4c4f-a515-94037b3d1530",
     "threshold": {
-      "id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+      "id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"
@@ -2470,9 +2470,9 @@
     ],
     "undetermined_because": [],
     "scope": "whether sign-off is blocked for any reason this module knows: the hard gate, the soft gate without a current partner acknowledgement, an item above PM still raised or communicated (spec section 7; acceptance 6 and 7)",
-    "engagement_id": "97f505bb-e431-407b-ad9e-864dfc424a4b",
+    "engagement_id": "6ff4ca3d-00f8-4c4f-a515-94037b3d1530",
     "threshold": {
-      "id": "61978f97-36ec-4325-b6b9-97c553096ad0",
+      "id": "b72d4cd1-6d2f-4cee-a59f-8f1ba1c86699",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"

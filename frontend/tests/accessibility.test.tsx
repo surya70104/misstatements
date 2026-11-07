@@ -19,6 +19,7 @@ import {
 import { detailPath, raised, workflowEngagement, workflowScheduleRaised } from './detailFixtures'
 import { evaluationAnswers, type Snapshot } from './evaluationFixtures'
 import listJson from './fixtures/workflow-engagements.json'
+import repJson from './fixtures/workflow-rep-letter-attachment.json'
 import tcwgJson from './fixtures/workflow-tcwg-extract.json'
 import screenJson from './fixtures/workflow-evaluation-screen.json'
 import { mockApi } from './mockApi'
@@ -37,6 +38,7 @@ const EVERYTHING = {
   ...thresholdsAnswers(workflowThresholds),
   ...spineAnswers(workflowSpine),
   [`GET /api/engagements/${id}/tcwg-extract`]: tcwgJson,
+  [`GET /api/engagements/${id}/rep-letter-attachment`]: repJson,
   [detailPath(raised)]: raised,
 }
 
@@ -70,6 +72,10 @@ test('every screen names itself in the page title', async () => {
     [`#/engagements/${id}`, `Schedule · ${label} · Misstatements Rollup`],
     [`#/engagements/${id}/evaluation`, `Evaluation · ${label} · Misstatements Rollup`],
     [`#/engagements/${id}/tcwg-extract`, `TCWG extract · ${label} · Misstatements Rollup`],
+    [
+      `#/engagements/${id}/rep-letter-attachment`,
+      `Representation attachment · ${label} · Misstatements Rollup`,
+    ],
     [`#/engagements/${id}/thresholds`, `Thresholds · ${label} · Misstatements Rollup`],
     [`#/engagements/${id}/spine`, `Financial Spine · ${label} · Misstatements Rollup`],
     [`#/engagements/${id}/events`, `Events · ${label} · Misstatements Rollup`],
@@ -144,6 +150,7 @@ test('every screen of an engagement leads to every other, and says which one is 
     ['Schedule', `#/engagements/${id}`],
     ['Evaluation', `#/engagements/${id}/evaluation`],
     ['TCWG extract', `#/engagements/${id}/tcwg-extract`],
+    ['Representation attachment', `#/engagements/${id}/rep-letter-attachment`],
     ['Thresholds', `#/engagements/${id}/thresholds`],
     ['Financial Spine', `#/engagements/${id}/spine`],
     ['Events', `#/engagements/${id}/events`],
@@ -189,6 +196,7 @@ test('every control on every screen has a name, and every field a label', async 
     `#/engagements/${id}`,
     `#/engagements/${id}/evaluation`,
     `#/engagements/${id}/tcwg-extract`,
+    `#/engagements/${id}/rep-letter-attachment`,
     `#/engagements/${id}/thresholds`,
     `#/engagements/${id}/spine`,
     `#/engagements/${id}/events`,

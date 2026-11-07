@@ -1,10 +1,10 @@
 [
   {
-    "id": "7f7b3fd4-5cde-44eb-bb86-3c5f4731701d",
-    "engagement_id": "7588e69c-d5c9-4381-bdce-77cf0d6d7c96",
+    "id": "db003b4d-72a2-461f-adcc-0963095b75f4",
+    "engagement_id": "c704d051-9f04-4d74-951d-70d8319a6ebd",
     "ref": "M-1",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T12:33:27",
+    "created_at": "2026-11-06T12:57:34",
     "current": {
       "version_no": 2,
       "type": "factual",
@@ -13,23 +13,23 @@
       "raised_from": "wp",
       "source_ref": "E-4.2",
       "state": "communicated",
-      "communicated_at": "2026-11-06T12:33:27.614798",
+      "communicated_at": "2026-11-06T12:57:35.332865",
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "e84262fc-5f77-42ad-b43d-2e69313907c6",
+      "spine_adjustment_id": "8d1e7e1a-0e10-4eb2-9f3b-cf5faa7a80b4",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
       "created_by": "manager@firm",
-      "created_at": "2026-11-06T12:33:27"
+      "created_at": "2026-11-06T12:57:35"
     },
     "spine": {
       "status": "ok",
       "detail": null,
-      "adjustment_id": "e84262fc-5f77-42ad-b43d-2e69313907c6",
+      "adjustment_id": "8d1e7e1a-0e10-4eb2-9f3b-cf5faa7a80b4",
       "adjustment_status": "proposed",
       "kind": "correction",
       "finding_ref": "M-1",
@@ -118,7 +118,7 @@
         "profit": "60000.00",
         "net_assets": "60000.00"
       },
-      "threshold_id": "2052ebdb-6417-4c2e-9dd6-8c69a4b0e9de",
+      "threshold_id": "5ae5574f-6a9c-403e-bb72-208f4aaeaf26",
       "threshold_version_no": 1,
       "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
       "projected": false,

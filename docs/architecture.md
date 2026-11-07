@@ -1750,3 +1750,76 @@ rolled back; no new migration): 522 passed, 0 skipped. In memory: 486 passed, 36
 `eslint`, `prettier --check` clean; the build succeeds; 153 captured API answers, 6 of them
 new. In a real browser, on the isolated preview (the real application over the test database in one transaction that was never committed; Spine test double; development identity): the extract opened from its tab, with two items named individually (one above PM, one escalated below the clearly-trivial threshold), the others summarised and listed, the totals, the clearly trivial item outside the communication, an unmodified opinion blocked and the request; no sideways scroll at 375 and 1280 pixels; the print rule present in the stylesheet. The engagement and its five misstatements were seeded through the preview's API. Not done: a printed page or PDF was not produced or inspected; a named
 partner; the live Financial Spine; a screen-reader session.
+
+## D63 · Pass 2: the written representation attachment — 6 Nov 2026 (SA 450 para 14; spec 2 row 14, 6 item 3)
+
+Built on instruction. Read-only: `GET /api/engagements/{id}/rep-letter-attachment`. No
+table and no migration: like the TCWG extract (D62) it is computed on every read from the
+evaluation as it stands. It is a view of the attachment, not a record that a representation
+was given.
+
+**What the specification says.** Section 2, row 14: "Written representation that management
+and TCWG believe the effects are immaterial, with the summary attached". Section 6, item 3:
+"the summary in the form that attaches to the representation letter".
+
+**The summary** (`core/representation.py`, pure). Every uncorrected misstatement that the
+aggregate counts, so the summary's total is the aggregate's by construction. It is set out
+by type, factual, judgemental and projected, the three kept apart as spec section 3.2 keeps
+them; each type carries its rows and its sums, gross (no netting) and net, on profit before
+tax and separately on net assets. The whole is the evaluation's own aggregate, carried as it
+is with its count; the tests check that the types add up to it and that each type's gross is
+the aggregate's own figure for that type. An uncorrected item whose effects cannot be
+determined is named in `undetermined` and the attachment is marked `incomplete`. A
+misstatement below the clearly-trivial threshold and not accumulated is outside the summary
+(spec section 4), as it is outside the TCWG extract, and is reported under `not_included`.
+The prior-period items carried forward (D61) come with their current-period and cumulative
+effects, apart from the totals.
+
+**The statement** is one fixed sentence, the standard's requirement put plainly:
+"Management and those charged with governance believe that the effects of the uncorrected
+misstatements summarised in this schedule are immaterial, individually and in aggregate, to
+the financial statements as a whole." It applies when there is a summary to attach;
+otherwise the attachment says there is none. The firm's wording of the representation
+letter is the firm's and is not built.
+
+**Whose statement it is.** It is management's belief, requested by the auditor. It is never
+the auditor's conclusion, it is the same whatever the evaluation says, and it changes
+nothing in the evaluation: no gate, no run and no conclusion reads it. That is why the
+attachment also carries **cautions**, for the auditor and not part of the document. Each is
+a fact of the evaluation as it stands that does not sit with the statement:
+
+- an item still raised, so not yet recorded as communicated to management (paragraph 8);
+- an item above PM or escalated, named individually in the TCWG extract;
+- an unmodified opinion blocked by the opinion gate, or its status undetermined;
+- a latest conclusion by the partner that the misstatements are material;
+- no current evaluation run recording the figures;
+- a line that only the figures with prior-period items reach, the current year's aggregate
+  not reaching it.
+
+No caution blocks the attachment or changes it. Whether any should block it is an open
+question.
+
+**Consistency with the evaluation.** The attachment is read from the same evaluation as the
+schedule, the gates and the TCWG extract, in one request, so its rows and totals are theirs.
+While an evaluation run is current, the run's four stored aggregates are the attachment's
+totals; when the evaluation moves, the attachment moves with it and says the run is stale,
+and the run recorded before is unchanged, as every run is. The endpoint writes nothing.
+
+**The screen** (`pages/RepLetterAttachmentPage.tsx`; tab "Representation attachment";
+address `#/engagements/{id}/rep-letter-attachment`). The breakdown by type with the total,
+each type's misstatements listed, the prior-period items, and the statement. The cautions,
+the run and conclusion status and what is left out of the summary are shown in a panel
+headed "For the auditor: not part of the attachment". "Print or save as PDF" hands the page
+to the browser's print dialog; that panel, the status pill, the tabs and the buttons carry
+`print:hidden`, so the printed page is the attachment alone. The page sends nothing.
+
+**Shared pieces.** The tables and small parts the TCWG extract page defined moved to
+`components/documentParts.tsx` so both documents use the same ones. Nothing about the TCWG
+page changed in what it shows; its tests pass unchanged.
+
+**Verified, 6 November 2026.** Backend `pytest` on PostgreSQL (`oak_misstatements_test`,
+rolled back; no new migration): 540 passed, 0 skipped. In memory: 504 passed, 36 skipped.
+`ruff`, `mypy` strict clean (110 files). Frontend `vitest` 395 passed (22 files); `tsc`,
+`eslint`, `prettier --check` clean; the build succeeds; 159 captured API answers, 6 of them
+new. In a real browser, on the isolated preview (the real application over the test database in one transaction that was never committed; Spine test double; development identity): the attachment opened from its tab, with the breakdown by type and its total, each type's misstatements listed, gross not netting an item and its reverse, the statement, and for the auditor two cautions and the clearly trivial item left out; no sideways scroll at 375 and 1280 pixels; the print rule present in the stylesheet and the auditor's panel marked to be left off the printed page. The engagement, its five misstatements and their moves were seeded through the preview's API. Not done: a printed page or PDF was not produced or inspected; a named
+partner; the live Financial Spine; a screen-reader session.

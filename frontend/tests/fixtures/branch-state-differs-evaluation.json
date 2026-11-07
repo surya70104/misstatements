@@ -17,7 +17,7 @@
         "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
       }
     },
-    "id": "59682c16-8e57-405e-a5f0-a72f52fe6c00",
+    "id": "6b9a8981-3337-4c97-b61d-420e1558f1dd",
     "label": "Test engagement B: display branches",
     "spine": {
       "engagement_id": "11111111-1111-4111-8111-111111111111",
@@ -27,14 +27,14 @@
       "detail": null
     },
     "misstatements": 2,
-    "current_threshold_id": "7d61021f-3f9e-404e-a8fe-47d423e0aabf",
+    "current_threshold_id": "42e5cac6-b65e-4499-89d8-005da9a5d67d",
     "created_by": "senior@firm",
-    "created_at": "2026-11-06T12:33:30"
+    "created_at": "2026-11-06T12:57:37"
   },
   "evaluation": {
-    "engagement_id": "59682c16-8e57-405e-a5f0-a72f52fe6c00",
+    "engagement_id": "6b9a8981-3337-4c97-b61d-420e1558f1dd",
     "threshold": {
-      "id": "7d61021f-3f9e-404e-a8fe-47d423e0aabf",
+      "id": "42e5cac6-b65e-4499-89d8-005da9a5d67d",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00",
@@ -263,7 +263,7 @@
     },
     "items": [
       {
-        "id": "1fb3580d-071c-4e04-b283-25afc7dcbd80",
+        "id": "c26d085c-1bee-49da-bed9-dfa34d56ac1d",
         "ref": "M-1",
         "type": "judgemental",
         "projected": false,
@@ -280,7 +280,7 @@
         "expected_spine_adjustment_status": "refused"
       },
       {
-        "id": "c848827d-a362-486f-94d6-7d1ba72a6b97",
+        "id": "29b0432b-4d30-4add-98e3-e3e4474c9dc7",
         "ref": "M-2",
         "type": "factual",
         "projected": false,
@@ -330,9 +330,9 @@
       "M-2 is communicated here but accepted in the Financial Spine"
     ],
     "scope": "whether an unmodified opinion is blocked by the size of the uncorrected misstatements: the hard gate at overall materiality (spec section 7), and the gate at performance materiality when the firm has set it to hard. It says nothing about items above PM not yet dealt with or about the partner's acknowledgement: the sign-off gate does",
-    "engagement_id": "59682c16-8e57-405e-a5f0-a72f52fe6c00",
+    "engagement_id": "6b9a8981-3337-4c97-b61d-420e1558f1dd",
     "threshold": {
-      "id": "7d61021f-3f9e-404e-a8fe-47d423e0aabf",
+      "id": "42e5cac6-b65e-4499-89d8-005da9a5d67d",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"
@@ -499,9 +499,9 @@
       "M-2 is communicated here but accepted in the Financial Spine"
     ],
     "scope": "whether sign-off is blocked for any reason this module knows: the hard gate, the soft gate without a current partner acknowledgement, an item above PM still raised or communicated (spec section 7; acceptance 6 and 7)",
-    "engagement_id": "59682c16-8e57-405e-a5f0-a72f52fe6c00",
+    "engagement_id": "6b9a8981-3337-4c97-b61d-420e1558f1dd",
     "threshold": {
-      "id": "7d61021f-3f9e-404e-a8fe-47d423e0aabf",
+      "id": "42e5cac6-b65e-4499-89d8-005da9a5d67d",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"

@@ -2,12 +2,20 @@
 // a person never has to go back to the list to move within an engagement.
 import { href, type Route } from '../router'
 
-type Tab = 'schedule' | 'evaluation' | 'tcwg-extract' | 'thresholds' | 'spine' | 'events'
+type Tab =
+  | 'schedule'
+  | 'evaluation'
+  | 'tcwg-extract'
+  | 'rep-letter-attachment'
+  | 'thresholds'
+  | 'spine'
+  | 'events'
 
 const TABS: { name: Tab; label: string }[] = [
   { name: 'schedule', label: 'Schedule' },
   { name: 'evaluation', label: 'Evaluation' },
   { name: 'tcwg-extract', label: 'TCWG extract' },
+  { name: 'rep-letter-attachment', label: 'Representation attachment' },
   { name: 'thresholds', label: 'Thresholds' },
   { name: 'spine', label: 'Financial Spine' },
   { name: 'events', label: 'Events' },

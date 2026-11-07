@@ -58,7 +58,7 @@ def _optional(value: Any) -> str | None:
     return None if value is None else amount(value)
 
 
-def _sums_json(sums: tcwg.Sums) -> dict[str, Any]:
+def sums_json(sums: tcwg.Sums) -> dict[str, Any]:
     return {
         "count": sums.count,
         "profit_before_tax": {"gross": amount(sums.profit.gross), "net": amount(sums.profit.net)},
@@ -69,7 +69,7 @@ def _sums_json(sums: tcwg.Sums) -> dict[str, Any]:
     }
 
 
-def _row(item: Item, version: MisstatementVersion) -> dict[str, Any]:
+def row_json(item: Item, version: MisstatementVersion) -> dict[str, Any]:
     """One uncorrected misstatement as the schedule of the extract shows it."""
     return {
         "id": str(item.misstatement_id),
@@ -96,7 +96,7 @@ def _named(
     """An item named individually: what the schedule shows, why it is named, and what an
     item of its type must say (spec section 3.2)."""
     return {
-        **_row(entry.item, version),
+        **row_json(entry.item, version),
         "reasons": [{"code": code, "text": tcwg.REASON_TEXT[code]} for code in entry.reasons],
         # The qualitative factors recorded against it, each with its reason (spec section 5).
         "factors": factors,
@@ -223,7 +223,7 @@ def extract_json(session: Session, evaluation: Evaluation, settings: Settings) -
         # Could not be banded: named, because it cannot be shown not to be material.
         "undetermined": [
             {
-                **_row(item, versions[item.misstatement_id]),
+                **row_json(item, versions[item.misstatement_id]),
                 "reason": (
                     "no thresholds have been set"
                     if threshold is None
@@ -234,12 +234,12 @@ def extract_json(session: Session, evaluation: Evaluation, settings: Settings) -
         ],
         # The remaining accumulated items, summarised by type and listed.
         "other_uncorrected": {
-            "groups": [{"type": kind, **_sums_json(grouped[kind])} for kind in tcwg.TYPES],
-            "items": [_row(item, versions[item.misstatement_id]) for item in extract.other],
+            "groups": [{"type": kind, **sums_json(grouped[kind])} for kind in tcwg.TYPES],
+            "items": [row_json(item, versions[item.misstatement_id]) for item in extract.other],
         },
         "totals": {
-            "named_individually": _sums_json(tcwg.sums(named_items)),
-            "other_uncorrected": _sums_json(tcwg.sums(extract.other)),
+            "named_individually": sums_json(tcwg.sums(named_items)),
+            "other_uncorrected": sums_json(tcwg.sums(extract.other)),
             # The aggregate of the evaluation: what the two above come to together, with
             # and without the projected items and by type. The gates test these figures.
             "all_uncorrected": {
@@ -253,7 +253,9 @@ def extract_json(session: Session, evaluation: Evaluation, settings: Settings) -
         # accumulated (spec section 4), and what is no longer uncorrected.
         "not_communicated": {
             "clearly_trivial": {
-                "items": [_row(item, versions[item.misstatement_id]) for item in extract.left_out],
+                "items": [
+                    row_json(item, versions[item.misstatement_id]) for item in extract.left_out
+                ],
                 "total": not_accumulated_total(total, threshold),
             },
             "not_uncorrected": [{"ref": ref, "state": state} for ref, state in total.excluded],

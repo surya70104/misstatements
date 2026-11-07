@@ -4,6 +4,7 @@
 //   #/engagements/<id>                    one engagement's schedule of misstatements
 //   #/engagements/<id>/evaluation         the engagement's evaluation
 //   #/engagements/<id>/tcwg-extract       its extract for those charged with governance
+//   #/engagements/<id>/rep-letter-attachment  its attachment to the written representation
 //   #/engagements/<id>/thresholds         its thresholds, their history and their revision
 //   #/engagements/<id>/spine              its Financial Spine link and the reconciliation
 //   #/engagements/<id>/events             its event trail
@@ -15,6 +16,7 @@ import { useEffect, useState } from 'react'
 const ENGAGEMENT_SCREENS = {
   evaluation: 'evaluation',
   'tcwg-extract': 'tcwg-extract',
+  'rep-letter-attachment': 'rep-letter-attachment',
   thresholds: 'thresholds',
   spine: 'spine',
   events: 'events',

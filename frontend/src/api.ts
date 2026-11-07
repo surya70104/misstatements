@@ -571,6 +571,46 @@ export type TcwgExtract = {
   authorisation: Authorisation
 }
 
+// ---- the written representation attachment (SA 450 paragraph 14; backend D63) ----
+
+// The summary of uncorrected misstatements in the form that attaches to the representation
+// letter, with the statement management is asked to make. Computed by the backend on every
+// read, read-only, never stored.
+export type RepLetterAttachment = {
+  engagement: { id: string; label: string }
+  threshold: ThresholdLines | null
+  // ready, or incomplete with the reasons: a misstatement's effects are not known, or the
+  // evaluation cannot be made.
+  status: string
+  incomplete_because: string[]
+  // Management's belief, requested by the auditor. Never the auditor's conclusion.
+  representation: { applies: boolean; text: string; basis: string }
+  schedule: {
+    // Every accumulated uncorrected misstatement, by type, each type summed gross and net.
+    by_type: (TcwgSums & { type: MisstatementType; items: TcwgRow[] })[]
+    // Uncorrected, with effects that could not be determined: named, never dropped.
+    undetermined: TcwgRow[]
+    count: number
+  }
+  // What the summary comes to: the evaluation's own aggregate.
+  totals: Figures & { count: number; complete: boolean; basis: string }
+  prior_period: Evaluation['prior_period']
+  not_included: {
+    clearly_trivial: { items: TcwgRow[]; total: NotAccumulatedTotal }
+    not_uncorrected: { ref: string; state: MisstatementState }[]
+  }
+  // For the auditor, and not part of the attachment: where the evaluation as it stands
+  // does not sit with the statement.
+  cautions: { code: string; text: string }[]
+  evaluation: {
+    run: { status: string; detail: string; run_no: number | null }
+    conclusion: { status: string; determination: string | null; run_no: number | null }
+  }
+  basis: string
+  read_only: boolean
+  authorisation: Authorisation
+}
+
 // A gate as another module reads it (architecture D18): open, blocked or undetermined.
 export type GateExposure = {
   gate: string
@@ -706,6 +746,17 @@ export function getMisstatement(id: string): Promise<Misstatement> {
  */
 export function getTcwgExtract(engagementId: string): Promise<TcwgExtract> {
   return request<TcwgExtract>(`/api/engagements/${encodeURIComponent(engagementId)}/tcwg-extract`)
+}
+
+/**
+ * The attachment to the written representation: the summary of uncorrected misstatements
+ * by type, its totals, the prior-period items and the statement management is asked to
+ * make. Read-only.
+ */
+export function getRepLetterAttachment(engagementId: string): Promise<RepLetterAttachment> {
+  return request<RepLetterAttachment>(
+    `/api/engagements/${encodeURIComponent(engagementId)}/rep-letter-attachment`,
+  )
 }
 
 function evaluationPath(engagementId: string, rest = ''): string {

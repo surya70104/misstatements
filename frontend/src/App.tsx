@@ -7,6 +7,7 @@ import { EventsPage } from './pages/EventsPage'
 import { MisstatementPage } from './pages/MisstatementPage'
 import { NewEngagementPage } from './pages/NewEngagementPage'
 import { RaiseMisstatementPage } from './pages/RaiseMisstatementPage'
+import { RepLetterAttachmentPage } from './pages/RepLetterAttachmentPage'
 import { SchedulePage } from './pages/SchedulePage'
 import { SpinePage } from './pages/SpinePage'
 import { TcwgExtractPage } from './pages/TcwgExtractPage'
@@ -45,6 +46,8 @@ function Screen({ route }: { route: Route }) {
       return <EvaluationPage id={route.id} />
     case 'tcwg-extract':
       return <TcwgExtractPage id={route.id} />
+    case 'rep-letter-attachment':
+      return <RepLetterAttachmentPage id={route.id} />
     case 'thresholds':
       return <ThresholdsPage id={route.id} />
     case 'spine':

@@ -1,0 +1,227 @@
+{
+  "engagement": {
+    "id": "c704d051-9f04-4d74-951d-70d8319a6ebd",
+    "label": "Test engagement D: misstatement detail"
+  },
+  "threshold": {
+    "id": "5ae5574f-6a9c-403e-bb72-208f4aaeaf26",
+    "version_no": 1,
+    "om": "400000.00",
+    "pm": "250000.00",
+    "ctt": "12500.00"
+  },
+  "status": "ready",
+  "incomplete_because": [],
+  "representation": {
+    "applies": true,
+    "text": "Management and those charged with governance believe that the effects of the uncorrected misstatements summarised in this schedule are immaterial, individually and in aggregate, to the financial statements as a whole.",
+    "basis": "SA 450 paragraph 14: the auditor requests a written representation from management and, where appropriate, those charged with governance whether they believe the effects of uncorrected misstatements are immaterial, individually and in aggregate, to the financial statements as a whole, and a summary of those items is included in or attached to the representation (spec section 2, row 14; section 6, item 3). The sentence is the standard's requirement put plainly. It is management's belief, not the auditor's conclusion, and it changes nothing in the evaluation. The firm's own wording of the representation letter is the firm's"
+  },
+  "schedule": {
+    "by_type": [
+      {
+        "type": "factual",
+        "count": 1,
+        "profit_before_tax": {
+          "gross": "60000.00",
+          "net": "-60000.00"
+        },
+        "net_assets": {
+          "gross": "60000.00",
+          "net": "-60000.00"
+        },
+        "items": [
+          {
+            "id": "db003b4d-72a2-461f-adcc-0963095b75f4",
+            "ref": "M-1",
+            "type": "factual",
+            "state": "raised",
+            "description": "Rent for March not accrued",
+            "source_ref": "E-4.2",
+            "profit_before_tax": "-60000.00",
+            "net_assets": "-60000.00",
+            "band": "accumulated",
+            "classification_only": false,
+            "refusal_reason": null
+          }
+        ]
+      },
+      {
+        "type": "judgemental",
+        "count": 0,
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "items": []
+      },
+      {
+        "type": "projected",
+        "count": 0,
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "items": []
+      }
+    ],
+    "undetermined": [],
+    "count": 1
+  },
+  "totals": {
+    "profit_before_tax": {
+      "gross": "60000.00",
+      "net": "-60000.00",
+      "gross_without_projected": "60000.00",
+      "net_without_projected": "-60000.00",
+      "projected_gross": "0.00",
+      "factual_gross": "60000.00",
+      "judgemental_gross": "0.00"
+    },
+    "net_assets": {
+      "gross": "60000.00",
+      "net": "-60000.00",
+      "gross_without_projected": "60000.00",
+      "net_without_projected": "-60000.00",
+      "projected_gross": "0.00",
+      "factual_gross": "60000.00",
+      "judgemental_gross": "0.00"
+    },
+    "count": 1,
+    "complete": true,
+    "basis": "every misstatement not corrected and not withdrawn (raised, communicated, refused; the F3 reading) that is not clearly trivial contributes its effect on profit before tax and, separately, on net assets; an item whose band is clearly trivial is not accumulated and is named (spec section 4: 'below it, not accumulated'; the band is the item's, the higher of its two effects' bands; architecture D33, D53), unless the clearly trivial items together reach the clearly-trivial threshold, gross, on either measure, when all of them are accumulated (SA 450 paragraph A2: clearly trivial matters are clearly inconsequential 'whether taken individually or in aggregate'; architecture D57); an escalated item, one with a qualitative factor recorded, is accumulated whatever its band and listed individually (spec section 5; acceptance 8; architecture D59); gross sums absolute effects with no netting between misstatements, net sums them signed (spec section 4.1); each is given with and without the projected items (spec section 3.2; pending decision B8); a classification-only item contributes nil and is listed; an item whose effects are unresolved is named and the aggregate marked incomplete (architecture D38)"
+  },
+  "prior_period": {
+    "items": [],
+    "totals": {
+      "current_period": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      },
+      "cumulative": {
+        "profit_before_tax": {
+          "gross": "0.00",
+          "net": "0.00"
+        },
+        "net_assets": {
+          "gross": "0.00",
+          "net": "0.00"
+        }
+      }
+    },
+    "current_year": {
+      "profit_before_tax": {
+        "gross": "60000.00",
+        "net": "-60000.00"
+      },
+      "net_assets": {
+        "gross": "60000.00",
+        "net": "-60000.00"
+      }
+    },
+    "with_prior_period": {
+      "current_period": {
+        "profit_before_tax": {
+          "gross": "60000.00",
+          "net": "-60000.00"
+        },
+        "net_assets": {
+          "gross": "60000.00",
+          "net": "-60000.00"
+        }
+      },
+      "cumulative": {
+        "profit_before_tax": {
+          "gross": "60000.00",
+          "net": "-60000.00"
+        },
+        "net_assets": {
+          "gross": "60000.00",
+          "net": "-60000.00"
+        }
+      }
+    },
+    "complete": true,
+    "reaches": {
+      "current_period": {
+        "pm": [],
+        "om": []
+      },
+      "cumulative": {
+        "pm": [],
+        "om": []
+      }
+    },
+    "read_by_gates": false,
+    "basis": "uncorrected misstatements of prior periods are carried forward and shown apart from the current year's own (SA 450 paragraph 11(b); spec section 4.1; acceptance 5); each carried item states its current-period effect and its cumulative effect on profit before tax and on net assets, entered by a person with the basis: this module computes neither (register B6); the totals sum those figures gross, with no netting between items, and net, signed (spec section 4.1); 'with prior-period items' adds each total to the aggregate of the current year's uncorrected misstatements, so the evaluation is shown both ways and no one method is chosen; a carried item is not banded and none is left out as clearly trivial; the gates of spec section 7 test the current year's aggregate and do not read these figures, because which basis a gate should test is the firm's policy and is not decided (architecture D61)"
+  },
+  "not_included": {
+    "clearly_trivial": {
+      "items": [],
+      "total": {
+        "profit_before_tax_gross": "0.00",
+        "net_assets_gross": "0.00",
+        "ctt": "12500.00",
+        "at_or_above_ctt": false,
+        "accumulated_together": [],
+        "basis": "the gross size, on each measure, of the items that band clearly trivial one by one; while it is below the clearly-trivial threshold on both measures those items are left out of the aggregate; once it reaches the threshold on either, all of them are accumulated, because SA 450 paragraph A2 describes clearly trivial matters as clearly inconsequential 'whether taken individually or in aggregate' and treats any uncertainty as not clearly trivial (architecture D57); measuring 'in aggregate' gross against the threshold itself is the conservative reading, for the CA to confirm (register S14, question 2)"
+      }
+    },
+    "not_uncorrected": []
+  },
+  "cautions": [
+    {
+      "code": "not_communicated",
+      "text": "M-1 is raised and not yet recorded as communicated to management (SA 450 paragraph 8)"
+    },
+    {
+      "code": "no_current_run",
+      "text": "no evaluation run records these figures"
+    }
+  ],
+  "evaluation": {
+    "run": {
+      "status": "none",
+      "detail": "no evaluation run has been recorded",
+      "run_no": null
+    },
+    "conclusion": {
+      "status": "none",
+      "determination": null,
+      "run_no": null
+    }
+  },
+  "basis": "the summary of uncorrected misstatements in the form that attaches to the written representation (SA 450 paragraph 14; spec section 6, item 3): every uncorrected misstatement that is accumulated (raised, communicated or refused; the F3 reading), listed by type, the three kept apart (spec section 3.2), each with its effect on profit before tax and, separately, on net assets; each type and the whole are summed gross, with no netting between misstatements, and net, signed (spec section 4.1); the whole is the evaluation's own aggregate, so the attachment and the evaluation cannot differ; a misstatement below the clearly-trivial threshold and not accumulated is outside the summary (spec section 4); corrected and withdrawn items are not uncorrected; prior-period items carried forward are shown with their current-period and cumulative effects, apart from the totals (SA 450 paragraph 11(b); architecture D61); the cautions are for the auditor and are not part of the attachment (architecture D63)",
+  "read_only": true,
+  "authorisation": {
+    "enforced": false,
+    "policy": "pending decision B9: no general role or permission model is enforced; any identity may raise, link and set thresholds; the acting identity is required on every write, recorded on the row, and frozen there; partner-only actions are enforced from the proxy's role claim and fail closed without it (docs/DECISIONS_PENDING.md)",
+    "identity_mode": "dev",
+    "production_grade": false,
+    "missing": "the firm's identity provider presenting a role claim through the authenticating proxy (OAK_AUTH_ROLES_HEADER) and the firm naming the value that means engagement partner (OAK_PARTNER_ROLE); and the firm's policy for who may raise, communicate and set thresholds, which the spec leaves open (spec sections 6.4, 7, 12)",
+    "partner_actions": {
+      "enforced": true,
+      "available": false,
+      "actions": [
+        "soft_gate_acknowledgement",
+        "conclusion"
+      ],
+      "source": null,
+      "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
+    }
+  }
+}

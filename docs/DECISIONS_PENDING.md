@@ -507,5 +507,23 @@ section records what the feature leaves to people. It does not change the Pass 1
 | T6 | May the other uncorrected items be communicated as a number and an overall effect only, where there are many? | Lead | Both are given: a summary by type and the full list |
 
 **Not built with this feature:** the written representation attachment (spec section 6,
-item 3); a file export other than the browser's own print dialog; any record of the
-communication having been made.
+item 3; since built, D63, see the next section); a file export other than the browser's
+own print dialog; any record of the communication having been made.
+
+## Pass 2, feature 4: the written representation attachment — 6 November 2026 (architecture D63)
+
+Built on instruction on 6 November 2026. Read-only, computed on read, nothing stored, no
+migration. This section records what the feature leaves to people. It does not change the
+Pass 1 count.
+
+| # | Question | Who | What is built meanwhile |
+|---|---|---|---|
+| R1 | The wording of the representation, and of the letter it belongs to; whether management alone signs, or those charged with governance too ("where appropriate", paragraph 14) | Firm | One sentence, the requirement of SA 450 paragraph 14 put plainly, naming both. No letter, no signature block |
+| R2 | Should a caution stop the attachment from being produced: an item not yet communicated to management, an unmodified opinion blocked, a conclusion that the misstatements are material? | CA and the lead | No. Every caution is shown to the auditor beside the document and none blocks it. The statement is management's belief and is the same whatever the evaluation says |
+| R3 | Do clearly trivial items that were communicated or refused belong in the representation list? (S14 question 5; with T2) | CA | No: an item not accumulated is outside the summary and is reported to the auditor apart |
+| R4 | Should the attachment be tied to a recorded evaluation run, and recorded when it is sent? (with T4) | Lead | Not recorded. It follows the evaluation as it stands and says whether a current run records the same figures |
+| R5 | Should each misstatement be listed, or the summary by type alone, where there are many? Should a row show the Dr/Cr lines? | Lead | Both the breakdown by type and every row. A row shows the description, the state, both effects and management's reason when refused; no lines |
+| R6 | How should prior-period items appear in the attachment, and does the representation cover them? (with P1) | CA and the firm | Shown with both effects, apart from the totals. The statement's words are not changed by them |
+
+**Not built with this feature:** the representation letter itself; a file export other than
+the browser's own print dialog; any record that a representation was received.
