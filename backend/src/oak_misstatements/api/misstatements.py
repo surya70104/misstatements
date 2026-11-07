@@ -64,6 +64,19 @@ def _optional_amount(value: Any) -> str | None:
     return None if value is None else amount(value)
 
 
+def sampling_json(version: MisstatementVersion) -> dict[str, Any] | None:
+    if version.sampling_method is None:
+        return None
+    return {
+        "method": version.sampling_method,
+        "population_value": _optional_amount(version.population_value),
+        "population_size": version.population_size,
+        "sample_value": _optional_amount(version.sample_value),
+        "sample_size": version.sample_size,
+        "known_error_in_sample": _optional_amount(version.known_error_in_sample),
+    }
+
+
 def version_json(version: MisstatementVersion) -> dict[str, Any]:
     return {
         "version_no": version.version_no,
@@ -85,6 +98,8 @@ def version_json(version: MisstatementVersion) -> dict[str, Any]:
         "range_high": _optional_amount(version.range_high),
         "sample_ref": version.sample_ref,
         "projection_basis": version.projection_basis,
+        # SA 530 (D65): how a projected item was projected; null for every other type.
+        "sampling": sampling_json(version),
         "created_by": version.created_by,  # who made this version: who moved the state
         "created_at": _time(version.created_at),
     }

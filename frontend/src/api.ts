@@ -59,6 +59,18 @@ export function isRunOrigin(origin: Origin): origin is RunOrigin {
   return 'run_id' in origin
 }
 
+// How a projected misstatement was projected from its sample (SA 530; backend D65). The
+// projected amount is the Dr/Cr lines, as every amount is; these are the sample's parameters.
+export type SamplingMethod = 'ratio' | 'difference' | 'mean_per_unit' | 'monetary_unit' | 'other'
+export type Sampling = {
+  method: SamplingMethod
+  population_value: string
+  population_size: number
+  sample_value: string
+  sample_size: number
+  known_error_in_sample: string
+}
+
 // One append-only version of a misstatement: what it says, and the state it is in.
 export type MisstatementVersion = {
   version_no: number
@@ -82,6 +94,8 @@ export type MisstatementVersion = {
   range_high: string | null
   sample_ref: string | null
   projection_basis: string | null
+  // Null for every type but projected.
+  sampling: Sampling | null
   created_by: string
   created_at: string
 }
@@ -1014,6 +1028,15 @@ export type MisstatementInput = {
   range_high?: string
   sample_ref?: string
   projection_basis?: string
+  // A projected item says how it was projected. `projected_amount` must equal the debits
+  // of the lines, which carry it; the backend checks that and does not store it.
+  sampling_method?: SamplingMethod
+  population_value?: string
+  population_size?: number
+  sample_value?: string
+  sample_size?: number
+  known_error_in_sample?: string
+  projected_amount?: string
 }
 
 // ---- the two writes reserved to the engagement partner (spec sections 6.4 and 7) ----

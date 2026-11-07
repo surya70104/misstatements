@@ -1,9 +1,9 @@
 {
-  "id": "f29896e0-5649-4dd9-b6c9-5fdc0a2930df",
-  "engagement_id": "d61dad2f-47de-4c1a-a8dd-24e452cc33ea",
+  "id": "3f4ea346-a608-4770-a394-a4c6af9d3e0e",
+  "engagement_id": "8b67ecbd-9fc2-4f85-bc54-1d2a991a2a58",
   "ref": "M-5",
   "created_by": "senior@firm",
-  "created_at": "2026-11-07T06:56:41",
+  "created_at": "2026-11-07T07:38:57",
   "current": {
     "version_no": 1,
     "type": "factual",
@@ -20,19 +20,20 @@
     "decided_at": null,
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "a769b6bd-b1ff-4162-93a9-99ef4c47ad79",
+    "spine_adjustment_id": "8d2b96f2-0a21-4ecd-8a65-cb75c18c7328",
     "spine_kind": "correction",
     "range_low": null,
     "range_high": null,
     "sample_ref": null,
     "projection_basis": null,
+    "sampling": null,
     "created_by": "senior@firm",
-    "created_at": "2026-11-07T06:56:41"
+    "created_at": "2026-11-07T07:38:57"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "a769b6bd-b1ff-4162-93a9-99ef4c47ad79",
+    "adjustment_id": "8d2b96f2-0a21-4ecd-8a65-cb75c18c7328",
     "adjustment_status": "proposed",
     "kind": "correction",
     "finding_ref": "M-5",
@@ -121,7 +122,7 @@
       "profit": "20000.00",
       "net_assets": "20000.00"
     },
-    "threshold_id": "66e01262-b842-485e-a8e5-8c2aec7efc34",
+    "threshold_id": "a5001494-9420-4332-b743-98db75334e6c",
     "threshold_version_no": 1,
     "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
     "projected": false,
@@ -226,14 +227,15 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "a769b6bd-b1ff-4162-93a9-99ef4c47ad79",
+      "spine_adjustment_id": "8d2b96f2-0a21-4ecd-8a65-cb75c18c7328",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
+      "sampling": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-07T06:56:41"
+      "created_at": "2026-11-07T07:38:57"
     }
   ]
 }

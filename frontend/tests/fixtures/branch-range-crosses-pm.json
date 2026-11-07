@@ -1,9 +1,9 @@
 {
-  "id": "e74236bc-e48f-4a12-bc3c-c5fd7f02e54d",
-  "engagement_id": "4b8b78ea-c1c6-44af-bdb0-72b5aa928c11",
+  "id": "14bc1d68-1915-4775-9de9-99b78737d99b",
+  "engagement_id": "cfa7ef7b-c36a-44cf-bc58-c1a55184291f",
   "ref": "M-1",
   "created_by": "senior@firm",
-  "created_at": "2026-11-07T06:56:36",
+  "created_at": "2026-11-07T07:38:51",
   "current": {
     "version_no": 1,
     "type": "judgemental",
@@ -17,19 +17,20 @@
     "decided_at": null,
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "919f8c5b-4d27-4130-b06f-26469c7115b8",
+    "spine_adjustment_id": "142bf3ba-71d2-4681-9a04-915265ff0c73",
     "spine_kind": "correction",
     "range_low": "200000.00",
     "range_high": "300000.00",
     "sample_ref": null,
     "projection_basis": null,
+    "sampling": null,
     "created_by": "senior@firm",
-    "created_at": "2026-11-07T06:56:36"
+    "created_at": "2026-11-07T07:38:51"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "919f8c5b-4d27-4130-b06f-26469c7115b8",
+    "adjustment_id": "142bf3ba-71d2-4681-9a04-915265ff0c73",
     "adjustment_status": "proposed",
     "kind": "correction",
     "finding_ref": "M-1",
@@ -118,7 +119,7 @@
       "profit": "240000.00",
       "net_assets": "240000.00"
     },
-    "threshold_id": "7b813041-0bd8-4f68-b55f-38bfdb589856",
+    "threshold_id": "117508df-5165-4eea-9588-92d539332cf8",
     "threshold_version_no": 1,
     "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
     "projected": false,
@@ -220,14 +221,15 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "919f8c5b-4d27-4130-b06f-26469c7115b8",
+      "spine_adjustment_id": "142bf3ba-71d2-4681-9a04-915265ff0c73",
       "spine_kind": "correction",
       "range_low": "200000.00",
       "range_high": "300000.00",
       "sample_ref": null,
       "projection_basis": null,
+      "sampling": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-07T06:56:36"
+      "created_at": "2026-11-07T07:38:51"
     }
   ]
 }

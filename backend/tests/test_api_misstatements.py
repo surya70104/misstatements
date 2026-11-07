@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session
 
 from tests.conftest import act_as, use_spine
 from tests.fake_spine import ENGAGEMENT_ID, LOCKED_VERSION_ID, OPEN_VERSION_ID, FakeSpine
+from tests.test_api_evaluation import SAMPLING
 
 RENT_ACCRUAL = [{"line_no": 5, "dr": "10000.00"}, {"line_no": 3, "cr": "10000.00"}]
 BS_ONLY = [{"line_no": 1, "dr": "700.00"}, {"line_no": 2, "cr": "700.00"}]
@@ -258,6 +259,8 @@ def test_judgemental_and_projected_items_carry_their_own_fields(api: TestClient)
         type="projected",
         sample_ref="S-3",
         projection_basis="ratio projection over the population",
+        **SAMPLING,
+        projected_amount="10000.00",
     )
     assert projected.status_code == 201
     assert projected.json()["current"]["sample_ref"] == "S-3"
@@ -881,7 +884,13 @@ def test_projected_items_keep_their_identification_in_the_band(api: TestClient) 
     engagement_id = linked_engagement(api)
     thresholds(api, engagement_id)
     record = raise_one(
-        api, engagement_id, type="projected", sample_ref="S-3", projection_basis="ratio"
+        api,
+        engagement_id,
+        type="projected",
+        sample_ref="S-3",
+        projection_basis="ratio",
+        **SAMPLING,
+        projected_amount="10000.00",
     ).json()
     assert record["banding"]["projected"] is True
     assert record["band"] == "clearly_trivial"

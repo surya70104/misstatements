@@ -991,3 +991,87 @@ def test_a_run_or_a_note_must_carry_its_origin_and_nothing_else_may(db: Connecti
         )
         == 3
     )
+
+
+# ---- Pass 2 (migration 0015): what a projected item says about its sample (D65) --------------
+
+PROJECTED = (
+    "INSERT INTO misstatement_version (misstatement_id, version_no, type, description, "
+    "raised_by, raised_from, source_ref, spine_adjustment_id, spine_kind, created_by, "
+    "sample_ref, projection_basis, sampling_method, population_value, population_size, "
+    "sample_value, sample_size, known_error_in_sample) "
+    "VALUES (:m, :v, :type, 'Cut-off', 'test', 'wp', 'R-5', :a, 'correction', 'test', "
+    ":sample, :basis, :method, :pv, :ps, :sv, :ss, :known) RETURNING id"
+)
+
+
+def projected_values(**extra: object) -> dict[str, object]:
+    values: dict[str, object] = {
+        "v": 2,
+        "type": "projected",
+        "sample": "S-12",
+        "basis": "ratio",
+        "method": "ratio",
+        "pv": "4000000.00",
+        "ps": 1200,
+        "sv": "400000.00",
+        "ss": 120,
+        "known": "4000.00",
+    }
+    values.update(extra)
+    return values
+
+
+def test_a_projected_item_says_how_it_was_projected_and_no_other_type_may(db: Connection) -> None:
+    _engagement, misstatement_id, _version = seed(db)
+    for extra, rule in (
+        ({"method": None}, "ck_misstatement_version_sampling_present"),
+        ({"pv": None}, "ck_misstatement_version_sampling_present"),
+        ({"ps": None}, "ck_misstatement_version_sampling_present"),
+        ({"sv": None}, "ck_misstatement_version_sampling_present"),
+        ({"ss": None}, "ck_misstatement_version_sampling_present"),
+        ({"known": None}, "ck_misstatement_version_sampling_present"),
+        ({"method": "haphazard"}, "ck_misstatement_version_sampling_method"),
+        ({"ss": 1300}, "ck_misstatement_version_sampling_sizes"),
+        ({"ss": 0}, "ck_misstatement_version_sampling_sizes"),
+        ({"ps": 0, "ss": 0}, "ck_misstatement_version_sampling_sizes"),
+        ({"sv": "5000000.00"}, "ck_misstatement_version_sampling_values"),
+        ({"pv": "0.00", "sv": "0.00"}, "ck_misstatement_version_sampling_values"),
+        ({"sv": "-1.00"}, "ck_misstatement_version_sampling_values"),
+        ({"pv": "1.005"}, "money_amount"),
+        # A factual item carries none of it.
+        (
+            {"type": "factual", "sample": None, "basis": None},
+            "ck_misstatement_version_sampling_only_projected",
+        ),
+    ):
+        with pytest.raises(DBAPIError, match=rule), db.begin_nested():
+            db.execute(
+                text(PROJECTED),
+                {"m": misstatement_id, "a": uuid.uuid4(), **projected_values(**extra)},
+            )
+    db.execute(text(PROJECTED), {"m": misstatement_id, "a": uuid.uuid4(), **projected_values()})
+    db.execute(
+        text(PROJECTED),
+        {
+            "m": misstatement_id,
+            "a": uuid.uuid4(),
+            **projected_values(
+                v=3,
+                type="factual",
+                sample=None,
+                basis=None,
+                method=None,
+                pv=None,
+                ps=None,
+                sv=None,
+                ss=None,
+                known=None,
+            ),
+        },
+    )
+    with pytest.raises(DBAPIError, match="append-only"), db.begin_nested():
+        db.execute(
+            text("UPDATE misstatement_version SET sample_size = 1 WHERE misstatement_id = :m"),
+            {"m": misstatement_id},
+        )

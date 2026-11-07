@@ -1,6 +1,12 @@
 // The words the screens use for the backend's codes. A label is presentation only: the
 // type, the state and the band of a misstatement are always the backend's.
-import type { Band, MisstatementState, MisstatementType, TransitionTarget } from './api'
+import type {
+  Band,
+  MisstatementState,
+  MisstatementType,
+  SamplingMethod,
+  TransitionTarget,
+} from './api'
 
 type Tone = 'neutral' | 'good' | 'attention'
 
@@ -68,6 +74,28 @@ export const REASON_REQUIRED: readonly TransitionTarget[] = ['refused', 'withdra
 
 /** The backend's limit on a reason, mirrored so a person sees it before sending. */
 export const REASON_MAX_LENGTH = 1500
+
+// How a projected misstatement was projected (SA 530), in the order a person chooses from.
+export const SAMPLING_METHODS: readonly SamplingMethod[] = [
+  'ratio',
+  'difference',
+  'mean_per_unit',
+  'monetary_unit',
+  'other',
+]
+
+export const SAMPLING_METHOD_LABEL: Record<SamplingMethod, string> = {
+  ratio: 'Ratio estimation',
+  difference: 'Difference estimation',
+  mean_per_unit: 'Mean-per-unit estimation',
+  monetary_unit: 'Monetary-unit sampling',
+  other: 'Other, described in the projection basis',
+}
+
+/** A method the backend sent that this screen has no word for is shown as sent. */
+export function samplingMethodLabel(code: string): string {
+  return (SAMPLING_METHOD_LABEL as Record<string, string>)[code] ?? code
+}
 
 /** The backend's limit on a qualitative factor's reason, mirrored the same way. */
 export const NOTE_MAX_LENGTH = 2000

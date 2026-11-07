@@ -651,3 +651,43 @@ def test_0014_adds_origin_checks_that_fail_on_a_missing_key_and_drops_nothing() 
     down = rendered("downgrade")
     assert "DROP CONSTRAINT ck_misstatement_version_run_origin_named" in down
     assert "DROP CONSTRAINT ck_misstatement_version_note_origin_named" in down
+
+
+# ---- 0015: what a projected item says about its sample (architecture D65) --------------------
+
+
+def test_the_sampling_columns_and_rules_are_added_by_0015_and_the_amounts_are_money() -> None:
+    sql = rendered("upgrade")
+    for column, kind in (
+        ("sampling_method", "TEXT"),
+        ("population_value", "NUMERIC"),
+        ("population_size", "INTEGER"),
+        ("sample_value", "NUMERIC"),
+        ("sample_size", "INTEGER"),
+        ("known_error_in_sample", "NUMERIC"),
+    ):
+        assert f"ALTER TABLE misstatement_version ADD COLUMN {column} {kind}" in sql, column
+    for column in ("population_value", "sample_value", "known_error_in_sample"):
+        assert f"ALTER TABLE misstatement_version ALTER COLUMN {column} TYPE money_amount" in sql
+    for name, words in (
+        (
+            "ck_misstatement_version_sampling_present",
+            "(type <> 'projected') OR (sampling_method IS NOT NULL",
+        ),
+        (
+            "ck_misstatement_version_sampling_only_projected",
+            "(type = 'projected') OR (sampling_method IS NULL",
+        ),
+        (
+            "ck_misstatement_version_sampling_method",
+            "'ratio', 'difference', 'mean_per_unit', 'monetary_unit', 'other'",
+        ),
+        ("ck_misstatement_version_sampling_sizes", "sample_size <= population_size"),
+        ("ck_misstatement_version_sampling_values", "sample_value <= population_value"),
+    ):
+        assert f"ADD CONSTRAINT {name} CHECK" in sql, name
+        assert words in sql, name
+    # No projected amount is a column: the lines in the Spine are the amount.
+    assert "projected_amount" not in sql
+    assert "UPDATE misstatement_version" not in sql
+    assert "DROP TRIGGER" not in sql

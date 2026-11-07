@@ -23,6 +23,9 @@ Positive = Annotated[Decimal, Field(gt=0, max_digits=15, decimal_places=2)]
 Amount = Annotated[Decimal, Field(max_digits=15, decimal_places=2)]
 
 MisstatementType = Literal["factual", "judgemental", "projected"]
+# How a projected misstatement was projected from its sample (SA 530; D65).
+SamplingMethod = Literal["ratio", "difference", "mean_per_unit", "monetary_unit", "other"]
+Count = Annotated[int, Field(ge=1, le=1_000_000_000)]
 # Spec section 8, every source (D25 for the two of Stage 1; D64 for the rest): a working
 # paper and a manual entry carry a working paper reference; an agent run carries its run
 # id and source-row citations; a review note carries its reference, and a link if it has
@@ -132,6 +135,27 @@ class MisstatementBase(BaseModel):
     range_high: Amount | None = None
     sample_ref: Label | None = None
     projection_basis: Narration | None = None
+    # SA 530; spec 3.2 (D65): a projected item says how it was projected. The lines carry
+    # the projected amount; ``projected_amount`` is checked against them and not stored.
+    sampling_method: SamplingMethod | None = None
+    population_value: Positive | None = Field(
+        default=None, description="The population's recorded value, in rupees"
+    )
+    population_size: Count | None = Field(default=None, description="Items in the population")
+    sample_value: Amount | None = Field(
+        default=None, ge=0, description="The sample's recorded value, in rupees"
+    )
+    sample_size: Count | None = Field(default=None, description="Items in the sample")
+    known_error_in_sample: Amount | None = Field(
+        default=None, description="The misstatement found in the sample, in rupees"
+    )
+    projected_amount: Positive | None = Field(
+        default=None,
+        description=(
+            "The best estimate of misstatement in the population. It must equal the "
+            "debits of the lines, which carry it; it is not stored on its own"
+        ),
+    )
 
     @model_validator(mode="after")
     def _double_entry(self) -> MisstatementBase:
@@ -158,13 +182,45 @@ class MisstatementBase(BaseModel):
                 raise ValueError("range_low must not exceed range_high")
         elif has_range:
             raise ValueError("only a judgemental misstatement carries a range")
+        sampling = {
+            "sampling_method": self.sampling_method,
+            "population_value": self.population_value,
+            "population_size": self.population_size,
+            "sample_value": self.sample_value,
+            "sample_size": self.sample_size,
+            "known_error_in_sample": self.known_error_in_sample,
+            "projected_amount": self.projected_amount,
+        }
         if self.type == "projected":
             if self.sample_ref is None or self.projection_basis is None:
                 raise ValueError(
                     "a projected misstatement names its sample_ref and projection_basis"
                 )
-        elif has_projection:
-            raise ValueError("only a projected misstatement names a sample and projection basis")
+            missing = [name for name, value in sampling.items() if value is None]
+            if missing:
+                raise ValueError(
+                    "a projected misstatement says how it was projected (SA 530): "
+                    + ", ".join(missing)
+                    + " required"
+                )
+            assert self.population_size is not None and self.sample_size is not None  # noqa: S101
+            assert self.population_value is not None and self.sample_value is not None  # noqa: S101
+            if self.sample_size > self.population_size:
+                raise ValueError("sample_size cannot exceed population_size")
+            if self.sample_value > self.population_value:
+                raise ValueError("sample_value cannot exceed population_value")
+            debits = sum((line.dr for line in self.lines if line.dr is not None), ZERO)
+            if self.projected_amount != debits:
+                raise ValueError(
+                    f"the Dr/Cr lines carry the projected amount: their debits {debits:f} "
+                    f"differ from projected_amount {self.projected_amount:f} (spec section "
+                    "3.1: a misstatement is its lines, never a separate amount)"
+                )
+        elif has_projection or any(value is not None for value in sampling.values()):
+            raise ValueError(
+                "only a projected misstatement names a sample, a projection basis and how "
+                "it was projected"
+            )
         return self
 
     def common(self) -> dict[str, Any]:
@@ -177,6 +233,13 @@ class MisstatementBase(BaseModel):
             "range_high": self.range_high,
             "sample_ref": self.sample_ref,
             "projection_basis": self.projection_basis,
+            "sampling_method": self.sampling_method,
+            "population_value": self.population_value,
+            "population_size": self.population_size,
+            "sample_value": self.sample_value,
+            "sample_size": self.sample_size,
+            "known_error_in_sample": self.known_error_in_sample,
+            "projected_amount": self.projected_amount,
         }
 
 

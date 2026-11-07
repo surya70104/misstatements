@@ -52,6 +52,17 @@ def thresholds(api: TestClient, engagement_id: str, **overrides: Any) -> Any:
     return answer.json()
 
 
+# SA 530 (D65): how a projected item was projected. The projected amount is the lines.
+SAMPLING: dict[str, Any] = {
+    "sampling_method": "ratio",
+    "population_value": "4000000.00",
+    "population_size": 1200,
+    "sample_value": "400000.00",
+    "sample_size": 120,
+    "known_error_in_sample": "4000.00",
+}
+
+
 def raise_item(
     api: TestClient,
     engagement_id: str,
@@ -69,7 +80,12 @@ def raise_item(
         "lines": lines or [{"line_no": 5, "dr": amount}, {"line_no": 3, "cr": amount}],
     }
     if type == "projected":
-        body |= {"sample_ref": "S-1", "projection_basis": "ratio of error in the sample"}
+        body |= {
+            "sample_ref": "S-1",
+            "projection_basis": "ratio of error in the sample",
+            **SAMPLING,
+            "projected_amount": amount,
+        }
     if type == "judgemental":
         body |= {"range_low": amount, "range_high": amount}
     answer = api.post(f"/api/engagements/{engagement_id}/misstatements", json=body, headers=headers)

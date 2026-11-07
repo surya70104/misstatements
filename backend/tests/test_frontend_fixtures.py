@@ -31,6 +31,7 @@ from sqlalchemy.exc import OperationalError
 
 from tests.conftest import BACKEND_DIR, act_as, use_spine
 from tests.fake_spine import ENGAGEMENT_ID, OPEN_VERSION_ID
+from tests.test_api_evaluation import SAMPLING
 
 FIXTURES = BACKEND_DIR.parent / "frontend" / "tests" / "fixtures"
 WRITE = os.environ.get("OAK_WRITE_FIXTURES") == "1"
@@ -195,6 +196,8 @@ def test_the_schedule_fixtures_are_the_apis_real_answers(api: TestClient) -> Non
         lines=[{"line_no": 4, "dr": "45000.00"}, {"line_no": 1, "cr": "45000.00"}],
         sample_ref="S-12",
         projection_basis="Ratio of error to sample value, applied to the population",
+        **SAMPLING,
+        projected_amount="45000.00",
     )
     # Above performance materiality, then corrected: posted in the Spine, out of the totals.
     salaries = raise_one(
@@ -392,6 +395,8 @@ def test_the_detail_fixtures_are_the_apis_real_answers(api: TestClient) -> None:
         lines=[{"line_no": 4, "dr": "45000.00"}, {"line_no": 1, "cr": "45000.00"}],
         sample_ref="S-12",
         projection_basis="Ratio of error to sample value, applied to the population",
+        **SAMPLING,
+        projected_amount="45000.00",
     )
     attempt(api, cut_off, 201, to="communicated")
     check("detail-communicated-projected", detail(api, cut_off))
@@ -475,6 +480,8 @@ def item(
     **more: Any,
 ) -> str:
     headers = more.pop("headers", None)
+    if type == "projected":  # SA 530 (D65): how it was projected; the lines carry the amount
+        more = {**SAMPLING, "projected_amount": amount, **more}
     body = {
         "type": type,
         "description": description,

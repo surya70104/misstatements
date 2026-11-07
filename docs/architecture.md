@@ -1886,3 +1886,57 @@ skipped. In memory: 517 passed, 37 skipped. `ruff`, `mypy` strict clean (115 fil
 captured API answers, 14 of them new. In a real browser, on the isolated preview (the real application over the test database in one transaction that was never committed; Spine test double; development identity): a misstatement recorded through the form with 'A WorkMind agent run' chosen, the working paper field gone, the record button disabled until the run id and a complete citation were typed, the detail then showing the run and its citation, and the schedule's Source column showing the run id marked 'Agent run'; no sideways scroll. The engagement and its thresholds were seeded through the preview's API. Not done: a real WorkMind run or review
 tool (none is connected; the hooks take what they are sent); a named partner; the live
 Financial Spine; a screen-reader session.
+
+## D65 · Pass 2: projected misstatements from Sampling — 7 Nov 2026 (SA 530; SA 450 para A3; spec 3.2)
+
+Built on instruction. A projected misstatement now says how it was projected, and the
+module keeps what Stage 1 built: the projected amount is its Dr/Cr lines, proposed to the
+Financial Spine like every other misstatement.
+
+**What was asked, and what was not done.** The instruction asked that projected items
+accumulate "without requiring balanced ledger-level journal entries to be posted to the
+Spine". That was not built. The specification is authoritative and says the opposite:
+section 3.1 ("a misstatement is double-entry, not a number"), section 1 ("amounts live in
+the Spine, not here"), acceptance 1 ("a misstatement stored as a single amount cannot be
+created; Dr/Cr lines are required and must balance"). A projected item with no lines would
+also have no effect on profit or net assets, since every effect is computed from the lines'
+Schedule III classification (D31), and so could not be banded or aggregated. The lines of a
+projected item carry the auditor's best estimate for the population, which is what spec
+section 3.2 calls its point estimate; proposing them to the Spine is what makes the item
+correctable by posting. Whether the specification should change on this is recorded as an
+open question, not decided here.
+
+**What a projected item says** (migration 0015; six nullable columns on
+`misstatement_version`, present on a projected item and absent on every other, held by five
+CHECKs and by the schema): `sampling_method` (ratio, difference, mean-per-unit,
+monetary-unit, or other, which the projection basis then describes), `population_value` and
+`population_size`, `sample_value` and `sample_size`, `known_error_in_sample`. The sizes are
+whole numbers of at least one, the sample no larger than the population; the values are
+money, the sample's no larger than the population's. These are the sample's parameters,
+the auditor's own figures like the judgemental range (D14), and the three money columns are
+added to the allowed list in `tests/test_models.py` with that reason. The projected amount
+is not a column: the request carries `projected_amount`, which must equal the debits of the
+lines, and the request is refused when the two differ. That check is the only arithmetic
+here. Nothing recomputes the projection from the sample: how the auditor projected is the
+auditor's, stated in the basis (register N16 stays as it is).
+
+**Accumulation** is as before (D43): a projected item accumulates like any other, and the
+aggregate is given with and without the projected items and by type, so it is never
+"aggregated as if it were factual without saying so" (spec 3.2). The gates say whether they
+depend on the projected items (B8). The runs, the TCWG extract and the representation
+attachment keep the type apart as they did. The sampling details are copied onto every
+later version.
+
+**Screens.** The record form, once the type is projected, asks for the method and the six
+figures, and says that the lines carry the projected amount; the record button stays
+disabled until every figure is well formed. The detail shows the method, the population
+and sample with their values and sizes, and the misstatement found in the sample. The
+schedule's Type cell says "From sample S-12" on a projected row.
+
+**Verified, 7 November 2026.** Backend `pytest` on PostgreSQL (`oak_misstatements_test`,
+rolled back; the run applied migration 0015 to that database): 565 passed, 0 skipped. In
+memory: 527 passed, 38 skipped. `ruff`, `mypy` strict clean (117 files). Frontend `vitest`
+414 passed (24 files); `tsc`, `eslint`, `prettier --check` clean; the build succeeds; 173
+captured API answers, every one with a projected item regenerated. In a real browser, on the isolated preview (the real application over the test database in one transaction that was never committed; Spine test double; development identity): a projected misstatement recorded through the form, the sampling fields appearing when the type was chosen, the record button disabled until every figure was given, a projected amount that differed from the lines refused in the backend's words, the corrected one recorded, the detail showing the method, population, sample and misstatement found, and the schedule's Type cell reading 'Projected · From sample S-12'; no sideways scroll. The engagement and its thresholds were seeded through the preview's API. Not done: a
+real Sampling module (none exists; the figures are typed); a named partner; the live
+Financial Spine; a screen-reader session.

@@ -1,9 +1,9 @@
 {
-  "id": "c3bc74e6-dd48-46cd-8e1d-f9e02adb5319",
-  "engagement_id": "d9e62520-5ee7-441b-8de0-ba104e07f06b",
+  "id": "4ab8de22-9321-4ad5-acd2-bd6d3b518ef4",
+  "engagement_id": "19f04439-9cf3-45ee-9a92-57b4a6dc2597",
   "ref": "M-3",
   "created_by": "senior@firm",
-  "created_at": "2026-11-07T06:56:29",
+  "created_at": "2026-11-07T07:38:45",
   "current": {
     "version_no": 3,
     "type": "judgemental",
@@ -13,23 +13,24 @@
     "source_ref": "F-3.4",
     "origin": null,
     "state": "refused",
-    "communicated_at": "2026-11-07T06:56:29.938298",
-    "decided_at": "2026-11-07T06:56:29.959642",
+    "communicated_at": "2026-11-07T07:38:45.538309",
+    "decided_at": "2026-11-07T07:38:45.562617",
     "refusal_reason": "Management considers the useful life appropriate",
     "withdrawal_reason": null,
-    "spine_adjustment_id": "eb8a00af-3a71-4c9c-b71f-4212d9f42c02",
+    "spine_adjustment_id": "528cce79-a667-487d-a5f7-b1ee0d1d35fc",
     "spine_kind": "correction",
     "range_low": "70000.00",
     "range_high": "110000.00",
     "sample_ref": null,
     "projection_basis": null,
+    "sampling": null,
     "created_by": "senior@firm",
-    "created_at": "2026-11-07T06:56:29"
+    "created_at": "2026-11-07T07:38:45"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "eb8a00af-3a71-4c9c-b71f-4212d9f42c02",
+    "adjustment_id": "528cce79-a667-487d-a5f7-b1ee0d1d35fc",
     "adjustment_status": "refused",
     "kind": "correction",
     "finding_ref": "M-3",
@@ -118,7 +119,7 @@
       "profit": "90000.00",
       "net_assets": "90000.00"
     },
-    "threshold_id": "262d4bc9-2176-462d-a70c-f1fd19da470e",
+    "threshold_id": "5f63e700-2d12-4e51-8e88-75383b0bbfcc",
     "threshold_version_no": 1,
     "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
     "projected": false,
@@ -220,14 +221,15 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "eb8a00af-3a71-4c9c-b71f-4212d9f42c02",
+      "spine_adjustment_id": "528cce79-a667-487d-a5f7-b1ee0d1d35fc",
       "spine_kind": "correction",
       "range_low": "70000.00",
       "range_high": "110000.00",
       "sample_ref": null,
       "projection_basis": null,
+      "sampling": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-07T06:56:29"
+      "created_at": "2026-11-07T07:38:45"
     },
     {
       "version_no": 2,
@@ -238,18 +240,19 @@
       "source_ref": "F-3.4",
       "origin": null,
       "state": "communicated",
-      "communicated_at": "2026-11-07T06:56:29.938298",
+      "communicated_at": "2026-11-07T07:38:45.538309",
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "eb8a00af-3a71-4c9c-b71f-4212d9f42c02",
+      "spine_adjustment_id": "528cce79-a667-487d-a5f7-b1ee0d1d35fc",
       "spine_kind": "correction",
       "range_low": "70000.00",
       "range_high": "110000.00",
       "sample_ref": null,
       "projection_basis": null,
+      "sampling": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-07T06:56:29"
+      "created_at": "2026-11-07T07:38:45"
     },
     {
       "version_no": 3,
@@ -260,18 +263,19 @@
       "source_ref": "F-3.4",
       "origin": null,
       "state": "refused",
-      "communicated_at": "2026-11-07T06:56:29.938298",
-      "decided_at": "2026-11-07T06:56:29.959642",
+      "communicated_at": "2026-11-07T07:38:45.538309",
+      "decided_at": "2026-11-07T07:38:45.562617",
       "refusal_reason": "Management considers the useful life appropriate",
       "withdrawal_reason": null,
-      "spine_adjustment_id": "eb8a00af-3a71-4c9c-b71f-4212d9f42c02",
+      "spine_adjustment_id": "528cce79-a667-487d-a5f7-b1ee0d1d35fc",
       "spine_kind": "correction",
       "range_low": "70000.00",
       "range_high": "110000.00",
       "sample_ref": null,
       "projection_basis": null,
+      "sampling": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-07T06:56:29"
+      "created_at": "2026-11-07T07:38:45"
     }
   ]
 }

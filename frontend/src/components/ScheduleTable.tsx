@@ -145,7 +145,16 @@ function Row({ misstatement }: { misstatement: Misstatement }) {
           {misstatement.ref}
         </a>
       </th>
-      <Cell label="Type">{TYPE_LABEL[current.type]}</Cell>
+      <Cell label="Type">
+        <div>
+          {TYPE_LABEL[current.type]}
+          {current.type === 'projected' && (
+            <p className="mt-1 text-xs text-amber-800">
+              From sample {current.sample_ref ?? 'not recorded'}
+            </p>
+          )}
+        </div>
+      </Cell>
       <Cell label="Description" className="xl:max-w-64">
         <span className="min-w-0 break-words">{current.description}</span>
       </Cell>

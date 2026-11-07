@@ -1,9 +1,9 @@
 {
-  "id": "8023f31c-dde1-4716-bb7c-867a1de8c003",
-  "engagement_id": "d93fe0e4-04e2-464e-8d1e-3a2332b206b9",
+  "id": "be452c37-85b1-4ff7-97b3-41db780fd513",
+  "engagement_id": "a0239477-b032-4c31-b368-0b9f7872bdbf",
   "ref": "M-2",
   "created_by": "senior@firm",
-  "created_at": "2026-11-07T06:56:38",
+  "created_at": "2026-11-07T07:38:54",
   "current": {
     "version_no": 1,
     "type": "factual",
@@ -17,19 +17,20 @@
     "decided_at": null,
     "refusal_reason": null,
     "withdrawal_reason": null,
-    "spine_adjustment_id": "0d965d85-18ab-4a0d-8e22-94a1728360f0",
+    "spine_adjustment_id": "f4dd294b-112b-44da-98a0-fce6e793015f",
     "spine_kind": "correction",
     "range_low": null,
     "range_high": null,
     "sample_ref": null,
     "projection_basis": null,
+    "sampling": null,
     "created_by": "senior@firm",
-    "created_at": "2026-11-07T06:56:38"
+    "created_at": "2026-11-07T07:38:54"
   },
   "spine": {
     "status": "ok",
     "detail": null,
-    "adjustment_id": "0d965d85-18ab-4a0d-8e22-94a1728360f0",
+    "adjustment_id": "f4dd294b-112b-44da-98a0-fce6e793015f",
     "adjustment_status": "proposed",
     "kind": "correction",
     "finding_ref": "M-2",
@@ -118,7 +119,7 @@
       "profit": "3000.00",
       "net_assets": "3000.00"
     },
-    "threshold_id": "b98371ab-5e43-4332-8107-2a69c6b173fd",
+    "threshold_id": "59bc0077-0cc4-4fc9-a6cb-6183ce2955c7",
     "threshold_version_no": 1,
     "basis": "each effect banded on its absolute value against the current threshold version: below CTT clearly trivial, from CTT to PM inclusive accumulated, above PM individually significant (spec section 4); the item's band is the higher of the two (architecture D33)",
     "projected": false,
@@ -133,7 +134,7 @@
         "text": "relates to a related party transaction",
         "note": "Director's firm; pricing not at arm's length",
         "escalated_by": "manager@firm",
-        "at": "2026-11-07T06:56:39"
+        "at": "2026-11-07T07:38:54"
       }
     ],
     "escalation_basis": "an item is escalated while at least one factor of the qualitative checklist is recorded against it, each with its reason (spec section 5); an escalated item is listed individually regardless of its size (acceptance 8) and is accumulated whatever its band, because a matter is clearly trivial only when it is clearly inconsequential 'whether judged by any criteria of size, nature or circumstances' (SA 450 paragraph A2; register F5; architecture D59); which factors apply is a person's judgement and is never detected (spec section 12)",
@@ -176,7 +177,7 @@
         "applies": true,
         "note": "Director's firm; pricing not at arm's length",
         "escalated_by": "manager@firm",
-        "at": "2026-11-07T06:56:39"
+        "at": "2026-11-07T07:38:54"
       },
       {
         "factor": "segment_or_remuneration",
@@ -202,7 +203,7 @@
         "applies": true,
         "note": "Sale to a firm owned by a director; see E-12",
         "escalated_by": "manager@firm",
-        "at": "2026-11-07T06:56:38"
+        "at": "2026-11-07T07:38:54"
       },
       {
         "entry_no": 2,
@@ -210,7 +211,7 @@
         "applies": true,
         "note": "Director's firm; pricing not at arm's length",
         "escalated_by": "manager@firm",
-        "at": "2026-11-07T06:56:39"
+        "at": "2026-11-07T07:38:54"
       }
     ]
   },
@@ -245,14 +246,15 @@
       "decided_at": null,
       "refusal_reason": null,
       "withdrawal_reason": null,
-      "spine_adjustment_id": "0d965d85-18ab-4a0d-8e22-94a1728360f0",
+      "spine_adjustment_id": "f4dd294b-112b-44da-98a0-fce6e793015f",
       "spine_kind": "correction",
       "range_low": null,
       "range_high": null,
       "sample_ref": null,
       "projection_basis": null,
+      "sampling": null,
       "created_by": "senior@firm",
-      "created_at": "2026-11-07T06:56:38"
+      "created_at": "2026-11-07T07:38:54"
     }
   ]
 }

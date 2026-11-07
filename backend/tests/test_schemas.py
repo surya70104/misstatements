@@ -93,7 +93,23 @@ def test_judgemental_needs_a_range_and_nothing_else_may_carry_one() -> None:
 def test_projected_needs_its_sample_and_basis_and_nothing_else_may_carry_them() -> None:
     with pytest.raises(ValidationError, match="sample_ref and projection_basis"):
         MisstatementIn(**body(type="projected"))
-    ok = MisstatementIn(**body(type="projected", sample_ref="S-7", projection_basis="ratio"))
+    # Since Pass 2 (D65) it says how it was projected too; the lines carry the amount.
+    with pytest.raises(ValidationError, match="sampling_method"):
+        MisstatementIn(**body(type="projected", sample_ref="S-7", projection_basis="ratio"))
+    ok = MisstatementIn(
+        **body(
+            type="projected",
+            sample_ref="S-7",
+            projection_basis="ratio",
+            sampling_method="ratio",
+            population_value="1000000.00",
+            population_size=500,
+            sample_value="50000.00",
+            sample_size=25,
+            known_error_in_sample="500.00",
+            projected_amount="10000.00",
+        )
+    )
     assert ok.sample_ref == "S-7"
     with pytest.raises(ValidationError, match="only a projected"):
         MisstatementIn(**body(sample_ref="S-7"))

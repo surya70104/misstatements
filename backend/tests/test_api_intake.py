@@ -11,7 +11,7 @@ from typing import Any
 from fastapi.testclient import TestClient
 
 from tests.conftest import act_as, use_spine
-from tests.test_api_evaluation import linked, thresholds
+from tests.test_api_evaluation import SAMPLING, linked, thresholds
 from tests.test_api_transitions import move
 
 RENT = [{"line_no": 5, "dr": "60000.00"}, {"line_no": 3, "cr": "60000.00"}]
@@ -148,6 +148,8 @@ def test_sampling_arrives_as_a_projected_misstatement_naming_its_sample(api: Tes
             working_paper_ref="R-5.3",
             sample_ref="S-12",
             projection_basis="Ratio of error to sample value, applied to the population",
+            **SAMPLING,
+            projected_amount="60000.00",
         ),
     )
     assert answer.status_code == 201, answer.text

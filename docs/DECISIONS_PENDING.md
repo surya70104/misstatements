@@ -545,3 +545,22 @@ people. It does not change the Pass 1 count.
 **Not built with this feature:** a connection to WorkMind or to a review tool; Sampling as a
 source of its own (a projected misstatement arrives through any hook, as before; N16 stays
 open); the generated binder paper.
+
+## Pass 2, feature 6: projected misstatements from Sampling — 7 November 2026 (architecture D65)
+
+Built on instruction on 7 November 2026. This section records what the feature leaves to
+people, and one instruction that was not followed because the specification says otherwise.
+It does not change the Pass 1 count.
+
+| # | Question | Who | What is built meanwhile |
+|---|---|---|---|
+| J1 | **Should a projected misstatement be allowed without Dr/Cr lines, as an amount alone?** The instruction asked for it; spec sections 1 and 3.1 and acceptance 1 refuse it, and an item without lines has no effect to band or aggregate (D31). Not built | CA and the lead, as a change to the specification | A projected item carries balanced lines proposed to the Spine, as every misstatement does; `projected_amount` in the request must equal their debits and is not stored |
+| J2 | Which sampling methods the firm uses, and whether the list should be the firm's own | Firm | ratio, difference, mean-per-unit, monetary-unit, and other (described in the projection basis) |
+| J3 | Should the module recompute the projection from the sample (known error, sample value, population value) and refuse a projected amount that does not follow? | CA | No. The auditor's projection is the auditor's, stated in the basis; only the equality of the projected amount and the lines is checked |
+| J4 | Whether the population and sample sizes are always meaningful (monetary-unit sampling counts rupees, not items), and whether some figures should be optional for some methods | CA | All six figures are required for every method |
+| J5 | Whether a Sampling module should supply these figures, and the sample reference, so that they are not typed (N16) | Lead | Typed. No Sampling module exists |
+| M4 | Applying migration 0015 to `oak_misstatements_test`, and later to `oak_misstatements` | Whoever approves migrations (with O2) | **Applied to `oak_misstatements_test` on 7 Nov 2026** by the PostgreSQL suite, which was asked for with this feature (565 passed). Not applied to `oak_misstatements`, which still waits (O2) |
+
+**Not built with this feature:** an amount-only projected misstatement (J1); any
+recomputation of the projection (J3); a Sampling module or an intake from one (J5); the
+generated binder paper.

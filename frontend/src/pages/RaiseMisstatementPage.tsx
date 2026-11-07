@@ -22,12 +22,21 @@ import {
   type MisstatementInput,
   type MisstatementType,
   type RaisedFrom,
+  type SamplingMethod,
 } from '../api'
 import { Breadcrumb } from '../components/EngagementHeader'
-import { Field, INPUT, LINK_BUTTON, PRIMARY, SECONDARY, isAmount } from '../components/forms'
+import {
+  Field,
+  INPUT,
+  isAmount,
+  isSignedAmount,
+  LINK_BUTTON,
+  PRIMARY,
+  SECONDARY,
+} from '../components/forms'
 import { Panel } from '../components/panels'
 import { ErrorState, Loading } from '../components/states'
-import { TYPES, TYPE_LABEL } from '../labels'
+import { SAMPLING_METHOD_LABEL, SAMPLING_METHODS, TYPES, TYPE_LABEL } from '../labels'
 import { href, navigate } from '../router'
 import { usePageTitle } from '../usePageTitle'
 import { useResource } from '../useResource'
@@ -68,6 +77,11 @@ const SOURCES: { value: RaisedFrom; label: string }[] = [
 
 function asSource(value: string): RaisedFrom {
   return SOURCES.some((source) => source.value === value) ? (value as RaisedFrom) : 'wp'
+}
+
+/** A count of items as a person types it: whole, and at least one. */
+function isCount(value: string): boolean {
+  return /^[1-9]\d{0,9}$/.test(value.trim())
 }
 
 function citationIsComplete(citation: CitationDraft): boolean {
@@ -259,12 +273,29 @@ function RaiseForm({ engagementId }: { engagementId: string }) {
   const [rangeHigh, setRangeHigh] = useState('')
   const [sampleRef, setSampleRef] = useState('')
   const [projectionBasis, setProjectionBasis] = useState('')
+  // SA 530: how a projected item was projected. The lines carry the projected amount; the
+  // figure typed here is checked against them by the backend and is not stored.
+  const [samplingMethod, setSamplingMethod] = useState<SamplingMethod>('ratio')
+  const [populationValue, setPopulationValue] = useState('')
+  const [populationSize, setPopulationSize] = useState('')
+  const [sampleValue, setSampleValue] = useState('')
+  const [sampleSize, setSampleSize] = useState('')
+  const [knownError, setKnownError] = useState('')
+  const [projectedAmount, setProjectedAmount] = useState('')
   const { submitting, error, submit } = useSubmit()
 
   const typeComplete =
     type === 'factual' ||
     (type === 'judgemental' && isAmount(rangeLow) && isAmount(rangeHigh)) ||
-    (type === 'projected' && sampleRef.trim() !== '' && projectionBasis.trim() !== '')
+    (type === 'projected' &&
+      sampleRef.trim() !== '' &&
+      projectionBasis.trim() !== '' &&
+      isAmount(populationValue) &&
+      isCount(populationSize) &&
+      isAmount(sampleValue) &&
+      isCount(sampleSize) &&
+      isSignedAmount(knownError) &&
+      isAmount(projectedAmount))
   // What the source must attach (spec section 8): a working paper reference, or the run
   // id with at least one citation, or the note's reference.
   const attributionComplete =
@@ -311,7 +342,17 @@ function RaiseForm({ engagementId }: { engagementId: string }) {
         ? { range_low: rangeLow.trim(), range_high: rangeHigh.trim() }
         : {}),
       ...(type === 'projected'
-        ? { sample_ref: sampleRef.trim(), projection_basis: projectionBasis.trim() }
+        ? {
+            sample_ref: sampleRef.trim(),
+            projection_basis: projectionBasis.trim(),
+            sampling_method: samplingMethod,
+            population_value: populationValue.trim(),
+            population_size: Number.parseInt(populationSize.trim(), 10),
+            sample_value: sampleValue.trim(),
+            sample_size: Number.parseInt(sampleSize.trim(), 10),
+            known_error_in_sample: knownError.trim(),
+            projected_amount: projectedAmount.trim(),
+          }
         : {}),
     }
     const sent = await submit(() => raiseMisstatement(engagementId, body))
@@ -621,6 +662,122 @@ function RaiseForm({ engagementId }: { engagementId: string }) {
                 />
               </Field>
             </div>
+          )}
+
+          {type === 'projected' && (
+            <fieldset disabled={submitting} className="rounded border border-slate-200 px-4 py-3">
+              <legend className="px-1 text-sm font-medium text-slate-800">
+                How it was projected (SA 530)
+              </legend>
+              <p className="text-xs text-slate-600">
+                The Dr/Cr lines below carry the projected amount, the best estimate for the
+                population. The figures here are the sample’s; the backend refuses the record if the
+                projected amount differs from the debits of the lines.
+              </p>
+              <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <Field id="raise-method" label="Sampling method" required>
+                  <select
+                    id="raise-method"
+                    value={samplingMethod}
+                    onChange={(event) => {
+                      setSamplingMethod(event.target.value as SamplingMethod)
+                    }}
+                    className={INPUT}
+                  >
+                    {SAMPLING_METHODS.map((method) => (
+                      <option key={method} value={method}>
+                        {SAMPLING_METHOD_LABEL[method]}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+                <Field
+                  id="raise-population-value"
+                  label="Population value"
+                  required
+                  hint="In rupees."
+                >
+                  <input
+                    id="raise-population-value"
+                    value={populationValue}
+                    inputMode="decimal"
+                    aria-describedby="raise-population-value-hint"
+                    onChange={(event) => {
+                      setPopulationValue(event.target.value)
+                    }}
+                    className={`${INPUT} tabular-nums`}
+                  />
+                </Field>
+                <Field id="raise-population-size" label="Items in the population" required>
+                  <input
+                    id="raise-population-size"
+                    value={populationSize}
+                    inputMode="numeric"
+                    onChange={(event) => {
+                      setPopulationSize(event.target.value)
+                    }}
+                    className={`${INPUT} tabular-nums`}
+                  />
+                </Field>
+                <Field id="raise-sample-value" label="Sample value" required hint="In rupees.">
+                  <input
+                    id="raise-sample-value"
+                    value={sampleValue}
+                    inputMode="decimal"
+                    aria-describedby="raise-sample-value-hint"
+                    onChange={(event) => {
+                      setSampleValue(event.target.value)
+                    }}
+                    className={`${INPUT} tabular-nums`}
+                  />
+                </Field>
+                <Field id="raise-sample-size" label="Items in the sample" required>
+                  <input
+                    id="raise-sample-size"
+                    value={sampleSize}
+                    inputMode="numeric"
+                    onChange={(event) => {
+                      setSampleSize(event.target.value)
+                    }}
+                    className={`${INPUT} tabular-nums`}
+                  />
+                </Field>
+                <Field
+                  id="raise-known-error"
+                  label="Misstatement found in the sample"
+                  required
+                  hint="In rupees, signed."
+                >
+                  <input
+                    id="raise-known-error"
+                    value={knownError}
+                    inputMode="decimal"
+                    aria-describedby="raise-known-error-hint"
+                    onChange={(event) => {
+                      setKnownError(event.target.value)
+                    }}
+                    className={`${INPUT} tabular-nums`}
+                  />
+                </Field>
+                <Field
+                  id="raise-projected-amount"
+                  label="Projected amount"
+                  required
+                  hint="In rupees. Must equal the debits of the lines."
+                >
+                  <input
+                    id="raise-projected-amount"
+                    value={projectedAmount}
+                    inputMode="decimal"
+                    aria-describedby="raise-projected-amount-hint"
+                    onChange={(event) => {
+                      setProjectedAmount(event.target.value)
+                    }}
+                    className={`${INPUT} tabular-nums`}
+                  />
+                </Field>
+              </div>
+            </fieldset>
           )}
         </div>
       </Panel>

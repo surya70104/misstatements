@@ -3,7 +3,7 @@
 // item carries the auditor's range; a projected one names its sample and projection basis.
 // An agent run's misstatement shows the run and its citations; a review note's, the note.
 import { isRunOrigin, type Misstatement, type Origin } from '../../api'
-import { dateTime, rupees } from '../../format'
+import { count, dateTime, rupees } from '../../format'
 import {
   BAND_LABEL,
   BAND_TONE,
@@ -12,6 +12,7 @@ import {
   STATE_TONE,
   TYPE_LABEL,
   raisedFromLabel,
+  samplingMethodLabel,
 } from '../../labels'
 import { Pill } from '../states'
 import { Basis, Fact, Panel } from '../panels'
@@ -140,6 +141,32 @@ export function Identification({ misstatement }: { misstatement: Misstatement })
             <Fact label="Projection basis" wide>
               {current.projection_basis ?? 'Not recorded'}
             </Fact>
+            {current.sampling !== null && (
+              <>
+                <Fact label="Sampling method">{samplingMethodLabel(current.sampling.method)}</Fact>
+                <Fact label="Population value">
+                  <span className="tabular-nums">{rupees(current.sampling.population_value)}</span>
+                  <span className="block text-xs text-slate-600">
+                    {count(current.sampling.population_size, 'item')}
+                  </span>
+                </Fact>
+                <Fact label="Sample value">
+                  <span className="tabular-nums">{rupees(current.sampling.sample_value)}</span>
+                  <span className="block text-xs text-slate-600">
+                    {count(current.sampling.sample_size, 'item')}
+                  </span>
+                </Fact>
+                <Fact label="Misstatement found in the sample">
+                  <span className="tabular-nums">
+                    {rupees(current.sampling.known_error_in_sample)}
+                  </span>
+                  <Basis>
+                    The Dr/Cr lines carry the projected amount, the auditor’s best estimate for the
+                    population; the band is computed on it.
+                  </Basis>
+                </Fact>
+              </>
+            )}
           </>
         )}
       </dl>

@@ -159,6 +159,12 @@ def transition(
         range_high=current.range_high,
         sample_ref=current.sample_ref,
         projection_basis=current.projection_basis,
+        sampling_method=current.sampling_method,
+        population_value=current.population_value,
+        population_size=current.population_size,
+        sample_value=current.sample_value,
+        sample_size=current.sample_size,
+        known_error_in_sample=current.known_error_in_sample,
         created_by=actor,
     )
     try:

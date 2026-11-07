@@ -422,6 +422,12 @@ def raise_misstatement(
         range_high=body.range_high,
         sample_ref=body.sample_ref,
         projection_basis=body.projection_basis,
+        sampling_method=body.sampling_method,
+        population_value=body.population_value,
+        population_size=body.population_size,
+        sample_value=body.sample_value,
+        sample_size=body.sample_size,
+        known_error_in_sample=body.known_error_in_sample,
         created_by=raised_by,
     )
     try:

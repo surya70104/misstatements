@@ -820,9 +820,17 @@ test('a projected misstatement must name its sample and projection basis', async
   fillRent()
   fireEvent.change(screen.getByLabelText(/^Type/), { target: { value: 'projected' } })
   expect(record()).toBeDisabled()
-  type(/^Sample/, 'S-12')
+  type(/^Sample \(/, 'S-12')
   expect(record()).toBeDisabled()
   type(/^Projection basis/, 'Ratio of error to sample value')
+  // Since Pass 2 (D65) it says how it was projected too.
+  expect(record()).toBeDisabled()
+  type(/^Population value/, '4000000.00')
+  type(/^Items in the population/, '1200')
+  type(/^Sample value/, '400000.00')
+  type(/^Items in the sample/, '120')
+  type(/^Misstatement found in the sample/, '4000.00')
+  type(/^Projected amount/, '60000.00')
   expect(record()).toBeEnabled()
   fireEvent.click(record())
   await vi.waitFor(() => {
@@ -832,6 +840,13 @@ test('a projected misstatement must name its sample and projection basis', async
     type: 'projected',
     sample_ref: 'S-12',
     projection_basis: 'Ratio of error to sample value',
+    sampling_method: 'ratio',
+    population_value: '4000000.00',
+    population_size: 1200,
+    sample_value: '400000.00',
+    sample_size: 120,
+    known_error_in_sample: '4000.00',
+    projected_amount: '60000.00',
   })
   // A range belongs to a judgemental misstatement only.
   expect(sent()[0]?.body).not.toHaveProperty('range_low')

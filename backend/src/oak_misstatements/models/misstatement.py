@@ -44,6 +44,17 @@ from oak_misstatements.db import Base
 
 MISSTATEMENT_TYPES = ("factual", "judgemental", "projected")
 RAISED_FROM = ("wp", "run", "note", "manual")
+# How a projected misstatement was projected from its sample (SA 530; D65). 'other' is
+# for a method the list lacks, which the projection basis then describes.
+SAMPLING_METHODS = ("ratio", "difference", "mean_per_unit", "monetary_unit", "other")
+SAMPLING_FIELDS = (
+    "sampling_method",
+    "population_value",
+    "population_size",
+    "sample_value",
+    "sample_size",
+    "known_error_in_sample",
+)
 STATES = ("raised", "communicated", "corrected", "refused", "withdrawn")
 SPINE_KINDS = ("reclass", "correction")
 
@@ -115,6 +126,34 @@ class MisstatementVersion(Base):
             "(type = 'projected') OR (sample_ref IS NULL AND projection_basis IS NULL)",
             name="ck_misstatement_version_projection_only_projected",
         ),
+        # SA 530; spec 3.2 (D65; migration 0015): a projected item says how it was projected
+        # from its sample, and no other type does. The projected amount is its lines.
+        CheckConstraint(
+            "(type <> 'projected') OR ("
+            + " AND ".join(f"{field} IS NOT NULL" for field in SAMPLING_FIELDS)
+            + ")",
+            name="ck_misstatement_version_sampling_present",
+        ),
+        CheckConstraint(
+            "(type = 'projected') OR ("
+            + " AND ".join(f"{field} IS NULL" for field in SAMPLING_FIELDS)
+            + ")",
+            name="ck_misstatement_version_sampling_only_projected",
+        ),
+        CheckConstraint(
+            "sampling_method IS NULL OR " + _in("sampling_method", SAMPLING_METHODS),
+            name="ck_misstatement_version_sampling_method",
+        ),
+        CheckConstraint(
+            "(population_size IS NULL AND sample_size IS NULL) OR "
+            "(population_size >= 1 AND sample_size >= 1 AND sample_size <= population_size)",
+            name="ck_misstatement_version_sampling_sizes",
+        ),
+        CheckConstraint(
+            "(population_value IS NULL AND sample_value IS NULL) OR "
+            "(population_value > 0 AND sample_value >= 0 AND sample_value <= population_value)",
+            name="ck_misstatement_version_sampling_values",
+        ),
         # Spec section 3.3 (D41; migration 0007): the dates and reasons follow the state.
         CheckConstraint(
             "version_no > 1 OR state = 'raised'", name="ck_misstatement_version_first_is_raised"
@@ -167,6 +206,14 @@ class MisstatementVersion(Base):
     range_high: Mapped[Decimal | None] = mapped_column(Numeric(asdecimal=True))
     sample_ref: Mapped[str | None] = mapped_column(Text())
     projection_basis: Mapped[str | None] = mapped_column(Text())
+    # SA 530 (D65): how the projection was made. These are the sample's parameters, not
+    # the misstatement's amount, which is the lines in the Financial Spine.
+    sampling_method: Mapped[str | None] = mapped_column(Text())
+    population_value: Mapped[Decimal | None] = mapped_column(Numeric(asdecimal=True))
+    population_size: Mapped[int | None] = mapped_column(Integer())
+    sample_value: Mapped[Decimal | None] = mapped_column(Numeric(asdecimal=True))
+    sample_size: Mapped[int | None] = mapped_column(Integer())
+    known_error_in_sample: Mapped[Decimal | None] = mapped_column(Numeric(asdecimal=True))
     created_by: Mapped[str] = mapped_column(Text())
     created_at: Mapped[dt.datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()

@@ -18,6 +18,7 @@ from sqlalchemy.exc import OperationalError
 from oak_misstatements.models import MisstatementLineClass, MisstatementVersion
 from tests.conftest import act_as, use_spine
 from tests.fake_spine import ENGAGEMENT_ID, OPEN_VERSION_ID, FakeSpine
+from tests.test_api_evaluation import SAMPLING
 
 RENT_ACCRUAL = [{"line_no": 5, "dr": "10000.00"}, {"line_no": 3, "cr": "10000.00"}]
 RENT_BEFORE = Decimal("60000.00")
@@ -410,7 +411,13 @@ def test_the_effects_and_the_type_fields_survive_every_move(api: TestClient) -> 
         "15000.00",
     )
     projected = raise_one(
-        api, engagement_id, type="projected", sample_ref="S-1", projection_basis="ratio"
+        api,
+        engagement_id,
+        type="projected",
+        sample_ref="S-1",
+        projection_basis="ratio",
+        **SAMPLING,
+        projected_amount="10000.00",
     )
     move(api, projected["id"], "communicated")
     kept = move(api, projected["id"], "withdrawn", "sample re-performed").json()

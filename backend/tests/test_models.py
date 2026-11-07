@@ -16,6 +16,12 @@ from oak_misstatements.models import Engagement, Misstatement, MisstatementVersi
 ALLOWED_MONEY = {
     ("misstatement_version", "range_low"),
     ("misstatement_version", "range_high"),
+    # SA 530; spec 3.2 (D65): what a projected item says about its sample. These are the
+    # sample's parameters, the auditor's own figures like the range; the projected
+    # amount itself is the lines in the Financial Spine and is not a column.
+    ("misstatement_version", "population_value"),
+    ("misstatement_version", "sample_value"),
+    ("misstatement_version", "known_error_in_sample"),
     # Spec section 4 and section 9 "threshold": the lines, the declared fraction and the PM
     # the Spine showed when they were set (D26).
     ("threshold", "om"),

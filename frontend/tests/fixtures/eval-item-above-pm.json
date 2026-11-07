@@ -17,7 +17,7 @@
         "detail": "unavailable: no trusted role claim is configured, so every partner-only action fails closed (403) until the firm wires its identity provider (B9, D39)"
       }
     },
-    "id": "93f15a3f-2d5f-4b34-a0df-4d55a3ccfe87",
+    "id": "f0dd1758-e723-44f8-9cdf-c564d27adcf7",
     "label": "Test engagement I: an item above performance materiality",
     "spine": {
       "engagement_id": "11111111-1111-4111-8111-111111111111",
@@ -27,14 +27,14 @@
       "detail": null
     },
     "misstatements": 1,
-    "current_threshold_id": "5945deaf-6290-4ce0-956a-48d2ff82f2ff",
+    "current_threshold_id": "a9e4f936-12c4-450f-8f01-e34e157fcba1",
     "created_by": "senior@firm",
-    "created_at": "2026-11-07T06:56:33"
+    "created_at": "2026-11-07T07:38:49"
   },
   "evaluation": {
-    "engagement_id": "93f15a3f-2d5f-4b34-a0df-4d55a3ccfe87",
+    "engagement_id": "f0dd1758-e723-44f8-9cdf-c564d27adcf7",
     "threshold": {
-      "id": "5945deaf-6290-4ce0-956a-48d2ff82f2ff",
+      "id": "a9e4f936-12c4-450f-8f01-e34e157fcba1",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00",
@@ -264,7 +264,7 @@
     },
     "items": [
       {
-        "id": "be2e1941-5a74-40bc-ac9c-90f49108ffe6",
+        "id": "2ee98882-f31b-4bfd-ab37-79b44509b8f5",
         "ref": "M-1",
         "type": "factual",
         "projected": false,
@@ -312,9 +312,9 @@
     "blocked_by": [],
     "undetermined_because": [],
     "scope": "whether an unmodified opinion is blocked by the size of the uncorrected misstatements: the hard gate at overall materiality (spec section 7), and the gate at performance materiality when the firm has set it to hard. It says nothing about items above PM not yet dealt with or about the partner's acknowledgement: the sign-off gate does",
-    "engagement_id": "93f15a3f-2d5f-4b34-a0df-4d55a3ccfe87",
+    "engagement_id": "f0dd1758-e723-44f8-9cdf-c564d27adcf7",
     "threshold": {
-      "id": "5945deaf-6290-4ce0-956a-48d2ff82f2ff",
+      "id": "a9e4f936-12c4-450f-8f01-e34e157fcba1",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"
@@ -480,9 +480,9 @@
     ],
     "undetermined_because": [],
     "scope": "whether sign-off is blocked for any reason this module knows: the hard gate, the soft gate without a current partner acknowledgement, an item above PM still raised or communicated (spec section 7; acceptance 6 and 7)",
-    "engagement_id": "93f15a3f-2d5f-4b34-a0df-4d55a3ccfe87",
+    "engagement_id": "f0dd1758-e723-44f8-9cdf-c564d27adcf7",
     "threshold": {
-      "id": "5945deaf-6290-4ce0-956a-48d2ff82f2ff",
+      "id": "a9e4f936-12c4-450f-8f01-e34e157fcba1",
       "version_no": 1,
       "om": "400000.00",
       "pm": "250000.00"
