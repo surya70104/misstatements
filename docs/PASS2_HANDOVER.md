@@ -232,7 +232,15 @@ committed. Pass 2 adds:
    (T3, R1), not the firm's.
 5. **Nothing external checks what the hooks receive** (I3, I4, J5).
 6. **Six more migrations wait for the main database** (M1 to M5, with O2).
-7. **There is still no remote and no CI.** The tests run on this machine only.
+7. **CI has not yet run.** The GitHub remote `origin`
+   (`github.com/surya70104/misstatements`) is configured and `master` is pushed to it. A
+   workflow, `.github/workflows/ci.yml`, was added on 9 November: lint and type checks,
+   the frontend tests, and the backend tests in memory and on a PostgreSQL service
+   (architecture D67). Its commands pass on this machine; the workflow itself has not run
+   on GitHub, so the tests have still run on this machine only.
+
+*Corrected 9 November 2026: point 7 first read "There is still no remote and no CI". The
+remote was configured the same day, and the workflow added after it.*
 
 ## 7. External access, approval or verification still required
 

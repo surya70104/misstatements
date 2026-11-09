@@ -32,6 +32,9 @@ Sampling goes through HTTP APIs only, each configured by a URL that may be unset
 | `backend/tests/` | `fake_spine.py` (the Spine double) and `local_stubs.py` (the double over HTTP on 8013); unit, schema, client, API and migration-SQL tests; database tests that skip until a test database exists |
 | `frontend/` | React 19 · TypeScript · Vite · Tailwind · vitest · ESLint · Prettier |
 | `scripts/db/` | One-time database and role creation scripts, run by a person as superuser. Not run yet |
+| `scripts/run_dev.ps1` | Starts the seeded demo, the API or the dev server with one command (D67) |
+| `scripts/seed_demo.py` | Seeds one demonstration engagement through the API; illustrative data; the isolated preview by default (D67) |
+| `.github/workflows/ci.yml` | CI on push and pull request to `master`: lint and type checks, frontend tests, backend tests in memory and on PostgreSQL (D67) |
 | `docs/` | Specification, architecture decisions, pending decisions |
 
 ## Ports and tools
@@ -119,6 +122,64 @@ or prefix each command with `fnm exec --using=22 --`. From `D:\MISSTATEMENTS_ROL
 
 The dev server proxies `/api` to the backend on 8003, so start the backend first and open
 <http://127.0.0.1:3003>.
+
+### Quick start
+
+Once the backend and the frontend are set up as above, `scripts\run_dev.ps1` starts each part
+with one command, from any folder. It installs nothing and changes no setting.
+
+| Task | Command |
+|---|---|
+| A seeded demonstration on <http://127.0.0.1:8014> | `powershell -ExecutionPolicy Bypass -File scripts\run_dev.ps1 demo` |
+| The API on port 8003 | `powershell -ExecutionPolicy Bypass -File scripts\run_dev.ps1 backend` |
+| The dev server on port 3003 | `powershell -ExecutionPolicy Bypass -File scripts\run_dev.ps1 frontend` |
+
+### The seeded demo, in one command
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\run_dev.ps1 demo
+```
+
+This builds the frontend if no build exists (`-Build` forces one), starts the isolated
+preview, seeds it and prints the address to open. Press Ctrl+C to stop it. **Nothing is
+kept:** the preview runs in one transaction on `oak_misstatements_test` that is rolled back
+when it stops. It needs the test database created and migrated, which running the backend
+tests on PostgreSQL once does, and `OAK_TEST_APP_DATABASE_URL` in `backend\.env`. The
+Financial Spine is the test double. Do not run the PostgreSQL test suite while it is open.
+
+The seed is `scripts\seed_demo.py`, standard library only. With a preview already running:
+
+```powershell
+backend\.venv\Scripts\python.exe scripts\seed_demo.py
+backend\.venv\Scripts\python.exe scripts\seed_demo.py --engagement-id <id>
+```
+
+The first creates "Demo engagement (illustrative data)"; the second seeds an existing
+engagement, which must have no misstatements, and keeps the thresholds it has. It records,
+through the same endpoints a person uses: the three thresholds; five misstatements (factual
+from an area tester, judgemental with its range, projected with its SA 530 sampling details,
+one from an agent run with its citation, one from a review note); their moves, with one
+refused and one corrected; a qualitative escalation; a prior-period item; and an evaluation
+run. Every figure is illustrative: none is a client's, and none is a firm policy.
+
+Every record of this module is append-only, so what is seeded through a real backend can
+never be removed. The script therefore writes to the isolated preview by default, refuses
+any other address unless `--allow-persistent` is given, and accepts a loopback address only.
+Its Dr/Cr lines name the Spine test double's ledgers; another Spine refuses lines it does
+not know.
+
+### Continuous integration
+
+`.github/workflows/ci.yml` runs on every push and pull request to `master`:
+
+| Job | What it runs |
+|---|---|
+| Lint and typecheck | `ruff check`, `ruff format --check`, `mypy` strict (backend and `scripts/`); `npm run lint`, `npm run format`, `npm run typecheck` |
+| Frontend tests | `npm test` |
+| Backend tests | `pytest` on the in-memory stand-in, then on a PostgreSQL 16 service container set up by `scripts/db/02_create.sql` |
+
+The container exists for the job only, and no job reaches the Financial Spine or any real
+database. **The workflow has not yet run on GitHub**; its commands pass on this machine.
 
 ### Database: one-time creation, run by a person
 
@@ -441,11 +502,25 @@ Built on 7 November 2026, the last feature of Pass 2.
   (`docs/DECISIONS_PENDING.md`, last section, W1).
 - **Screen:** a "Working paper" tab with the paragraph 15 checklist, the whole record, the
   export and the registered papers; it prints.
-- **Tests, 7 November 2026 (latest):** backend `pytest` on PostgreSQL **580 passed, 0
+- **Tests, 7 November 2026, after this feature:** backend `pytest` on PostgreSQL **580 passed, 0
   skipped**; on the in-memory stand-in **540 passed, 40 skipped**; `ruff` and `mypy` strict
   clean (122 files); frontend `vitest` **428 passed** (25 files); `tsc`, `eslint`,
-  `prettier` clean; build succeeds; 184 captured API answers. These supersede the counts in
-  every other section, which are those of their own dates.
+  `prettier` clean; build succeeds; 184 captured API answers. The latest counts are in the
+  next section.
+
+## The demo seed, the run script and CI (D67)
+
+Added on 9 November 2026, after Pass 2. No application code, schema or migration changed.
+See "Quick start", "The seeded demo, in one command" and "Continuous integration" above.
+
+- **Tests, 9 November 2026 (latest):** backend `pytest` on PostgreSQL **584 passed, 0
+  skipped**; on the in-memory stand-in **544 passed, 40 skipped**; `ruff` and `mypy` strict
+  clean (123 files, and the seed script); frontend `vitest` **428 passed** (25 files);
+  `tsc`, `eslint`, `prettier` clean; 184 captured API answers. The four new backend tests
+  run the demo seed against the application. These supersede the counts in every other
+  section, which are those of their own dates.
+- **Not verified:** the CI workflow on GitHub; the `backend` and `frontend` targets of the
+  run script, which were parsed and not started.
 
 ## Clearly trivial items and the percentage display (D53, D54)
 

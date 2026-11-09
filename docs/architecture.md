@@ -2001,3 +2001,50 @@ memory: 540 passed, 40 skipped. `ruff`, `mypy` strict clean (122 files). Fronten
 captured API answers, 11 of them the paper's. In a browser on the isolated preview (port 8014, over the test database in one transaction never committed, the Spine double, the development identity): an engagement with five misstatements of every type, a refused and a corrected one, an escalated item, a prior-period item and one run was seeded through the API; the Working paper tab showed the whole paper with the paragraph 15 checklist and the content hash; 'Export to the binder' registered paper 1 on run 1 (201) and the page re-read itself as current; a second press was refused as unchanged (409) in the backend's words; the registered paper read by id recomputed its hash and matched; at phone width nothing overflowed. Not done: a delivery to the Binder
 (W1); a named partner, so no paper yet documents a conclusion; the live Financial Spine; a
 screen-reader session.
+
+## D67 · Tooling: CI, the demo seed and the run script — 9 Nov 2026
+
+Built on instruction, after an audit of the specification against the code found the
+application complete and these three missing. No application code, schema or migration
+changed.
+
+**The demo seed** (`scripts/seed_demo.py`). A standalone script, standard library only, that
+records one demonstration engagement through the module's own API: thresholds, five
+misstatements (factual from an area tester, judgemental with its range, projected with its
+SA 530 details, one from an agent run with its citation, one from a review note), their
+moves, one qualitative escalation, one prior-period item and one evaluation run. It goes
+through the API and not the database, so every rule of the module applies to it. Every
+figure is illustrative and the engagement's label says so.
+*Where it writes.* The module's records are append-only, so a demo seeded through a real
+backend could never be removed. The script therefore defaults to the isolated preview on
+port 8014, whose one transaction is never committed; refuses any other address unless
+`--allow-persistent` is given; and accepts a loopback address only. With `--engagement-id`
+it seeds an existing engagement, keeps the thresholds it has, and writes nothing if it
+already holds a misstatement. Its lines name the Spine test double's ledgers, which is what
+the preview runs on. `backend/tests/test_seed_demo.py` runs the same `seed` through the test
+client, so a change to the API that the script does not follow fails the suite.
+
+**The run script** (`scripts/run_dev.ps1`): `demo` (the default) builds the frontend if no
+build exists, starts the isolated preview, seeds it and waits; `backend` starts the API on
+8003; `frontend` starts the dev server on 3003. It installs nothing and changes no setting.
+
+**CI** (`.github/workflows/ci.yml`), on a push or pull request to `master`, three jobs with
+the commands the README gives: lint and type checks (`ruff check`, `ruff format --check`,
+`mypy` strict, over the backend and `scripts/`; `eslint`, `prettier --check`, `tsc`); the
+frontend tests (`vitest`); the backend tests, first on the in-memory stand-in, then on a
+PostgreSQL 16 service container created by the project's own `scripts/db/02_create.sql`.
+The container is destroyed with the job; its passwords are in the workflow because they
+protect nothing. No job reaches the Financial Spine or any real database.
+
+**Verified, 9 November 2026.** Backend `pytest` on PostgreSQL (`oak_misstatements_test`,
+rolled back; no new migration): 584 passed, 0 skipped. In memory: 544 passed, 40 skipped.
+`ruff`, `ruff format`, `mypy` strict clean (123 files, and the seed script). Frontend
+`vitest` 428 passed (25 files), also with the clock set to UTC as on the CI runner;
+`eslint`, `prettier --check .`, `tsc` clean. `scripts\run_dev.ps1 demo` was run: the preview
+started, the seed recorded everything above, and the seeded schedule was read in a browser.
+The seed was also run with `--engagement-id` on an empty engagement, and was refused on a
+seeded one, on another port without the flag, and on a non-loopback address. **Not
+verified:** the workflow has not run on GitHub, so the Linux install, the service container
+and the creation script under CI are untested; the `backend` and `frontend` targets of the
+run script were parsed and not started, because the development servers were already
+running on those ports.
