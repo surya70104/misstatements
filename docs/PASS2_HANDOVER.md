@@ -81,6 +81,10 @@ the evaluation does not compute.
 | Production build | Succeeds | 7 November |
 | Captured API answers used by the screen tests | 184, regenerated from the real API | 7 November |
 
+*Note, 9 November 2026, later the same day: four tests of the demo seed were added after
+this table was written (architecture D67). The suite is now 584 passed on PostgreSQL and
+544 passed, 40 skipped in memory, and it has passed once on GitHub (section 6, point 7).*
+
 **Growth over Pass 1.** PostgreSQL 469 to 580; `vitest` 319 to 428, 18 files to 25;
 captured answers 122 to 184. No test was deleted.
 
@@ -232,15 +236,20 @@ committed. Pass 2 adds:
    (T3, R1), not the firm's.
 5. **Nothing external checks what the hooks receive** (I3, I4, J5).
 6. **Six more migrations wait for the main database** (M1 to M5, with O2).
-7. **CI has not yet run.** The GitHub remote `origin`
+7. **CI runs, and proves only what the tests prove.** The GitHub remote `origin`
    (`github.com/surya70104/misstatements`) is configured and `master` is pushed to it. A
    workflow, `.github/workflows/ci.yml`, was added on 9 November: lint and type checks,
    the frontend tests, and the backend tests in memory and on a PostgreSQL service
-   (architecture D67). Its commands pass on this machine; the workflow itself has not run
-   on GitHub, so the tests have still run on this machine only.
+   (architecture D67). It ran on GitHub on the push of commit `81bd638` the same day (run
+   1, 04:22 UTC) and all three jobs succeeded, including the creation of the roles and
+   databases in the service container and `pytest` on PostgreSQL there. So the tests no
+   longer run on this machine only. CI uses the Spine test double and a throwaway
+   database, like the local suite: it is not a run against the live Financial Spine, a
+   named partner or the main database, and it changes nothing in points 1 to 6.
 
-*Corrected 9 November 2026: point 7 first read "There is still no remote and no CI". The
-remote was configured the same day, and the workflow added after it.*
+*Corrected 9 November 2026, twice. Point 7 first read "There is still no remote and no
+CI"; the remote was configured the same day and the workflow added after it. It then read
+"CI has not yet run"; the workflow ran and passed once it was pushed.*
 
 ## 7. External access, approval or verification still required
 

@@ -31,7 +31,7 @@ Sampling goes through HTTP APIs only, each configured by a URL that may be unset
 | `backend/alembic/` | Migrations. 0001: the append-only trigger function and the money domain. 0002: the three Stage 1 tables, the record tables append-only. 0003: threshold and event. 0004: the classification snapshot, append-only, no amounts. 0005: PM below OM as a CHECK. 0006: the engagement's audit columns frozen, the app role limited to the Spine link columns. 0007: the state machine's CHECKs and INSERT trigger on `misstatement_version`. 0008: the `evaluation` row, append-only, one per run. 0009: the conclusion columns on that row and the hard gate as a trigger. 0010: the event kind held to the five the module writes |
 | `backend/tests/` | `fake_spine.py` (the Spine double) and `local_stubs.py` (the double over HTTP on 8013); unit, schema, client, API and migration-SQL tests; database tests that skip until a test database exists |
 | `frontend/` | React 19 · TypeScript · Vite · Tailwind · vitest · ESLint · Prettier |
-| `scripts/db/` | One-time database and role creation scripts, run by a person as superuser. Not run yet |
+| `scripts/db/` | One-time database and role creation scripts, run by a person as superuser. Run on 5 Nov 2026: both databases and both roles exist |
 | `scripts/run_dev.ps1` | Starts the seeded demo, the API or the dev server with one command (D67) |
 | `scripts/seed_demo.py` | Seeds one demonstration engagement through the API; illustrative data; the isolated preview by default (D67) |
 | `.github/workflows/ci.yml` | CI on push and pull request to `master`: lint and type checks, frontend tests, backend tests in memory and on PostgreSQL (D67) |
@@ -46,7 +46,7 @@ Sampling goes through HTTP APIs only, each configured by a URL that may be unset
 | Test doubles for other modules | from 8013 |
 | Python | 3.11, virtual environment at `backend\.venv` |
 | Node | 22, selected through fnm (`.node-version` in `frontend/`) |
-| Database | PostgreSQL 16 on localhost, databases `oak_misstatements` and `oak_misstatements_test` (not created yet) |
+| Database | PostgreSQL 16 on localhost, databases `oak_misstatements` and `oak_misstatements_test`. Both exist. `oak_misstatements_test` is at migration 0016 with no data rows; `oak_misstatements` has no tables and is not migrated (O2) |
 
 ## Build stages
 
@@ -179,7 +179,12 @@ not know.
 | Backend tests | `pytest` on the in-memory stand-in, then on a PostgreSQL 16 service container set up by `scripts/db/02_create.sql` |
 
 The container exists for the job only, and no job reaches the Financial Spine or any real
-database. **The workflow has not yet run on GitHub**; its commands pass on this machine.
+database.
+
+**The workflow has run on GitHub and passed.** Run 1, on the push of commit `81bd638` to
+`master` on 9 November 2026 (04:22 UTC): all three jobs succeeded, every step of each,
+including the creation of the roles and databases in the service container and `pytest` on
+PostgreSQL there ([run 1](https://github.com/surya70104/misstatements/actions/runs/42561436625)). The same commands pass on this machine.
 
 ### Database: one-time creation, run by a person
 
@@ -188,7 +193,16 @@ and `oak_misstatements_test`, and two roles, `oak_misstatements_owner` (migratio
 `oak_misstatements_app` (the API). They are created once by `scripts\db\02_create.sql`, run
 as the `postgres` superuser. The script checks that none of the four names exist and stops
 without changing anything if one does. It never drops anything and never refers to any other
-project's databases or roles. **Neither script has been run yet** (pending decision O2).
+project's databases or roles.
+
+**On this machine this is done.** A person ran the creation script and set the passwords on
+5 November 2026 (see "PostgreSQL verification on the test database"). Read on 9 November
+2026, read-only: both databases and both roles exist on PostgreSQL 16.15, each carrying the
+comment the script writes. `oak_misstatements_test` has its eleven tables at migration 0016,
+applied by the test suite, and no data rows. `oak_misstatements` has no tables: no migration
+has been applied to it, and applying one still waits for approval (O2). The steps below are
+for a new machine; here the creation script would find the four names and stop without
+changing anything.
 
 First, the read-only pre-check:
 
@@ -209,7 +223,11 @@ Then, in psql, set the two passwords. psql hides what you type and sends only a 
 ```
 
 Put the passwords into `backend\.env`, replacing `CHANGE_ME`, and uncomment the two
-`OAK_TEST_*` lines so the database tests run. Then apply the migration from `backend\`:
+`OAK_TEST_*` lines so the database tests run. Running the backend tests then migrates
+`oak_misstatements_test` to the latest migration by itself.
+
+The main database is migrated from `backend\` with the command below. **It has not been
+run:** `oak_misstatements` has no tables, and migrating it needs approval first (O2).
 
 ```powershell
 .venv\Scripts\python.exe -m alembic upgrade head
@@ -519,8 +537,10 @@ See "Quick start", "The seeded demo, in one command" and "Continuous integration
   `tsc`, `eslint`, `prettier` clean; 184 captured API answers. The four new backend tests
   run the demo seed against the application. These supersede the counts in every other
   section, which are those of their own dates.
-- **Not verified:** the CI workflow on GitHub; the `backend` and `frontend` targets of the
-  run script, which were parsed and not started.
+- **CI on GitHub:** run 1, on commit `81bd638`, 9 November 2026: the three jobs succeeded.
+  The test counts inside that run were not read; the job's steps passed.
+- **Not verified:** the `backend` and `frontend` targets of the run script, which were
+  parsed and not started.
 
 ## Clearly trivial items and the percentage display (D53, D54)
 

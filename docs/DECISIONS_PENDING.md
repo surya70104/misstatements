@@ -586,3 +586,26 @@ screen prints); any figure the evaluation does not already compute.
 PostgreSQL and in a browser on the isolated preview. What stands between the module and
 production is unchanged and listed above: the firm's and the CA's decisions, a named partner
 (V12), the live Financial Spine, and the migrations to `oak_misstatements` (O2).
+
+## Reserved settings: the Binder and WorkMind — 9 November 2026 (architecture D67, note)
+
+This section records a state of the code, not a new question. It changes no count.
+
+Four settings exist and nothing reads them: `OAK_BINDER_URL`, `OAK_BINDER_CREDENTIAL`,
+`OAK_WORKMIND_URL` and `OAK_WORKMIND_CREDENTIAL`. They are declared in `config.py`, checked
+at startup like the Spine's (an http or https URL; https in production unless on the loopback
+interface), covered by `tests/test_config.py`, and listed, commented out, in
+`backend/.env.example`. Setting them today changes nothing: no request is ever sent to
+either module.
+
+They are reserved for external integration that waits on other people:
+
+| Setting | Reserved for | Waits on |
+|---|---|---|
+| `OAK_BINDER_URL`, `OAK_BINDER_CREDENTIAL` | Delivering the generated working paper to the Working Paper Binder | W1: the Binder has no source for this module |
+| `OAK_WORKMIND_URL`, `OAK_WORKMIND_CREDENTIAL` | Checking an agent run against WorkMind before its exception is raised | I3 and I4: no WorkMind is connected, and its citation contract is not agreed |
+
+They were kept and not removed because the architecture names both modules as reached over
+HTTP (D1, D11), their validation is tested, and removing them would only have to be undone
+when W1 or I3 is decided. If either is decided against, its two settings should be removed
+with it.

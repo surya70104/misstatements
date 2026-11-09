@@ -2048,3 +2048,20 @@ verified:** the workflow has not run on GitHub, so the Linux install, the servic
 and the creation script under CI are untested; the `backend` and `frontend` targets of the
 run script were parsed and not started, because the development servers were already
 running on those ports.
+
+*Note on D67, 9 November 2026, later the same day.* The workflow has since run on GitHub:
+run 1, on the push of commit `81bd638` to `master` (04:22 UTC). All three jobs succeeded,
+every step of each: the Linux install of the backend and the frontend, `ruff`, `mypy`,
+`eslint`, `prettier` and `tsc`; `vitest`; `pytest` on the in-memory stand-in; the creation
+of the roles and databases in the PostgreSQL 16 service container by
+`scripts/db/02_create.sql`; and `pytest` on PostgreSQL there (https://github.com/surya70104/misstatements/actions/runs/42561436625).
+So the first half of "Not verified" above no longer holds. The test counts inside that run
+were not read; the steps passed. Still not verified: the `backend` and `frontend` targets
+of the run script.
+
+**The Binder and WorkMind settings are reserved.** `OAK_BINDER_URL`, `OAK_BINDER_CREDENTIAL`,
+`OAK_WORKMIND_URL` and `OAK_WORKMIND_CREDENTIAL` are declared and validated in `config.py`
+(D1, D11) and no code reads them. They were kept, not removed: the validation is tested
+(`tests/test_config.py`), and they are where a delivery to the Binder (W1) and a check of a
+run against WorkMind (I3) would be configured. Setting them today changes nothing. Recorded
+in `docs/DECISIONS_PENDING.md`, last section.
